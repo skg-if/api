@@ -1,0 +1,1422 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0-alpha
+  title: SKG-IF OpenAPI
+  termsOfService: 'https://skg-if.github.io/interoperability-framework/'
+  contact:
+    url: 'https://github.com/skg-if'
+  license:
+    name: CC-BY
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+  x-logo:
+    url: 'https://www.rd-alliance.org/wp-content/uploads/2024/04/RDA_Logotype_CMYK.png'
+  description: |
+    OpenAPI end points specifications for [SKG-IF](https://skg-if.github.io/interoperability-framework/)
+      
+    This API is compatible with SKG-IF DataModel 1.0.1 and [JSON-LD context](https://w3id.org/skg-if/context/1.0.1/skg-if.json)
+
+    # Note for implementers :
+      - Please refer to [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?usp=sharing)   
+      - [RDA SKG-IF WG](https://skg-if.github.io/) does not provide any official implementation of the current specification.
+      - Recommended OpenAPI viewer : [StopLight/Elements](https://elements-demo.stoplight.io/)  (Use a public URL exposing the current file)
+      - This OpenAPI is compatible with [StopLight PRISM](https://docs.stoplight.io/docs/prism/). 
+        - You can run a mock server, for testing purpose, before implementaion.   
+        - You can test your server implementation compatibility.
+      - All the errors returned MUST conform to format [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    
+    # JSON Output compatibility
+      - The JSON output of single entity operations _/entity-type/{local_identifier}_ are compatible with SKG-IF JSON-LD context (see @context version in response specifications). 
+      - The JSON output of search entity operations _/entity-type?filter=xxx_ are JSON only.
+    
+    __2025/03 : This is alpha unversionned release make sure you refresh/download the YAML regularly to get the last fixes__     
+
+externalDocs:
+  description: SKG-IF
+  url: 'https://skg-if.github.io/interoperability-framework/'
+tags: # upper case name
+  - name: Product
+    description: product operations
+  - name: Person
+    description: person operations.
+  - name: Organisation
+    description: organisation operations.  
+  - name: Venue
+    description: venue operations.
+  - name: Grant
+    description: grant operations.
+  - name: Data Source
+    description: grant operations.       
+  - name: Echo
+    description: test operations.
+  - name: Pagination
+    description: Pagination description (can use markdown syntax)
+    x-traitTag: true     
+servers:
+  - url: 'http://example.com/api'
+paths:
+  '/products/{local_identifier}':
+    get:
+      tags:
+          - Product
+      summary: Get product by id
+      description: |
+          Get single `product`. See definition in SKG-IF [Research product](https://skg-if.github.io/interoperability-framework/docs/research-product.html) ( entity_type:product ).
+      operationId: getProductById
+      parameters:
+        - $ref : '#/components/parameters/localIdPathParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            # not 'application/json-ld' to be compatible with StopLight PRISM tool
+            application/json: 
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsonLdCtx"
+                  - $ref: "#/components/schemas/Product"
+              examples:
+                JournalArticleEx01:
+                  summary: "Journal article - FAIR Guiding Principles"
+                  value :
+                    "@context": [
+                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      {"@base" : "http://example.com/"}
+                    ]
+                    local_identifier: http://www.example.com/xxx
+                    entity_type: product
+                    product_type: literature
+                    titles :
+                      "en": ["The FAIR Guiding Principles for scientific data management and stewardship"]
+                    abstracts :
+                      "en": ["There is an urgent need to improve the infrastructure supporting the reuse of scholarly data. A diverse set of stakeholders—representing academia, industry, funding agencies, and scholarly publishers—have come together to design and jointly endorse a concise and measureable set of principles that we refer to as the FAIR Data Principles"]               
+                    identifiers:
+                      - value: "10.1038/sdata.2016.18"
+                        scheme: "doi"
+                      - value: "26978244"
+                        scheme: "pmid"
+                    contributions:                 
+                      - contribution: "writing – original draft"
+                        role: "author"
+                        rank: 1
+                        by:
+                          name: "Mark Wilkinson"
+                          given_name: "Mark"
+                          family_name: "Wilkinson"
+                          identifiers: 
+                          - value: "0000-0001-6960-357X"
+                            scheme: "orcid"                      
+                          local_identifier: "http://www.example.com/skg-if/614a6575-5d6c-416c-a8e1-f49a5d589bf8"
+                          entity_type: "person"
+                        declared_affiliations:                   
+                          - name: "Center for Plant Biotechnology and Genomics, Universidad Politécnica de Madrid, Madrid, 28223, Spain"
+                            local_identifier: "http://www.example.com/skg-if/32bc66c6-38be-4d5f-85db-d44c9f86921f"
+                            entity_type: "organisation"
+                            country: "ES"
+                    manifestations:
+                      - type:
+                          labels: 
+                            en: localtypey
+                          defined_in: http://www.example.com/types/onto
+                          class: http://www.example.com/types/onto/localtypemethodology
+                        biblio: 
+                          hosting_data_source:
+                            local_identifier: http://www.example.com/skg-if/6f368a3a-b1cf-498f-b2de-27135d1e0075
+                            entity_type: datasource
+                            name: "An Archive"
+                          in:
+                            name: "Scientific Data"
+                            acronym: "Sci Data"
+                            identifiers: 
+                              - "value": "2052-4463"
+                                "scheme": "issn"
+                            local_identifier: "http://www.example.com/skg-if/journal/51f46bc1-00f8-42dd-8221-ac4deb52fb25"
+                            entity_type: "venue"
+                        dates: # http://api.crossref.org/works/10.1038/sdata.2016.18
+                          publication: "2016-03-15T00:00:00.0Z"
+                          deposit: "2023-01-04T12:47:12.0Z"         
+         
+                DatasetEx02:
+                  summary: "Dataset - OpenAIRE Graph dataset new collected projects"
+                  value :
+                    "@context": [
+                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      {"@base" : "http://example.com/"}
+                    ]
+                    local_identifier: http://www.example.com/yyy
+                    entity_type: product
+                    product_type: research data
+                    titles :
+                      "en": ["OpenAIRE Graph dataset - new collected projects"]
+                    abstracts :
+                      "en": ["The dataset includes metadata about projects grants collected by OpenAIRE since October 2024."]               
+                    identifiers:
+                      - value: "10.5281/zenodo.14622592"
+                        scheme: "doi"
+                      - value: "W4393781519"
+                        scheme: "openalex"
+  '/products':
+    get:
+      tags:
+          - Product
+      summary: Get list of product
+      operationId: getProducts
+      description: |
+          Get a list of `product`.
+
+          __Attribute filters__ \
+          You can filter using these attributes of the `product` object. Exact match.
+          | Filter key | Attribute filter example |
+          | -------- | -------- | 
+          | product_type |  `product_type:literature` |
+          | identifiers.id | `identifiers.id:10.1038/sdata.2016.18` |
+          | identifiers.scheme | `identifiers.scheme:doi` |     
+          | contributions.by. local_identifier |   `contributions.by. local_identifier:prod_1` |
+          | contributions.by. identifiers.id | `contributions.by. identifiers.id:0000-0002-1825-0097` |
+          | contributions.by. identifiers.scheme | `contributions.by. identifiers.scheme:orcid` |
+          | contributions.by. family_name |   `contributions.by. family_name:smith` |
+          | contributions.by. given_name |   `contributions.by. given_name:john` |
+          | contributions.by. name |   `contributions.by. name:john smith` |
+          | contributions.declared_affiliations. local_identifier | `contributions.declared_affiliations. local_identifier:org_1` |
+          | contributions.declared_affiliations. identifiers.id | `contributions.declared_affiliations. identifiers.id:05gq02987` |
+          | contributions.declared_affiliations. identifiers.scheme | `contributions.declared_affiliations. identifiers.scheme:ror` |
+          | contributions.declared_affiliations. name | `contributions.declared_affiliations. name:brown university` |
+          | contributions.declared_affiliations. short_name | `contributions.declared_affiliations. short_name:BU` |
+          | funding. local_identifier | `funding. local_identifier:grant_1` |
+          | funding. grant_number | `funding. grant_number:101095129` |
+          | funding. identifiers.id | `funding. identifiers.id:10.3030/101095129` |
+          | funding. identifiers.scheme | `funding. identifiers.scheme:doi` |
+              
+          __Convenience filters__ \
+          These filters aren't attributes of the `product` object, but they're handy for solving some common use cases.
+          | Filter key | Filter value | List returned | Attribute filter example |
+          | -------- | -------- | ------- | ------- |
+          | cf.search.title | a string | `product` with title containing the filter value | `search.title:ocean` |
+          | cf.search.title_abstract | a string | `product` with title or abstract containing the filter value | `search.title_abstract:ocean` |
+          | cf.contributions_orcid | a string | `product` with contributor with orcid value | `contributions_orcid:0000-0002-1825-0097` |
+          | cf.contributions_aff_ror | a string | `product` with contributor with declared_affiliations ror value | `contributions_aff_ror:05gq02987` |
+          | cf.contributions_aff_country | a string | `product` with contributor with declared_affiliations country value | `contributions_aff_country:us` 
+          | cf.cites | a local_identifier | `product` that cites the `product` having local_identifier filter value | `cites:prod_1` |
+          | cf.cited_by | a local_identifier | `product` that cites the `product` having local_identifier filter value | `cited_by:prod_1` |
+          | cf.cites_doi | a doi | `product` that cites the `product` having doi filter value | `cites_doi:10.1038/sdata.2016.18` |
+          | cf.cited_by_doi | a doi | `product` that cites the `product` having doi filter value | `cited_by_doi:10.1038/sdata.2016.18` |
+          
+          <!-- theme: warning  -->
+          > #### Filter error
+          >
+          >  If the endpoint does not implement one of the requested filters it must return an HTTP 501 Not implemented response.       
+      parameters:    
+        - $ref : '#/components/parameters/filterQueryParam'
+          name: filter     
+          examples : # note example with parameter $ref. OK on Redoc, KO on stoplight
+            product_type_lit_ex :
+              value: product_type:literature
+              summary : search product by type 'literature'
+            id_orcid_ex:
+              value: contributions.person.identifiers.id:0000-0002-1825-0097
+              summary : Get all product with author with identifier id '0000-0002-1825-0097'  
+            id_orcid_scheme_ex:
+              value: contributions.person.identifiers.id:0000-0002-1825-0097,contributions.person.identifiers.scheme:orcid
+              summary : Get all product with author with identifier scheme 'orcid' and id '0000-0002-1825-0097'
+            title_ex :
+              value: search_title:ocean
+              summary : search product which title contains 'ocean'             
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  results:
+                    type: array
+                    items:     
+                      $ref: '#/components/schemas/Product'
+                required: [ "meta", "results" ]   
+              examples:
+                JournalArticleListEx01:
+                    summary: A list of journal articles
+                    value :
+                      meta:
+                        count: 2
+                        page: 1
+                        page_size: 10
+                      results:  
+                        - local_identifier: http://www.example.com/xxx
+                          entity_type: product
+                          product_type: literature 
+                        - local_identifier: http://www.example.com/yyy
+                          entity_type: literature
+                          product_type: research data
+                DatasetListEx02:
+                    summary: A list of datasets
+                    value :
+                      meta: 
+                        count: 2
+                        page: 1
+                        page_size: 10
+                      results:  
+                        - local_identifier: http://www.example.com/aaa
+                          entity_type: product
+                          product_type: research data 
+                        - local_identifier: http://www.example.com/bbb
+                          entity_type: product
+                          product_type: research data              
+        '501': # TODO maybe also/or 400 if fail to parse the coma separated "filter" 
+          description: Not implemented or invalid filter error. Conform to format [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807) 
+          content:
+            application/json:
+              schema:         
+                $ref: '#/components/schemas/Error'            
+              examples:
+                ErrorInvalidFilter01:
+                    summary: Invalid filter.
+                    value :
+                      type: 'https://skg-if.github.io/api/errors#INVALID_FILTER'
+                      title: 'INVALID_FILTER'
+                      status: '501'
+                      detail: 'The filter b is not supported by this implementation, valid filters are x, y, z'
+                      occurence: 'http://my-api/products?filter=b:foo,x:bar'
+  '/persons/{local_identifier}':
+    get:
+      tags:
+          - Person
+      summary: Get person by id
+      description: |
+          Get `person` by id. See definition in SKG-IF [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html) ( entity_type:person ) .\
+      operationId: getPersonById
+      parameters:
+        - $ref : '#/components/parameters/localIdPathParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsonLdCtx"
+                  - $ref: "#/components/schemas/Person" 
+              examples:
+                PersonEx01:
+                  summary: a single person
+                  value :
+                    "@context": [
+                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      {"@base" : "http://example.com/"}
+                    ]
+                    local_identifier: http://www.example.com/xxx
+                    identifiers:
+                      - scheme: orcid
+                        value: 0000-0002-1825-0097
+                    given_name: "Josiah"
+                    family_name: "Carberry"
+                    name: "Josiah Carberry"          
+  '/persons':
+    get:
+      tags:
+          - Person
+      summary: Get list of person 
+      operationId: getPersons
+      description: |
+          Get a list of `person`.
+
+          __Attribute filters__ \
+          You can filter using these attributes of the `person` object
+          | Filter key| Attribute filter example |
+          | -------- | -------- |
+          | identifiers.id | `identifiers.id:0000-0002-1825-0097` |
+          | identifiers.scheme | `identifiers.scheme:orcid` |
+      
+      parameters:    
+        - $ref : '#/components/parameters/filterQueryParam'
+          examples :
+            orcid_ex:
+              value: identifiers.scheme:orcid,identifiers.id:0000-0002-1825-0097
+              summary : List of person with identifier scheme 'orcid' and id '0000-0002-1825-0097'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  results:
+                    type: array
+                    items:     
+                      $ref: '#/components/schemas/Person'
+                required: [ "meta", "results" ] 
+              examples:
+                PersonEx01:
+                    summary: a list of persons
+                    value :
+                      meta: 
+                        count: 2
+                        page: 1
+                        page_size: 10
+                      results:  
+                        - local_identifier: http://www.example.com/xxx
+                          identifiers:
+                            - scheme: orcid
+                              value: 0000-0002-1825-0097
+                          given_name: "Josiah"
+                          family_name:  "Carberry"
+                          name: "Josiah Carberry"
+                        - local_identifier: http://www.example.com/yyy
+                          given_name: "Botul"
+                          family_name:  "Jean-Baptiste"
+                          name: "Jean-Baptiste Botul"
+                #PersonEx02: # commented KO on StopLight UI, OK on Redoc UI, Not used in PRISM
+                #  summary: "a list of persons - external URL"
+                #  externalValue: "https://raw.githubusercontent.com/skg-if/examples/refs/heads/main/OpenCitations/oc_1.json"                
+          links:
+            address:
+              operationId: getPersonById
+              parameters:
+                local_identifier: $response.body#/results/local_identifier 
+  '/organisations/{local_identifier}':
+    get:
+      tags:
+          - Organisation
+      summary: Get organisation by id
+      description: |
+          Get `organisation` by id.  See definition in SKG-IF [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html) ( entity_type:organisation) .\
+      operationId: getOrganisationById
+      parameters:
+        - $ref : '#/components/parameters/localIdPathParam'
+  '/organisations':
+    get:
+      tags:
+          - Organisation
+      summary: Get list of organisation
+      operationId: getOrganisations
+      description: |
+          Get a list of `organisation`.
+
+          __Attribute filters__ \
+          You can filter using these attributes of the `organisation` object
+          | Filter key| Attribute filter example |
+          | -------- | -------- |
+          | identifiers.id | `identifiers.id:05gq02987` |
+          | identifiers.scheme | `identifiers.scheme:ror` |
+      
+      parameters:    
+        - name: filter
+          in: query
+          description: filter. coma separated filter rules
+          examples :
+            rorid_ex:
+              value: identifiers.scheme:ror,identifiers.id:05gq02987
+              summary : Get all organisation with identifier scheme 'ror' and id '05gq02987'
+          schema:
+            type: string
+            pattern: '^(,?.+:.+)*$'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  results:
+                    type: array
+                    items:     
+                      $ref: '#/components/schemas/Organisation'
+                required: [ "meta", "results" ]                                  
+  '/grants/{local_identifier}':
+    get:
+      tags:
+          - Grant
+      summary: Get grant by id
+      description: |
+          Get single `grant`. See definition in SKG-IF [Grant](https://skg-if.github.io/interoperability-framework/docs/grant.html) ( entity_type:grant ).
+      operationId: getGrantById
+      parameters:
+        - $ref : '#/components/parameters/localIdPathParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            # not 'application/json-ld' to be compatible with StopLight PRISM tool
+            application/json: 
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsonLdCtx"
+                  - $ref: "#/components/schemas/Grant"
+  '/grants':
+    get:
+      tags:
+          - Grant
+      summary: Get list of grant 
+      operationId: getGrants
+      description: |
+          Get a list of `grant`.
+      parameters:    
+        - $ref : '#/components/parameters/filterQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  results:
+                    type: array
+                    items:     
+                      $ref: '#/components/schemas/Grant'
+                required: [ "meta", "results" ]   
+  '/venues/{local_identifier}':
+    get:
+      tags:
+          - Venue
+      summary: Get venue by id
+      description: |
+          Get single `venue`. See definition in SKG-IF [Grant](https://skg-if.github.io/interoperability-framework/docs/venue.html) ( entity_type:venue ).
+      operationId: getVenueById
+      parameters:
+        - $ref : '#/components/parameters/localIdPathParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            # not 'application/json-ld' to be compatible with StopLight PRISM tool
+            application/json: 
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsonLdCtx"
+                  - $ref: "#/components/schemas/Venue"
+  '/venues':
+    get:
+      tags:
+          - Venue
+      summary: Get list of venue 
+      operationId: getVenues
+      description: |
+          Get a list of `venue`.
+      parameters:    
+        - $ref : '#/components/parameters/filterQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  results:
+                    type: array
+                    items:     
+                      $ref: '#/components/schemas/Venue'
+                required: [ "meta", "results" ]
+  '/datasources/{local_identifier}':
+    get:
+      tags:
+          - Data Source
+      summary: Get datasource by id
+      description: |
+          Get single `datasource`. See definition in SKG-IF [Grant](https://skg-if.github.io/interoperability-framework/docs/data-source.html) ( entity_type:datasource ).
+      operationId: getDataSourceById
+      parameters:
+        - $ref : '#/components/parameters/localIdPathParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            # not 'application/json-ld' to be compatible with StopLight PRISM tool
+            application/json: 
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsonLdCtx"
+                  - $ref: "#/components/schemas/DataSource"
+  '/datasources':
+    get:
+      tags:
+          - Data Source
+      summary: Get list of datasource 
+      operationId: getDataSources
+      description: |
+          Get a list of `datasource`.
+      parameters:    
+        - $ref : '#/components/parameters/filterQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  results:
+                    type: array
+                    items:     
+                      $ref: '#/components/schemas/DataSource'
+                required: [ "meta", "results" ]                       
+components:
+  securitySchemes:
+    main_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://example.com/api/oauth/dialog'
+          scopes:
+            'read:users': read users info
+            'write:users': modify or remove users
+    api_key:
+      type: apiKey
+      in: header
+      name: api_key
+    basic_auth:
+      type: http
+      scheme: basic
+  parameters:
+    localIdPathParam:
+      name: local_identifier
+      in: path
+      description: The [local identifier](https://skg-if.github.io/interoperability-framework/#local-identifiers-of-entities) that needs to be fetched
+      required: true
+      schema:
+        type: string
+    filterQueryParam:
+      name: filter
+      in: query
+      description: | 
+            Search filter. Format : coma separated rules
+      schema:
+        type: string
+        pattern: '^(,?.+:.+)*$'   
+  schemas:
+    Product:
+      type: object
+      title: 'Product'
+      description:  "`product` object. See definition in SKG-IF [Research product](https://skg-if.github.io/interoperability-framework/docs/research-product.html) ( entity_type:product )."
+      allOf:
+        - $ref: "#/components/schemas/Entity"
+        - type: object
+          required: [
+            "local_identifier","entity_type","product_type"
+          ]        
+          properties:
+            entity_type:
+              default: "product"
+              type: string
+              x-faker:
+                helpers.arrayElement: [["product"]]
+            identifiers:
+              type: array
+              items:
+                properties:
+                  scheme: 
+                    type: string
+                    x-faker: 
+                      helpers.arrayElement: [["url"]]
+                  value: 
+                    type: string
+                    x-faker:
+                      fake : ['{{internet.url}}/record/{{random.alphaNumeric(8)}}']        
+            product_type:
+              type: string
+              description: see 4 types definition in [SKG-IF Research product](https://skg-if.github.io/interoperability-framework/docs/research-product.html)
+              enum:
+                - "literature"
+                - "research data"
+                - "research software"    
+                - "other"
+            titles:
+              type: object
+              description: | 
+                The titles of a `product` (multiple for multilinguism).\
+                The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
+                The special key `none` is reserved whenever the information about the language is not available or cannot be shared.
+              # Warn patternProperties, display does not work with vscode-openapi-viewer vscode extension, but compatible in stoplight.io web viewer.
+              patternProperties: 
+                "^([a-z]{2}|none)$":
+                  type: array
+                  items:
+                    type: string
+                    x-faker:
+                       random.words: [ 5 ]
+            abstracts:
+              type: object
+              description: | 
+                The abstracts of a `product` (multiple for multilinguism).\
+                The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
+                The special key `none` is reserved whenever the information about the language is not available or cannot be shared.
+              patternProperties: 
+                "^([a-z]{2}|none)$":
+                  type: array
+                  items:
+                    type: string
+                    x-faker:
+                       random.words: [ 20 ]               
+            topics:
+              type: array
+              description:  List of `topic` covered by the `product`
+              items:
+                properties:
+                  term: 
+                    $ref: '#/components/schemas/Topic'
+                  # TODO provenance ?     
+            contributions:
+              type: array
+              description: List of objects describing a `person` or `organisatiion`, its role, contribution, rank, when working on the `product`.
+              items:
+                $ref: '#/components/schemas/ProductContribution'    
+            manifestations:
+              type: array
+              description: List of objects representing multiple manifestations of the same `product` (e.g., a preprint, a postprint, etc.).
+              items:              
+                $ref: '#/components/schemas/ProductManifestation'
+            relevant_organisations:
+              type: array
+              description: List of relevant Organisation  associated with the `product`, in case the individual affiliations of a `person` are not available.
+              items:              
+                $ref: '#/components/schemas/Organisation'         
+            funding:
+              type: array
+              description:  List of `grant` associated with the `product`
+              items:
+                $ref: '#/components/schemas/GrantLite'
+            #related_products not included    
+    ProductContribution:
+      type: object
+      title: 'ProductContribution'
+      description: 'Product contribution. Describes a `person` or `organisatiion`, its role, contribution, rank, when working on a `product`. See definition in SKG-IF [Research product](https://skg-if.github.io/interoperability-framework/docs/research-product.html#contributions)'
+      properties:
+        by:
+          description: The identifier of a `person` or `organisation` contributing to a `product`.
+          oneOf:
+            - $ref: '#/components/schemas/PersonLite'
+            #  const: 'Person'
+            #  title: 'Person.'
+            - $ref: '#/components/schemas/Organisation'
+        declared_affiliations:
+          description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `product`.
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisation'      
+        rank:
+          type: integer
+          x-faker: 
+            helpers.regexpStyleStringParse: ['[0-10]']
+        role: 
+          type: string
+          enum:
+            - "author"
+            - "editor"
+            - "publisher"
+        contribution:
+          description: |
+            The contributions of `person` or `organisation` had in a `product`.\
+            Each element in the list is a String compliant with the [CRediT](https://credit.niso.org/) taxonomy.
+          type: string
+          enum:
+            - "conceptualization"
+            - "data curation"
+            - "formal analysis"                 
+            - "funding acquisition"
+            - "investigation"
+            - "methodology"
+            - "project administration"
+            - "resources"
+            - "software"
+            - "supervision"
+            - "validation"
+            - "visualization"
+            - "writing – original draft"
+            - "writing – review & editing"
+    ProductManifestation:
+      type: object
+      title: 'ProductManifestation'
+      description: 'Product manifestation, represents a specific manifestation of a `product` (e.g., a preprint, a postprint, etc.). See definition in SKG-IF [Research product](https://skg-if.github.io/interoperability-framework/docs/research-product.html#manifestations)'
+      properties:
+        type:
+          description: 'The type of the manifestation (e.g., preprint).'
+          type: object
+          properties: 
+            class:
+              type: string 
+              description: The URL of the class identifying the entity (e.g., in an ontology) describing that type.
+              x-faker:
+                fake : ['http://www.example.com/types/onto/localtype{{random.words(1)}}'] 
+              examples: 
+                - "http://purl.org/spar/fabio/Preprint"
+            defined_in:
+              type: string
+              description: the URL of the schema of the manifestation type, e.g., a link to the vocabulary of allowed product types.
+              x-faker:
+                fake : ['http://www.example.com/types/onto'] 
+              examples: 
+                - "http://purl.org/spar/fabio"    
+            labels:
+              type: object
+              description: | 
+                the labels describing the type (multiple for multilinguism)\
+                The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
+                The special key `none` is reserved whenever the information about the language is not available or cannot be shared.
+              # Warn patternProperties, display does not work with vscode-openapi-viewer vscode extension, but compatible in stoplight.io web viewer.
+              patternProperties: 
+                "^([a-z]{2}|none)$":
+                  type: string
+                  x-faker:
+                    helpers.arrayElement: [["localtypez", "localtypex", "localtypey"]]
+                  examples:
+                    - preprint         
+        dates:
+          type: object
+          properties:
+            acceptance:
+              type: string
+              format: date-time
+            access:
+              type: string
+              format: date-time
+            collected:
+              type: string
+              format: date-time
+            copyright:
+              type: string
+              format: date-time
+            correction:
+              type: string
+              format: date-time
+            creation:
+              type: string
+              format: date-time
+            decision:
+              type: string
+              format: date-time
+            deposit:
+              type: string
+              format: date-time
+            distribution:
+              type: string
+              format: date-time
+            embargo:
+              type: string
+              format: date-time
+            modified:
+              type: string
+              format: date-time
+            publication:
+              type: string
+              format: date-time
+            received:
+              type: string
+              format: date-time
+            request:
+              type: string
+              format: date-time
+            retraction:
+              type: string
+              format: date-time
+            validity:
+              type: string
+              format: date-time                       
+        biblio:
+          type: object
+          properties:
+            issue: 
+              type : string 
+              description: Issue number.
+              x-faker:
+                fake : ['{{datatype.number(5)}}']
+            pages:  
+              type : object 
+              description: the pages where the manifestation in defined (within its Venue).
+              properties :
+                first:  
+                  type : string 
+                  description: The starting page.
+                  x-faker:
+                    fake : ['{{datatype.number(20)}}']
+                last:  
+                  type : string 
+                  description: The ending page.
+                  x-faker:
+                    fake : ['{{datatype.number(20)}}']
+            volume:  
+              type : string 
+              description: Volume number (for journals, books, conferences).
+              x-faker:
+                fake : ['{{datatype.number(50)}}']
+            edition:  
+              type : string 
+              description: The edition (for journals and books).
+            number:  
+              type : string 
+              description: a number of the manifestation within the Venue (e.g., chapter number).
+              x-faker:
+                fake : ['{{datatype.number(5)}}']  
+            in:
+              $ref: '#/components/schemas/VenueLite'
+            hosting_data_source :
+              $ref: '#/components/schemas/DataSourceLite'
+    Organisation:
+      type: object
+      title: "Organisation"
+      description:  "`person` object containing a limited set of fields.  See definition in SKG-IF [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html) ( entity_type:organisation )."
+      allOf:
+        - $ref: "#/components/schemas/Entity"
+        - type: object
+          required: [
+            "name"
+          ] 
+          properties :
+            entity_type:
+              default: "organisation"
+              type: string
+              x-faker:
+                fake: ["organisation"]
+            identifiers:
+              type: array
+              items:
+                properties:
+                  scheme: 
+                    type: string
+                    x-faker:
+                      fake: ["ror"]
+                    examples:
+                      - 'ror'  
+                  value: 
+                    type: string
+                    x-faker:
+                      fake : ['{{random.alphaNumeric(10)}}']  
+                    examples:
+                      - "https://ror.org/05gq02987"
+            name: 
+              type: string
+              x-faker: company.companyName
+              examples:
+                - "Brown University"
+            short_name: 
+              type: string
+              #x-faker: company.bsAdjective
+              x-faker:
+                random.alpha: [{count: 4, upcase: true}]
+              examples:
+                - "BU"  
+            country: 
+              type: string
+              description: The country code expressed as [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+              pattern: '^[A-Z]{2}$'
+              examples:
+                - "US"
+      examples:
+        - local_identifier: 'otf_session12324_org_1124'
+          entity_type: 'organisation'
+          identifiers:
+            - scheme: ror
+              value: https://ror.org/05gq02987
+          name: Brown University
+          short_name: BU
+          country: US
+        - local_identifier: 'otf_session12325_org_1125'
+          entity_type: 'organisation'
+          identifiers:
+            - scheme: ror
+              value: https://ror.org/05gq02987
+            - scheme: ror
+              value: https://ror.org/0274ane14  
+          name: John Carter Brown Library, Brown University, Providence RI, US
+          short_name: BU
+          country: US
+        - local_identifier: 'otf_session12325_org_1125'
+          entity_type: 'organisation'
+          name: Lab of science, unknown University, Antarctica  
+    Person:
+      type: object
+      title: "Person"
+      description:  "`person` object.  See definition in SKG-IF [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html) ( entity_type:person )"
+      allOf:
+        - $ref: "#/components/schemas/PersonLite"
+        - type: object     
+          properties :
+            affiliations:
+              description : "All the affiliations of a `person`. (curriculum vitae list )"
+              type: array
+              items:
+                properties:
+                  affiliation: 
+                    description : "`organisation` a `person` is affiliated with"
+                    $ref: "#/components/schemas/Organisation"
+                  role : 
+                    type: string
+                    default: "affiliate"
+                    x-faker:
+                      fake : ['affiliate']
+                  period :
+                    type: object
+                    description : "The time period where the Person was affiliated with an Organisation" 
+                    properties :
+                      start:
+                        type: string
+                        format: date-time
+                      end:
+                        type: string
+                        format: date-time        
+      examples:
+        - local_identifier: 'otf_session12324_person_1124'
+          entity_type: 'person'
+          identifiers:
+            - scheme: orcid
+              value: 0000-0002-1825-0097
+          given_name: Josiah
+          family_name: Josiah
+          name: Josiah Carberry
+          affiliations:
+            role: affiliate
+            period:
+              start: "2010-08-24T14:15:22Z"
+              end: "2020-08-24T14:15:22Z"
+            affiliation:
+              local_identifier: 'otf_session12324_org_1124'
+              entity_type: 'organisation'
+              identifiers:
+                - scheme: ror
+                  value: https://ror.org/05gq02987
+              name: Brown University
+              short_name: BU
+              country: US       
+    PersonLite:
+      type: object
+      title: "PersonLite"
+      description:  "`person` object containing a limited set of fields.  See definition in SKG-IF [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html) ( entity_type:person )."
+      allOf:
+        - $ref: "#/components/schemas/Entity"                     
+        - type: object
+          required: [
+            "name"
+          ]  
+          properties :
+            entity_type:
+              default: "person"
+              type: string
+              x-faker:
+                fake: ["person"]
+            identifiers:
+              type: array
+              items:
+                properties:
+                  scheme: 
+                    type: string
+                    x-faker:
+                      fake: ["orcid"]
+                    examples : 
+                      - orcid  
+                  value: 
+                    type: string
+                    x-faker:
+                      helpers.regexpStyleStringParse: ['[1000-9999]-[1000-9999]-[1000-9999]-[1000-9999]'] 
+                    examples : 
+                      - "0000-0002-1825-0097"     
+            given_name: 
+              type: string
+              x-faker: name.firstName
+              examples : 
+                - Josiah
+            family_name: 
+              type: string
+              x-faker: name.lastName
+              examples : 
+                - Carberry
+            name:
+              type: string
+              x-faker: name.findName
+              examples : 
+                - Josiah Carberro
+      examples:
+        - local_identifier: 'otf_session12324_person_1124'
+          entity_type: 'person'
+          identifiers:
+            - scheme: orcid
+              value: 0000-0002-1825-0097
+          given_name: Josiah
+          family_name: Josiah
+          name: Josiah Carberry
+    Topic:
+      allOf:
+        - $ref: "#/components/schemas/Entity"
+        - type: object
+          title: 'Topic'
+          description: 'Topic.'
+          properties :
+            entity_type:
+              default: "topic"
+              type: string
+              x-faker:
+                fake: ["topic"] 
+            identifiers:
+              type: array
+              items:
+                properties:
+                  scheme: 
+                    type: string
+                    x-faker:
+                      helpers.arrayElement: [["wikidata", "dbpedia", "Computer Science Ontology"]]
+                  value: 
+                    type: string
+                    x-faker:
+                      fake : ['{{internet.url}}/{{random.alphaNumeric(6)}}']          
+            labels:
+              type: object
+              description:  The labels describing a Topic (multiple for multilingualism). The object is a dictionary, the keys represent language codes following ISO 639-1 (`en`, `es`, `it`, `fr`...). The special key `none` is reserved whenever the information about the language is not available or cannot be shared.
+              patternProperties:
+                "^([a-z]{2}|none)$":
+                  type: string
+                  x-faker:
+                    random.words: [1]                                            
+    Grant:
+      type: object
+      title: 'Grant'  
+      description:  "`grant` object. See SKG-IF definition [Grant](https://skg-if.github.io/interoperability-framework/docs/grant.html) ( entity_type:grant )."
+      allOf:
+        - $ref: "#/components/schemas/GrantLite"
+        - type: object
+          properties :
+            funding_agency:
+              description : "`organisation` funding the `grant`."
+              $ref: "#/components/schemas/Organisation"
+            funding_stream:
+              description : "funding stream of the `grant`"
+              type: string
+              examples : 
+                - "Horizon Europe"
+            beneficiaries:
+              description: "List of `organisation` funded by the `grant`"
+              type: array
+              items:
+                $ref: '#/components/schemas/Organisation'
+            contributions:
+              type: array
+              description: List of objects describing a `person` or `organisatiion`, its role, contribution, rank, when working on the `grant`.
+              items:
+                $ref: '#/components/schemas/GrantContribution'             
+    GrantContribution:
+      type: object
+      title: 'GrantContribution'
+      description: 'Grant contribution. Describes a `person` or `organisation`, its role, contribution, rank, when working on a `grant`. See SKG-IF definition [Grant contribution](https://skg-if.github.io/interoperability-framework/docs/grant.html#contributions) ( entity_type:grant ).'
+      properties:
+        by:
+          description: The identifier of a `person` or `organisation` contributing to a `grant`.
+          oneOf:
+            - $ref: '#/components/schemas/PersonLite'
+            - $ref: '#/components/schemas/Organisation'
+        declared_affiliations:
+          description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `grant`.
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisation'                   
+        role: 
+          description: |
+            The role of `person` or `organisation` had in a `grant`.\
+            Each element in the list is a String compliant with the [SCoRO](https://sparontologies.github.io/scoro/current/scoro.html#http://purl.org/spar/scoro/ProjectRole) taxonomy.
+          type: string
+          enum:
+            - "co-applicant"
+            - "lead applicant"
+            - "project leader"
+            - "project manager"
+            - "project member"
+            - "workpackage leader"           
+    GrantLite:
+      type: object
+      title: 'GrantLite'  
+      description:  "`grant` object containing a limited set of fields. See SKG-IF definition [Grant](https://skg-if.github.io/interoperability-framework/docs/grant.html) ( entity_type:grant )."
+      allOf:
+        - $ref: "#/components/schemas/Entity"
+        - type: object
+          properties :
+            entity_type:
+              default: "grant"
+              type: string
+              x-faker:
+                fake: ["grant"]
+            identifiers:
+              type: array
+              items:
+                properties:
+                  scheme: 
+                    type: string
+                    x-faker:
+                      fake: ["doi"]
+                    examples:
+                      - "doi"  
+                  value: 
+                    type: string
+                    x-faker:
+                      fake : ['{{internet.url}}/grant/{{random.alphaNumeric(8)}}']
+                    examples:
+                      - "https://doi.org/10.3030/101095129"       
+            grant_number: 
+              type: string
+              x-faker: 
+                fake : ['{{internet.url}}/grant/{{random.alphaNumeric(8)}}']
+              examples:
+                - "101095129"  
+            titles:
+              type: object
+              description: | 
+                The titles of a `grant` (multiple for multilinguism).\
+                The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
+                The special key `none` is reserved whenever the information about the language is not available or cannot be shared.
+              # Warn patternProperties, display does not work with vscode-openapi-viewer vscode extension, but compatible in stoplight.io web viewer.
+              patternProperties: 
+                "^([a-z]{2}|none)$":
+                  type: array
+                  items:
+                    type: string
+                    x-faker:
+                       random.words: [ 5 ]
+                  examples:
+                    - ["GraspOS: next Generation Research Assessment to Promote Open Science"]  
+            abstracts:
+              type: object
+              description: | 
+                The abstracts of a `grant` (multiple for multilinguism).\
+                The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
+                The special key `none` is reserved whenever the information about the language is not available or cannot be shared.
+              patternProperties: 
+                "^([a-z]{2}|none)$":
+                  type: array
+                  items:
+                    type: string
+                    x-faker:
+                       random.words: [ 20 ]
+            acronym: 
+              type: string
+              x-faker:
+                random.alpha: [{count: 8, upcase: true}]
+              examples:
+                 - "GraspOS"  
+    Venue:
+      type: object
+      title: 'Venue'
+      description:  "`venue` object. See definition in SKG-IF [Grant](https://skg-if.github.io/interoperability-framework/docs/venue.html) ( entity_type:venue )."
+      allOf:
+        - $ref: "#/components/schemas/VenueLite"
+        - type: object
+          properties:
+            acronym: 
+              type: string
+              x-faker:
+                random.alpha: [{count: 8, upcase: true}]
+            type:
+              type: string
+              enum: [journal, conference, book, repository, other, unknown]
+    VenueLite:
+      type: object
+      title: 'VenueLite'
+      description:  "`venue` object containing a limited set of fields. See definition in SKG-IF [Grant](https://skg-if.github.io/interoperability-framework/docs/venue.html) ( entity_type:venue )."
+      allOf:
+        - $ref: "#/components/schemas/Entity"
+        - type: object
+          properties :
+            entity_type:
+              default: "venue"
+              type: string
+              x-faker:
+                fake: ["venue"]
+            identifiers:
+              type: array
+              items:
+                properties:
+                  scheme: 
+                    type: string
+                    enum: [issn, eissn, lissn, isbn, opendoar, re3data.org, fairsharing, doi, handle, url]
+                    x-faker:
+                      fake: ["issn"]
+                    examples:
+                      - "issn"  
+                  value: 
+                    type: string
+                    x-faker:
+                      helpers.regexpStyleStringParse: ['[1000-9999]-[1000-9999]']
+                    examples:
+                      - "0264-3561"        
+            name: 
+              type: string
+              x-faker:
+                fake : ['{{random.words(5)}} {{helpers.arrayElement(["Journal", "Catalog"])}}'] 
+              examples:
+                - "Journal of Psychoceramics"  
+    DataSource:
+      type: object
+      title: 'DataSource'
+      description:  "`datasource` object. See definition in SKG-IF [Grant](https://skg-if.github.io/interoperability-framework/docs/data-source.html) ( entity_type:datasource )."
+      allOf:
+        - $ref: "#/components/schemas/DataSourceLite" 
+        - type: object
+          properties:
+            #TODO persistent_identity_systems
+            #TODO audience
+            data_source_classification:
+              type : string 
+              description: "The specific type of a Data source, based on the vocabulary Data source Classification. It can be chosen among the following values"
+              enum : [repository, aggregator, scientific database, journal archive, publisher archive, cris system]
+            research_product_type:
+              type: array
+              description: "The types of entities managed by a Data source. Each item in the list should be compliant with the following terms" 
+              items:
+                type: string
+                enum : [metadata, research data, literature , software , any] 
+           #TODO disciplines
+           #TODO policy     
+    DataSourceLite:
+      type: object
+      title: 'DataSourceLite'
+      description:  "`datasource` object containing a limited set of fields. See definition in SKG-IF [Grant](https://skg-if.github.io/interoperability-framework/docs/data-source.html) ( entity_type:datasource )."
+      allOf:
+        - $ref: "#/components/schemas/Entity"
+        - type: object       
+          properties :
+            entity_type:
+              default: "datasource"
+              type: string
+              x-faker:
+                fake: ["datasource"]
+            identifiers:
+              type: array
+              items:
+                properties:
+                  scheme: 
+                    type: string
+                    x-faker: 
+                      helpers.arrayElement: [["url"]]
+                  value: 
+                    type: string
+                    x-faker:
+                      fake : ['{{internet.url}}/datasource/{{random.alphaNumeric(8)}}']      
+            name: 
+              type: string
+              x-faker: 
+                fake : ['{{random.words(4)}} {{helpers.arrayElement(["Archive", "Repository", "Database"])}}'] 
+            acronym: 
+              type: string
+              x-faker:
+                random.alpha: [{count: 8, upcase: true}]                                     
+    Entity:
+      type: object
+      description: "Entity common fields used for entities : `product`,`person`,`organisation`,`grant`,`venue`,`datasource`" 
+      properties:
+        local_identifier: 
+          type: string
+          description: id
+          x-faker:
+            fake : ['http://www.example.com/skg-if/{{random.uuid}}']
+        identifiers:
+          type: array
+          items:
+            properties:
+              scheme: 
+                type: string
+                # alias list in https://skg-if.github.io/context/ver/current/skg-if.json
+                # enum: ["doi","pmid","pmcid","arxiv","url","omid","crossref","openalex","orcid","viaf","ror": ,"issn": , "eissn":, "lissn","isbn","opendoar","re3data.org","fairsharing","handle"]
+              value: 
+                type: string
+        entity_type:
+          type: string        
+    Meta:
+      type: object
+      properties:
+        count:
+          description: total results count 
+          type: integer
+          x-faker:
+            datatype.number: [{min: 100, max: 200}] 
+        page:
+          description: current result page
+          type: integer
+          x-faker:
+            datatype.number: [{min: 1, max: 3}] 
+        page_size:
+          description: page size 
+          type: integer
+          x-faker:
+            datatype.number: [{min: 10, max: 10}]
+    Error:
+        type: object
+        properties:
+          # from https://datatracker.ietf.org/doc/html/rfc7807
+          "type":
+            type: string
+            description: A URI reference that identifies the problem type.  
+              This specification encourages that, when dereferenced, it provide human-readable documentation 
+              for the problem type (e.g., using HTML).  
+              When this member is not present, its value is assumed to be "about:blank"
+          "title": 
+            type: string
+            description: A short, human-readable summary of the problem
+              type.  It SHOULD NOT change from occurrence to occurrence of the
+              problem, except for purposes of localization (e.g., using
+              proactive content negotiation).
+          "status":
+            type: string
+            description: The HTTP status code
+              generated by the origin server for this occurrence of the problem.
+          "detail" :
+            type: string
+            description: A human-readable explanation specific to this
+              occurrence of the problem.
+          "instance":
+            type: string
+            description: A URI reference that identifies the specific
+              occurrence of the problem.  It may or may not yield further
+              information if dereferenced.
+    JsonLdCtx:
+      type: object
+      description: "This JSON-LD context object covers the SKG-IF entities. See [SKG-IF JSON-LD preamble](https://skg-if.github.io/interoperability-framework/#json-ld-preamble)"   
+      properties:
+        "@context":
+          description: JSON-LD context
+          type: array
+          minItems: 1
+          maxItems: 2
+          items:
+            anyOf: 
+              - type: string
+                description: "URL to SKG-IF context supported by the current OpenApi"
+                enum:
+                  - https://w3id.org/skg-if/context/1.0.1/skg-if.json
+                #default: "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                x-faker:
+                  fake: ['https://w3id.org/skg-if/context/1.0.1/skg-if.json']
+                #example: "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+              - type: object
+                properties:
+                  "@base": 
+                    type: string
+                    description : "Default base URL specific to the implementer"
+                    x-faker:
+                      fake: ['https://example.com/']
+                    example: "https://example.com/"
+                #required: ["@base"]          
+                additionalProperties:
+                  type: string
+                  description: "context URL of extension entities"
+                  x-faker:
+                    fake : ['http://www.example.com/skg-if/{{random.alpha(3)}}']
+            #required: [ skgifjson]
+          #anyOf: [
+          #  required: [ skgifjson, skgifimpl],
+          #  required: [ skgifjson]
+          #]
+          additionalProperties: false    
+      required: [ "@context" ]
+      examples:
+        - "@context":
+            - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+            - "@base" : "http://example.com/"                
