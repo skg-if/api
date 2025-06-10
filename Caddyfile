@@ -1,0 +1,5 @@
+http://localhost
+route /current/* {
+uri strip_prefix /current
+reverse_proxy prism_current:4010
+}

@@ -1,0 +1,21 @@
+[project]
+name = "skgif-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dicttoxml>=1.7.16",
+    "dotenv>=0.9.9",
+    "fastapi>=0.115.11",
+    "httpx>=0.28.1",
+    "markdown>=3.7",
+    "plain-text-markdown-extention",
+    "requests>=2.32.3",
+    "ruff>=0.9.10",
+    "tqdm>=4.67.1",
+    "uvicorn>=0.34.0",
+]
+
+[tool.uv.sources]
+plain-text-markdown-extention = { git = "https://github.com/kostyachum/python-markdown-plain-text.git" }
