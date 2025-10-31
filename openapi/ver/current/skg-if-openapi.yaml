@@ -91,7 +91,7 @@ paths:
                       {"@base" : "https://w3id.org/skg-if/sandbox/myprov/"}
                     ]
                     "@graph" :
-                      - local_identifier: xxx
+                      - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: product
                         product_type: literature
                         titles :
@@ -116,11 +116,11 @@ paths:
                               identifiers:
                               - value: "0000-0001-6960-357X"
                                 scheme: "orcid"
-                              local_identifier: "614a6575-5d6c-416c-a8e1-f49a5d589bf8"
+                              local_identifier: "otf___1730027051396___person-1"
                               entity_type: "person"
                             declared_affiliations:
                               - name: "Center for Plant Biotechnology and Genomics, Universidad Politécnica de Madrid, Madrid, 28223, Spain"
-                                local_identifier: "32bc66c6-38be-4d5f-85db-d44c9f86921f"
+                                local_identifier: "otf___1730027051396___person-1-aff-1"
                                 entity_type: "organisation"
                                 country: "ES"
                         manifestations:
@@ -131,7 +131,7 @@ paths:
                               class: http://www.example.com/types/onto/localtypemethodology
                             biblio:
                               hosting_data_source:
-                                local_identifier: 6f368a3a-b1cf-498f-b2de-27135d1e0075
+                                local_identifier: arch-6f368a3a-b1cf-498f-b2de-27135d1e0075
                                 entity_type: datasource
                                 name: "An Archive"
                               in:
@@ -140,7 +140,7 @@ paths:
                                 identifiers:
                                   - "value": "2052-4463"
                                     "scheme": "issn"
-                                local_identifier: "51f46bc1-00f8-42dd-8221-ac4deb52fb25"
+                                local_identifier: "journal-46bc1-00f8-42dd-8221-ac4deb52fb25"
                                 entity_type: "venue"
                             dates: # http://api.crossref.org/works/10.1038/sdata.2016.18
                               publication:
@@ -162,7 +162,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: yyy
+                      - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869555
                         entity_type: product
                         product_type: research data
                         titles :
@@ -279,10 +279,10 @@ paths:
                         page: 1
                         page_size: 10
                       results:
-                        - local_identifier: xxx
+                        - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869333
                           entity_type: product
                           product_type: literature
-                        - local_identifier: yyy
+                        - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869999
                           entity_type: product
                           product_type: research data
                 DatasetListEx02:
@@ -293,10 +293,10 @@ paths:
                         page: 1
                         page_size: 10
                       results:
-                        - local_identifier: aaa
+                        - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869888
                           entity_type: product
                           product_type: research data
-                        - local_identifier: bbb
+                        - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869881
                           entity_type: product
                           product_type: research data
         '422':
@@ -350,7 +350,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: xxx
+                      - local_identifier: pers-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "person"
                         identifiers:
                           - scheme: orcid
@@ -376,7 +376,7 @@ paths:
           | given_name | `given_name:Josiah` |
           | family_name |  `family_name:Carberry` |
           | name |  `name:Josiah Carberro` |
-          | affiliations.affiliation.local_identifier | `affiliations.affiliation.local_identifier:xxx` |
+          | affiliations.affiliation.local_identifier | `affiliations.affiliation.local_identifier:pers_1` |
           | affiliations.affiliation.name | `affiliations.affiliation.name:Brown University` |
           | affiliations.affiliation.short_name |  `affiliations.affiliation.short_name:BU` |
           | affiliations.role | `affiliations.role:affiliate` |
@@ -435,7 +435,7 @@ paths:
                         page: 1
                         page_size: 10
                       results:
-                        - local_identifier: xxx
+                        - local_identifier: pers-c66c6-38be-4d5f-85db-d44c9f869333
                           entity_type: "person"
                           identifiers:
                             - scheme: orcid
@@ -443,7 +443,7 @@ paths:
                           given_name: "Josiah"
                           family_name:  "Carberry"
                           name: "Josiah Carberry"
-                        - local_identifier: yyy
+                        - local_identifier: pers-c66c6-38be-4d5f-85db-d44c9f869888
                           entity_type: "person"
                           given_name: "Botul"
                           family_name:  "Jean-Baptiste"
@@ -604,7 +604,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: xxx
+                      - local_identifier: grant-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "grant"
                         identifiers:
                           - scheme: "doi"
@@ -617,7 +617,7 @@ paths:
                         }
                         acronym: "GraspOS"
                         funding_agency:
-                          local_identifier: "xxx"
+                          local_identifier: "otf___1730027051396___org-1"
                           entity_type: "organisation"
                           identifiers:
                             - scheme: "ror"
@@ -634,7 +634,7 @@ paths:
                           end: "2025-12-31T23:59:59Z"
                         website: "https://graspos.eu"
                         beneficiaries:
-                          - local_identifier: "xxx"
+                          - local_identifier: "otf___1730027051396___org-2"
                             entity_type: "organisation"
                             identifiers:
                               - scheme: "ror"
@@ -645,7 +645,7 @@ paths:
                             website: "https://www.brown.edu/"
                         contributions:
                           - by:
-                              local_identifier: "xxx"
+                              local_identifier: "otf___1730027051396___pers-1"
                               entity_type: "person"
                               identifiers:
                                 - scheme: "orcid"
@@ -654,7 +654,7 @@ paths:
                               family_name: "Carberry"
                               name: "Josiah Carberro"
                               declared_affiliations:
-                                - local_identifier": "xxx"
+                                - local_identifier": "otf___1730027051396___org-2"
                                   entity_type": "organisation"
                                   identifiers:
                                     - scheme: "ror"
@@ -802,7 +802,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: xxx
+                      - local_identifier: venue-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "venue"
                         identifiers:
                           - scheme: issn
@@ -903,7 +903,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: xxx
+                      - local_identifier: topic-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "topic"
                         identifiers:
                           - scheme: wikidata
@@ -1015,7 +1015,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: xxx
+                      - local_identifier: datasrc-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "datasource"
                         identifiers:
                           - scheme: doi
@@ -1106,14 +1106,14 @@ components:
       required: true
       schema:
         type: string
-    filterQueryParam:
-      name: filter
-      in: query
-      description: |
-            Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value3,key:value3 ). Server side operator used is _AND_.
-      schema:
-        type: string
-        pattern: '^(,?.+:.+)*$'
+#    filterQueryParam: # filterQueryParam duplicated in each search endpoint ( only way to add distinct examples for each endpoint )
+#      name: filter
+#      in: query
+#      description: |
+#            Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value3,key:value3 ). Server side operator used is _AND_.
+#      schema:
+#        type: string
+#        pattern: '^(,?.+:.+)*$'
     pageQueryParam:
       name: page
       in: query
@@ -1701,31 +1701,40 @@ components:
                   - research
                   - unspecified
       examples:
-        - local_identifier: 'otf_session12324_org_1124'
-          entity_type: 'organisation'
-          identifiers:
-            - scheme: ror
-              value: https://ror.org/05gq02987
-          name: Brown University
-          short_name: BU
-          country: US
-          types:
-            - education
-        - local_identifier: 'otf_session12325_org_1125'
-          entity_type: 'organisation'
-          identifiers:
-            - scheme: ror
-              value: https://ror.org/05gq02987
-            - scheme: ror
-              value: https://ror.org/0274ane14
-          name: John Carter Brown Library, Brown University, Providence RI, US
-          short_name: BU
-          country: US
-          types:
-            - archive
-        - local_identifier: 'otf_session12325_org_1125'
-          entity_type: 'organisation'
-          name: Lab of science, unknown University, Antarctica
+        - OrgEx01:
+          summary: "Brown University"
+          value :
+            local_identifier: 'otf_session12324_org_1124'
+            entity_type: 'organisation'
+            identifiers:
+              - scheme: ror
+                value: https://ror.org/05gq02987
+            name: Brown University
+            short_name: BU
+            country: US
+            types:
+              - education
+        - OrgEx02:
+          summary: "John Carter Brown Library"
+          value :
+            local_identifier: 'otf_session12325_org_1125'
+            entity_type: 'organisation'
+            identifiers:
+              - scheme: ror
+                value: https://ror.org/05gq02987
+              - scheme: ror
+                value: https://ror.org/0274ane14
+            name: John Carter Brown Library, Brown University, Providence RI, US
+            short_name: BU
+            country: US
+            types:
+              - archive
+        - OrgEx03:
+          summary: "Lab of science"
+          value :
+            local_identifier: 'otf_session12325_org_1125'
+            entity_type: 'organisation'
+            name: Lab of science, unknown University, Antarctica
     Person:
       type: object
       title: "Person"
