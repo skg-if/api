@@ -485,8 +485,8 @@ paths:
                         items:
                           $ref: "#/components/schemas/Organisation"
               examples:
-                OrgEx10:
-                  summary: a single organisation
+                OrgEx1:
+                  summary: "Brown Uni"
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
@@ -494,6 +494,15 @@ paths:
                     ]
                     "@graph" :
                       - $ref: '#/components/examples/OrgEx01/value'
+                OrgEx2:
+                  summary: "European Commission"
+                  value :
+                    "@context": [
+                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      {"@base" : "http://example.com/"}
+                    ]
+                    "@graph" :
+                      - $ref: '#/components/examples/OrgEx04/value'
   '/organisations':
     get:
       tags:
@@ -1692,9 +1701,9 @@ components:
                   - research
                   - unspecified
       examples:
-        - $ref: '#/components/examples/OrgEx01'
-        - $ref: '#/components/examples/OrgEx02'
-        - $ref: '#/components/examples/OrgEx03'
+        - $ref: '#/components/examples/OrgEx01/value'
+        - $ref: '#/components/examples/OrgEx02/value'
+        - $ref: '#/components/examples/OrgEx03/value'
     Person:
       type: object
       title: "Person"
@@ -2302,7 +2311,7 @@ components:
         identifiers:
           - scheme: ror
             value: https://ror.org/05gq02987
-        name: Brown University
+        name: Brown University.
         short_name: BU
         country: US
         types:
