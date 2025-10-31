@@ -2379,7 +2379,7 @@ components:
                 properties:
                   "@base":
                     type: string
-                    description : "Default base URL specific to the implementer. https://w3id.org/skg-if/sandbox/<provider accronym>/"
+                    description : "Default base URL specific to the implementer. https://w3id.org/skg-if/sandbox/provider_accronym/"
                     x-faker:
                       fake: ['https://w3id.org/skg-if/sandbox/myprov/']
                     example: "https://w3id.org/skg-if/sandbox/myprov/"
@@ -2396,6 +2396,5 @@ components:
           #]
           additionalProperties: false
           examples:
-            - ["https://w3id.org/skg-if/context/1.0.1/skg-if.json",
-              {"@base" : "https://w3id.org/skg-if/sandbox/myprov/"}]
+            - ["https://w3id.org/skg-if/context/1.0.1/skg-if.json", {"@base" : "https://w3id.org/skg-if/sandbox/my_prov/"}]
       required: [ "@context" ]
