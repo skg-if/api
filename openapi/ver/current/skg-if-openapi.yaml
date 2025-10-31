@@ -485,24 +485,68 @@ paths:
                         items:
                           $ref: "#/components/schemas/Organisation"
               examples:
-                OrgEx1:
-                  summary: "Brown Uni"
+                OrgBrownUniversity:
+                  summary: "Brown University"
                   value :
-                    "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
-                      {"@base" : "http://example.com/"}
-                    ]
-                    "@graph" :
-                      - $ref: "#/components/examples/OrgEx01/value"
-                OrgEx2:
+                    "@context":
+                      - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                      - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+                    "@graph":
+                      - local_identifier: 'otf_session12324_org_1124'
+                        entity_type: 'organisation'
+                        identifiers:
+                          - scheme: ror
+                            value: https://ror.org/05gq02987
+                        name: Brown University.
+                        short_name: BU
+                        country: US
+                        types:
+                          - education
+                OrgJohnCarterBrownLibrary:
+                  summary: "John Carter Brown Library"
+                  value :
+                    "@context":
+                      - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                      - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+                    "@graph":
+                      - local_identifier: 'otf_session12325_org_1125'
+                        entity_type: 'organisation'
+                        identifiers:
+                          - scheme: ror
+                            value: https://ror.org/05gq02987
+                          - scheme: ror
+                            value: https://ror.org/0274ane14
+                        name: John Carter Brown Library, Brown University, Providence RI, US
+                        short_name: BU
+                        country: US
+                        types:
+                          - archive
+                OrgLabScienceNoId:
+                  summary: "Lab of science"
+                  value :
+                    "@context":
+                      - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                      - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+                    "@graph":
+                      - local_identifier: 'otf_session12325_org_1126'
+                        entity_type: 'organisation'
+                        name: Lab of science, unknown University, Antarctica
+                OrgEuropeanCommission:
                   summary: "European Commission"
                   value :
-                    "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
-                      {"@base" : "http://example.com/"}
-                    ]
-                    "@graph" :
-                      - $ref: '#/components/examples/OrgEx04/value'
+                    "@context":
+                      - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                      - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+                    "@graph":
+                      - local_identifier: 'otf_session12324_org_1127'
+                        entity_type: 'organisation'
+                        identifiers:
+                          - scheme: ror
+                            value: https://ror.org/00k4n6c32
+                        name: "European Commission"
+                        short_name: EU
+                        types:
+                          - funder
   '/organisations':
     get:
       tags:
@@ -1701,9 +1745,52 @@ components:
                   - research
                   - unspecified
       examples:
-        - $ref: '#/components/examples/OrgEx01/value'
-        - $ref: '#/components/examples/OrgEx02/value'
-        - $ref: '#/components/examples/OrgEx03/value'
+        - OrgEx01:
+          summary: "Brown University"
+          value :
+            local_identifiers: 'otf_session12324_org_1124'
+            entity_type: 'organisation'
+            identifiers:
+              - "scheme": ror
+                "value": https://ror.org/05gq02987
+            name: "Brown University"
+            short_name: BU
+            country: US
+            types":
+              - education
+        - OrgEx02:
+            summary: "John Carter Brown Library"
+            value :
+              local_identifier: 'otf_session12325_org_1125'
+              entity_type: 'organisation'
+              identifiers:
+                - scheme: ror
+                  value: https://ror.org/05gq02987
+                - scheme: ror
+                  value: https://ror.org/0274ane14
+              name: John Carter Brown Library, Brown University, Providence RI, US
+              short_name: BU
+              country: US
+              types:
+                - archive
+        - OrgEx03:
+            summary: "Lab of science"
+            value :
+              local_identifier: 'otf_session12325_org_1126'
+              entity_type: 'organisation'
+              name: Lab of science, unknown University, Antarctica
+        - OrgEx04:
+            summary: "European Commission"
+            value :
+              local_identifier: 'otf_session12324_org_1127'
+              entity_type: 'organisation'
+              identifiers:
+                - scheme: ror
+                  value: https://ror.org/00k4n6c32
+              name: "European Commission"
+              short_name: EU
+              types:
+                - funder
     Person:
       type: object
       title: "Person"
@@ -2302,50 +2389,3 @@ components:
         - "@context":
             - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
             - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
-  examples:
-    OrgEx01:
-      summary: "Brown University"
-      value :
-        local_identifier: 'otf_session12324_org_1124'
-        entity_type: 'organisation'
-        identifiers:
-          - scheme: ror
-            value: https://ror.org/05gq02987
-        name: Brown University.
-        short_name: BU
-        country: US
-        types:
-          - education
-    OrgEx02:
-      summary: "John Carter Brown Library"
-      value :
-        local_identifier: 'otf_session12325_org_1125'
-        entity_type: 'organisation'
-        identifiers:
-          - scheme: ror
-            value: https://ror.org/05gq02987
-          - scheme: ror
-            value: https://ror.org/0274ane14
-        name: John Carter Brown Library, Brown University, Providence RI, US
-        short_name: BU
-        country: US
-        types:
-          - archive
-    OrgEx03:
-      summary: "Lab of science"
-      value :
-        local_identifier: 'otf_session12325_org_1126'
-        entity_type: 'organisation'
-        name: Lab of science, unknown University, Antarctica
-    OrgEx04:
-      summary: "European Commission"
-      value :
-        local_identifier: 'otf_session12324_org_1127'
-        entity_type: 'organisation'
-        identifiers:
-          - scheme: ror
-            value: https://ror.org/00k4n6c32
-        name: European Commission
-        short_name: EU
-        types:
-          - funder
