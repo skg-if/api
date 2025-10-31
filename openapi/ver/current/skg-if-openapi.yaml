@@ -159,10 +159,8 @@ paths:
                 DatasetEx02:
                   summary: "Dataset - OpenAIRE Graph dataset new collected projects"
                   value :
-                    "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
-                      {"@base" : "http://example.com/"}
-                    ]
+                    "@context":
+                      $ref: '#/components/examples/ContextArray'
                     "@graph" :
                       - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869555
                         entity_type: product
@@ -347,7 +345,7 @@ paths:
                           $ref: "#/components/schemas/Person"
               examples:
                 PersonEx01:
-                  summary: a single person
+                  summary: Josiah Carberry person
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
@@ -362,6 +360,17 @@ paths:
                         given_name: "Josiah"
                         family_name: "Carberry"
                         name: "Josiah Carberry"
+                PersonEx02:
+                  summary: John Doe person on-the-fly id
+                  value :
+                    "@context": [
+                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      {"@base" : "http://example.com/"}
+                    ]
+                    "@graph" :
+                      - local_identifier: otf_126848135_prod-1-pers-1
+                        entity_type: "person"
+                        name: "John Doe"
   '/persons':
     get:
       tags:
@@ -507,7 +516,7 @@ paths:
                         types:
                           - education
                 OrgJohnCarterBrownLibrary:
-                  summary: "John Carter Brown Library"
+                  summary: "John Carter Brown Library - Brown University"
                   value :
                     "@context":
                       - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
@@ -536,7 +545,7 @@ paths:
                         entity_type: 'organisation'
                         name: Lab of science, unknown University, Antarctica
                 OrgEuropeanCommission:
-                  summary: "European Commission"
+                  summary: "European Commission Funder"
                   value :
                     "@context":
                       - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
@@ -645,7 +654,7 @@ paths:
                           $ref: "#/components/schemas/Grant"
               examples:
                 GrantEx01:
-                  summary: a single grant
+                  summary: GraspOS grant
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
@@ -843,7 +852,7 @@ paths:
                           $ref: "#/components/schemas/Venue"
               examples:
                 VenueEx01:
-                  summary: a single venue
+                  summary: Journal of Psychoceramics venue
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
@@ -944,7 +953,7 @@ paths:
                          $ref: "#/components/schemas/Topic"
               examples:
                 TopicEx01:
-                  summary: a single topic
+                  summary: Computer Science topic
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
@@ -1056,7 +1065,7 @@ paths:
                           $ref: "#/components/schemas/DataSource"
               examples:
                 DatasourceEx01:
-                  summary: a single datasource
+                  summary: Oxford University Research Archive datasource
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
@@ -2389,3 +2398,8 @@ components:
         - "@context":
             - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
             - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+  examples:
+    ContextArray:
+      value:
+        - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+        - { "@base" : "http://example.com/" }
