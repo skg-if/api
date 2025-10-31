@@ -1701,12 +1701,9 @@ components:
                   - research
                   - unspecified
       examples:
-        - OrgEx01:
-          $ref: '#/components/examples/OrgEx01'
-        - OrgEx02:
-          $ref: '#/components/examples/OrgEx02'
-        - OrgEx03:
-          $ref: '#/components/examples/OrgEx03'
+        - $ref: '#/components/examples/OrgEx01'
+        - $ref: '#/components/examples/OrgEx02'
+        - $ref: '#/components/examples/OrgEx03'
     Person:
       type: object
       title: "Person"
