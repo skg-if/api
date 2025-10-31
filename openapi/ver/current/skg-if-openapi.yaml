@@ -485,7 +485,7 @@ paths:
                         items:
                           $ref: "#/components/schemas/Organisation"
               examples:
-                OrgEx01:
+                OrgEx10:
                   summary: a single organisation
                   value :
                     "@context": [
@@ -493,16 +493,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: xxx
-                        entity_type: "organisation"
-                        identifiers:
-                          - scheme: ror
-                            value: https://ror.org/05gq02987
-                        name: Brown University
-                        short_name: BU
-                        country: US
-                        types:
-                          - education
+                      - $ref: '#/components/examples/OrgEx01'
   '/organisations':
     get:
       tags:
@@ -2334,6 +2325,18 @@ components:
     OrgEx03:
       summary: "Lab of science"
       value :
-        local_identifier: 'otf_session12325_org_1125'
+        local_identifier: 'otf_session12325_org_1126'
         entity_type: 'organisation'
         name: Lab of science, unknown University, Antarctica
+    OrgEx04:
+      summary: "European Commission"
+      value :
+        local_identifier: 'otf_session12324_org_1127'
+        entity_type: 'organisation'
+        identifiers:
+          - scheme: ror
+            value: https://ror.org/00k4n6c32
+        name: European Commission
+        short_name: EU
+        types:
+          - funder
