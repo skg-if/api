@@ -2374,15 +2374,17 @@ components:
                 #default: "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
                 x-faker:
                   fake: ['https://w3id.org/skg-if/context/1.0.1/skg-if.json']
-                #example: "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                #examples:
+                # - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
               - type: object
                 properties:
                   "@base":
                     type: string
                     description : "Default base URL specific to the implementer. https://w3id.org/skg-if/sandbox/provider_accronym/"
                     x-faker:
-                      fake: ['https://w3id.org/skg-if/sandbox/myprov/']
-                    example: "https://w3id.org/skg-if/sandbox/myprov/"
+                      fake: ['https://w3id.org/skg-if/sandbox/my_prov/']
+                    examples:
+                     - "https://w3id.org/skg-if/sandbox/my_prov/"
                 #required: ["@base"]
                 additionalProperties:
                   type: string
