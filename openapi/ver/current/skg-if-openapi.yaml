@@ -2396,6 +2396,6 @@ components:
           #]
           additionalProperties: false
           examples:
-            - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
-            - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+            - ["https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+              {"@base" : "https://w3id.org/skg-if/sandbox/myprov/"}]
       required: [ "@context" ]
