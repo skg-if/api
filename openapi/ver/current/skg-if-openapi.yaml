@@ -89,7 +89,7 @@ paths:
                   summary: "Journal article - FAIR Guiding Principles"
                   value :
                     "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
                       {"@base" : "https://w3id.org/skg-if/sandbox/myprov/"}
                     ]
                     "@graph" :
@@ -160,7 +160,7 @@ paths:
                   summary: "Dataset - OpenAIRE Graph dataset new collected projects"
                   value :
                     "@context": [
-                       "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                       "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
                        {"@base" : "https://w3id.org/skg-if/sandbox/myprov/"}
                     ]
                     "@graph" :
@@ -350,7 +350,7 @@ paths:
                   summary: Josiah Carberry person
                   value :
                     "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
@@ -366,7 +366,7 @@ paths:
                   summary: John Doe person on-the-fly id
                   value :
                     "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
@@ -504,7 +504,7 @@ paths:
                   summary: "Brown University"
                   value :
                     "@context":
-                      - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                      - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
                       - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
                     "@graph":
                       - local_identifier: 'otf_session12324_org_1124'
@@ -521,7 +521,7 @@ paths:
                   summary: "John Carter Brown Library - Brown University"
                   value :
                     "@context":
-                      - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                      - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
                       - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
                     "@graph":
                       - local_identifier: 'otf_session12325_org_1125'
@@ -540,7 +540,7 @@ paths:
                   summary: "Lab of science"
                   value :
                     "@context":
-                      - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                      - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
                       - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
                     "@graph":
                       - local_identifier: 'otf_session12325_org_1126'
@@ -550,7 +550,7 @@ paths:
                   summary: "European Commission Funder"
                   value :
                     "@context":
-                      - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                      - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
                       - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
                     "@graph":
                       - local_identifier: 'otf_session12324_org_1127'
@@ -659,7 +659,7 @@ paths:
                   summary: GraspOS grant
                   value :
                     "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
@@ -857,7 +857,7 @@ paths:
                   summary: Journal of Psychoceramics venue
                   value :
                     "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
@@ -958,7 +958,7 @@ paths:
                   summary: Computer Science topic
                   value :
                     "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
@@ -1070,7 +1070,7 @@ paths:
                   summary: Oxford University Research Archive datasource
                   value :
                     "@context": [
-                      "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
@@ -2370,12 +2370,12 @@ components:
               - type: string
                 description: "URL to SKG-IF context supported by the current OpenApi"
                 enum:
-                  - https://w3id.org/skg-if/context/1.0.1/skg-if.json
-                #default: "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                  - https://w3id.org/skg-if/context/1.1.0/skg-if.json
+                #default: "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
                 x-faker:
-                  fake: ['https://w3id.org/skg-if/context/1.0.1/skg-if.json']
+                  fake: ['https://w3id.org/skg-if/context/1.1.0/skg-if.json']
                 #examples:
-                # - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
+                # - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
               - type: object
                 properties:
                   "@base":
@@ -2398,5 +2398,5 @@ components:
           #]
           additionalProperties: false
           examples:
-            - ["https://w3id.org/skg-if/context/1.0.1/skg-if.json", {"@base" : "https://w3id.org/skg-if/sandbox/my_prov/"}]
+            - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", {"@base" : "https://w3id.org/skg-if/sandbox/my_prov/"}]
       required: [ "@context" ]

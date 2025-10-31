@@ -1,6 +1,6 @@
 {
   "@context": [
-    "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+    "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
     {
       "@base": "https://example.com/skg-if/api/"
     }
