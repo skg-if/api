@@ -493,7 +493,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - $ref: '#/components/examples/OrgEx01'
+                      - $ref: '#/components/examples/OrgEx01/value'
   '/organisations':
     get:
       tags:
@@ -2295,18 +2295,18 @@ components:
             - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
   examples:
     OrgEx01:
-        summary: "Brown University"
-        value :
-          local_identifier: 'otf_session12324_org_1124'
-          entity_type: 'organisation'
-          identifiers:
-            - scheme: ror
-              value: https://ror.org/05gq02987
-          name: Brown University
-          short_name: BU
-          country: US
-          types:
-            - education
+      summary: "Brown University"
+      value :
+        local_identifier: 'otf_session12324_org_1124'
+        entity_type: 'organisation'
+        identifiers:
+          - scheme: ror
+            value: https://ror.org/05gq02987
+        name: Brown University
+        short_name: BU
+        country: US
+        types:
+          - education
     OrgEx02:
       summary: "John Carter Brown Library"
       value :
