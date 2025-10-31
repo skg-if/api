@@ -493,7 +493,7 @@ paths:
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - $ref: '#/components/examples/OrgEx01/value'
+                      - $ref: "#/components/examples/OrgEx01/value"
                 OrgEx2:
                   summary: "European Commission"
                   value :
