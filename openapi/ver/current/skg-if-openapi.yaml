@@ -159,8 +159,10 @@ paths:
                 DatasetEx02:
                   summary: "Dataset - OpenAIRE Graph dataset new collected projects"
                   value :
-                    "@context":
-                      $ref: '#/components/examples/ContextArray'
+                    "@context": [
+                       "https://w3id.org/skg-if/context/1.0.1/skg-if.json",
+                       {"@base" : "https://w3id.org/skg-if/sandbox/myprov/"}
+                    ]
                     "@graph" :
                       - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869555
                         entity_type: product
@@ -2398,8 +2400,3 @@ components:
         - "@context":
             - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
             - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
-  examples:
-    ContextArray:
-      value:
-        - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
-        - { "@base" : "http://example.com/" }
