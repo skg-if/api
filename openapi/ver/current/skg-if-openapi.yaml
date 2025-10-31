@@ -2273,12 +2273,12 @@ components:
         local_identifier:
           type: string
           description: |
-            Unique local identifier of the entity.
-              It should be compatible with the URL `/<entity_type_get_operation>/<local_identifier>` ex: `/products/c66c6-38be-4d5f-85db-d44c9`
-            If the entity does not have any stable identifier an on-the-fly identifier is returned : `otf___<session identifier>___<identifier string>`. example : `otf___1730027051396___person-1`.
-              `otf` stands for on-the-fly to explicitly clarify the local identifiers it has been created for the purpose of creating this SKG-IF document;
-              `<session identifier>` is a string portion that enables the source to uniquely identifier the session in which such SKG-IF document has been created - e.g. it could be the current time of the software run to create the SKG expressed in milliseconds;
-              `<identifier string>` is a string portion that identifies the particular entity in consideration. For instance, a possible example of such a local identifier would be.
+            Unique local identifier of the entity. \
+              It should be compatible with the URL `/<entity_type_get_operation>/<local_identifier>` ex: `/products/c66c6-38be-4d5f-85db-d44c9` \
+            If the entity does not have any stable identifier an on-the-fly identifier is returned : `otf___<session identifier>___<identifier string>`. example : `otf___1730027051396___person-1`. \
+              `otf` stands for on-the-fly to explicitly clarify the local identifiers it has been created for the purpose of creating this SKG-IF document; \
+              `<session identifier>` is a string portion that enables the source to uniquely identifier the session in which such SKG-IF document has been created - e.g. it could be the current time of the software run to create the SKG expressed in milliseconds; \
+              `<identifier string>` is a string portion that identifies the particular entity in consideration. For instance, a possible example of such a local identifier would be. \
           x-faker:
             fake : ['{{random.uuid}}']
           examples:
