@@ -66,7 +66,9 @@ paths:
         - $ref : '#/components/parameters/localIdPathParam'
       responses:
         '200':
-          description: Success
+          description: |
+            Success.
+            Important : the output is JSON-LD and contains a `@context` and `@graph` keys.
           content:
             # not 'application/json-ld' to be compatible with StopLight PRISM tool
             application/json:
@@ -236,7 +238,7 @@ paths:
         - name: filter
           in: query
           description: |
-                Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value2,key3:value3 ). Server side operator used is _AND_.
+                Search filter. Format : Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
           schema:
             type: string
             pattern: '^(,?.+:.+)*$'
@@ -257,7 +259,9 @@ paths:
         - $ref : '#/components/parameters/pageSizeQueryParam'
       responses:
         '200':
-          description: Success
+          description: |
+            Success.
+            Important : The output is JSON with `meta` and `results` keys. It is not JSON-LD, it does not contain any `@context` or `@graph` keys. There is an issue [#9](https://github.com/skg-if/context/issues/9) to fix this.
           content:
             application/json:
               schema:
@@ -401,7 +405,7 @@ paths:
         - name: filter
           in: query
           description: |
-                Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value2,key3:value3 ). Server side operator used is _AND_.
+                Search filter. Format : Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
           schema:
             type: string
             pattern: '^(,?.+:.+)*$'
@@ -583,7 +587,7 @@ paths:
       parameters:
         - name: filter
           in: query
-          description: filter. coma separated filter rules
+          description: filter. Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
           examples :
             rorid_ex:
               value: identifiers.scheme:ror,identifiers.id:05gq02987
@@ -784,7 +788,7 @@ paths:
         - name: filter
           in: query
           description: |
-                Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value2,key3:value3 ). Server side operator used is _AND_.
+                Search filter. Format :Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
           schema:
             type: string
             pattern: '^(,?.+:.+)*$'
@@ -885,7 +889,7 @@ paths:
         - name: filter
           in: query
           description: |
-                Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value2,key3:value3 ). Server side operator used is _AND_.
+                Search filter. Format : Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
           schema:
             type: string
             pattern: '^(,?.+:.+)*$'
@@ -991,7 +995,7 @@ paths:
         - name: filter
           in: query
           description: |
-                Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value2,key3:value3 ). Server side operator used is _AND_.
+                Search filter. Format : Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
           schema:
             type: string
             pattern: '^(,?.+:.+)*$'
@@ -1100,7 +1104,7 @@ paths:
         - name: filter
           in: query
           description: |
-                Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value2,key3:value3 ). Server side operator used is _AND_.
+                Search filter. Format : Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
           schema:
             type: string
             pattern: '^(,?.+:.+)*$'
@@ -1154,7 +1158,7 @@ components:
 #      name: filter
 #      in: query
 #      description: |
-#            Search filter. Format : Coma separated key:value elements ( key1:value1,key2:value3,key:value3 ). Server side operator used is _AND_.
+#            Search filter. Format : Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
 #      schema:
 #        type: string
 #        pattern: '^(,?.+:.+)*$'
@@ -2268,7 +2272,13 @@ components:
       properties:
         local_identifier:
           type: string
-          description: id
+          description: |
+            Unique local identifier of the entity.
+              It should be compatible with the URL `/<entity_type_get_operation>/<local_identifier>` ex: `/products/c66c6-38be-4d5f-85db-d44c9`
+            If the entity does not have any stable identifier an on-the-fly identifier is returned : `otf___<session identifier>___<identifier string>`. example : `otf___1730027051396___person-1`.
+              `otf` stands for on-the-fly to explicitly clarify the local identifiers it has been created for the purpose of creating this SKG-IF document;
+              `<session identifier>` is a string portion that enables the source to uniquely identifier the session in which such SKG-IF document has been created - e.g. it could be the current time of the software run to create the SKG expressed in milliseconds;
+              `<identifier string>` is a string portion that identifies the particular entity in consideration. For instance, a possible example of such a local identifier would be.
           x-faker:
             fake : ['{{random.uuid}}']
           examples:
