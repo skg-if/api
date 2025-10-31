@@ -1702,39 +1702,11 @@ components:
                   - unspecified
       examples:
         - OrgEx01:
-          summary: "Brown University"
-          value :
-            local_identifier: 'otf_session12324_org_1124'
-            entity_type: 'organisation'
-            identifiers:
-              - scheme: ror
-                value: https://ror.org/05gq02987
-            name: Brown University
-            short_name: BU
-            country: US
-            types:
-              - education
+          $ref: '#/components/examples/OrgEx01'
         - OrgEx02:
-          summary: "John Carter Brown Library"
-          value :
-            local_identifier: 'otf_session12325_org_1125'
-            entity_type: 'organisation'
-            identifiers:
-              - scheme: ror
-                value: https://ror.org/05gq02987
-              - scheme: ror
-                value: https://ror.org/0274ane14
-            name: John Carter Brown Library, Brown University, Providence RI, US
-            short_name: BU
-            country: US
-            types:
-              - archive
+          $ref: '#/components/examples/OrgEx02'
         - OrgEx03:
-          summary: "Lab of science"
-          value :
-            local_identifier: 'otf_session12325_org_1125'
-            entity_type: 'organisation'
-            name: Lab of science, unknown University, Antarctica
+          $ref: '#/components/examples/OrgEx03'
     Person:
       type: object
       title: "Person"
@@ -2333,3 +2305,38 @@ components:
         - "@context":
             - "https://w3id.org/skg-if/context/1.0.1/skg-if.json"
             - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+  examples:
+    OrgEx01:
+        summary: "Brown University"
+        value :
+          local_identifier: 'otf_session12324_org_1124'
+          entity_type: 'organisation'
+          identifiers:
+            - scheme: ror
+              value: https://ror.org/05gq02987
+          name: Brown University
+          short_name: BU
+          country: US
+          types:
+            - education
+    OrgEx02:
+      summary: "John Carter Brown Library"
+      value :
+        local_identifier: 'otf_session12325_org_1125'
+        entity_type: 'organisation'
+        identifiers:
+          - scheme: ror
+            value: https://ror.org/05gq02987
+          - scheme: ror
+            value: https://ror.org/0274ane14
+        name: John Carter Brown Library, Brown University, Providence RI, US
+        short_name: BU
+        country: US
+        types:
+          - archive
+    OrgEx03:
+      summary: "Lab of science"
+      value :
+        local_identifier: 'otf_session12325_org_1125'
+        entity_type: 'organisation'
+        name: Lab of science, unknown University, Antarctica
