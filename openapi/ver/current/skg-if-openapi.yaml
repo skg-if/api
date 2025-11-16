@@ -2460,7 +2460,7 @@ components:
       description: ""
       properties:
         "@context":
-          description: |
+          title: |
             JSON-LD context for SKG-IF OpenAPI output.
             ``` json
             "@context": [
@@ -2489,6 +2489,7 @@ components:
                 x-faker:
                   fake: ['https://w3id.org/skg-if/context/1.0.0/skg-if-api.json']
               - type: object
+                description : "additional context mappings (ex: @base)"
                 properties:
                   "@base":
                     type: string
