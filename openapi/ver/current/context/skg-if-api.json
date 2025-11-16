@@ -1,6 +1,6 @@
 {
     "@context": {
-        "@version": 1.0,
+        "@version": 1.1,
         "@protected": true,
         "as": "http://www.w3.org/ns/activitystreams#",
         "search_result_page": {
