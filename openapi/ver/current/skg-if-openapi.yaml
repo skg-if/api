@@ -2457,20 +2457,20 @@ components:
               information if dereferenced.
     JsonLdCtx:
       type: object
-      description: |
-        JSON-LD context for SKG-IF OpenAPI output \
-        ``` json
-          "@context": [
-            "https://w3id.org/skg-if/context/1.1.0/skg-if.json", => SKG-IF data model context elements
-            "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", => SKG-IF API context elements (meta section)
-            {
-              "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/" => JSON-LD @base fallback.
-            }
-          ]
-        ```
+      description: ""
       properties:
         "@context":
-          description: JSON-LD context
+          description: |
+            JSON-LD context for SKG-IF OpenAPI output.
+            ``` json
+            "@context": [
+              "https://w3id.org/skg-if/context/1.1.0/skg-if.json", => SKG-IF data model context elements
+              "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", => SKG-IF API context elements (meta section)
+              {
+                "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/" => JSON-LD @base fallback.
+              }
+            ]
+            ```
           type: array
           minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
           uniqueItems: true
