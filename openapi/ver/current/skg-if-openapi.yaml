@@ -70,6 +70,7 @@ paths:
                 properties:
                   "@context":
                     type: object
+                    description: JSON-LD context
                     $ref: '#/components/schemas/JsonLdCtx'
                   "@graph":
                     type: array
