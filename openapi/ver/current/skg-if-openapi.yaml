@@ -66,17 +66,17 @@ paths:
             # not 'application/json-ld' to be compatible with StopLight PRISM tool
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/JsonLdCtx"
-                  - type: object
-                    required: ['@graph']
-                    properties:
-                      "@graph":
-                        type: array
-                        minItems: 1
-                        maxItems: 1
-                        items:
-                          $ref: "#/components/schemas/Product"
+                required: ['@context','@graph']
+                properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
+                  "@graph":
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                    items:
+                      $ref: "#/components/schemas/Product"
               examples:
                 JournalArticleEx01:
                   summary: "Journal article - FAIR Guiding Principles"
@@ -263,6 +263,9 @@ paths:
             application/json:
               schema:
                 properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -270,11 +273,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Product'
-                required: [ "meta", "@graph" ]
+                required: [ "@context", "meta", "@graph" ]
               examples:
                 JournalArticleListEx01:
                     summary: A list of journal articles
                     value :
+                      "@context":
+                       - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
+                       - "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json"
+                       - "@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
                       meta:
                         local_identifier: https://example.com/skg-if/api/products?filter=product_type:literature&page=1
                         entity_type: search_result_page
@@ -295,6 +302,10 @@ paths:
                 DatasetListEx02:
                     summary: A list of datasets
                     value :
+                      "@context":
+                       - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
+                       - "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json"
+                       - "@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
                       meta:
                         local_identifier: http://example.com/skg-if/api/products?filter=product_type:research%20data&page=1
                         entity_type: search_result_page
@@ -343,17 +354,17 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/JsonLdCtx"
-                  - type: object
-                    required: ['@graph']
-                    properties:
-                      "@graph":
-                        type: array
-                        minItems: 1
-                        maxItems: 1
-                        items:
-                          $ref: "#/components/schemas/Person"
+                required: ['@context','@graph']
+                properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
+                  "@graph":
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                    items:
+                      $ref: "#/components/schemas/Person"
               examples:
                 PersonEx01:
                   summary: Josiah Carberry person
@@ -447,6 +458,9 @@ paths:
             application/json:
               schema:
                 properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -454,11 +468,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Person'
-                required: [ "meta", "@graph" ]
+                required: [ "@context", "meta", "@graph" ]
               examples:
                 PersonEx01:
                     summary: a list of persons
                     value :
+                      "@context":
+                       - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
+                       - "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json"
+                       - "@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
                       meta:
                           local_identifier: https://example.com/skg-if/api/persons?filter=family_name:Carberry&page=1
                           entity_type: search_result_page
@@ -508,17 +526,17 @@ paths:
             # not 'application/json-ld' to be compatible with StopLight PRISM tool
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/JsonLdCtx"
-                  - type: object
-                    required: ['@graph']
-                    properties:
-                      "@graph":
-                        type: array
-                        minItems: 1
-                        maxItems: 1
-                        items:
-                          $ref: "#/components/schemas/Organisation"
+                required: ['@context','@graph']
+                properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
+                  "@graph":
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                    items:
+                      $ref: "#/components/schemas/Organisation"
               examples:
                 OrgBrownUniversity:
                   summary: "Brown University"
@@ -645,6 +663,9 @@ paths:
             application/json:
               schema:
                 properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -652,7 +673,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Organisation'
-                required: [ "meta", "@graph" ]
+                required: [ "@context", "meta", "@graph" ]
   '/grants/{short_local_identifier}':
     get:
       tags:
@@ -670,17 +691,17 @@ paths:
             # not 'application/json-ld' to be compatible with StopLight PRISM tool
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/JsonLdCtx"
-                  - type: object
-                    required: ['@graph']
-                    properties:
-                      "@graph":
-                        type: array
-                        minItems: 1
-                        maxItems: 1
-                        items:
-                          $ref: "#/components/schemas/Grant"
+                required: ['@context','@graph']
+                properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
+                  "@graph":
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                    items:
+                      $ref: "#/components/schemas/Grant"
               examples:
                 GrantEx01:
                   summary: GraspOS grant
@@ -847,6 +868,9 @@ paths:
             application/json:
               schema:
                 properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -854,7 +878,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Grant'
-                required: [ "meta", "@graph" ]
+                required: [ "@context", "meta", "@graph" ]
   '/venues/{short_local_identifier}':
     get:
       tags:
@@ -872,17 +896,17 @@ paths:
             # not 'application/json-ld' to be compatible with StopLight PRISM tool
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/JsonLdCtx"
-                  - type: object
-                    required: ['@graph']
-                    properties:
-                      "@graph":
-                        type: array
-                        minItems: 1
-                        maxItems: 1
-                        items:
-                          $ref: "#/components/schemas/Venue"
+                required: ['@context','@graph']
+                properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
+                  "@graph":
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                    items:
+                      $ref: "#/components/schemas/Venue"
               examples:
                 VenueEx01:
                   summary: Journal of Psychoceramics venue
@@ -952,6 +976,9 @@ paths:
             application/json:
               schema:
                 properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -959,7 +986,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Venue'
-                required: [ "meta", "@graph" ]
+                required: [ "@context", "meta", "@graph" ]
   '/topics/{short_local_identifier}':
     get:
       tags:
@@ -977,17 +1004,17 @@ paths:
             # not 'application/json-ld' to be compatible with StopLight PRISM tool
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/JsonLdCtx"
-                  - type: object
-                    required: ['@graph']
-                    properties:
-                      "@graph":
-                        type: array
-                        minItems: 1
-                        maxItems: 1
-                        items:
-                         $ref: "#/components/schemas/Topic"
+                required: ['@context','@graph']
+                properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
+                  "@graph":
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                    items:
+                      $ref: "#/components/schemas/Topic"
               examples:
                 TopicEx01:
                   summary: Computer Science topic
@@ -1068,6 +1095,9 @@ paths:
             application/json:
               schema:
                 properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -1075,7 +1105,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Topic'
-                required: [ "meta", "@graph" ]
+                required: [ "@context", "meta", "@graph" ]
   '/datasources/{short_local_identifier}':
     get:
       tags:
@@ -1093,17 +1123,17 @@ paths:
             # not 'application/json-ld' to be compatible with StopLight PRISM tool
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/JsonLdCtx"
-                  - type: object
-                    required: ['@graph']
-                    properties:
-                      "@graph":
-                        type: array
-                        minItems: 1
-                        maxItems: 1
-                        items:
-                          $ref: "#/components/schemas/DataSource"
+                required: ['@context','@graph']
+                properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
+                  "@graph":
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                    items:
+                      $ref: "#/components/schemas/DataSource"
               examples:
                 DatasourceEx01:
                   summary: Oxford University Research Archive datasource
@@ -1175,6 +1205,9 @@ paths:
             application/json:
               schema:
                 properties:
+                  "@context":
+                    type: object
+                    $ref: '#/components/schemas/JsonLdCtx'
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -1182,7 +1215,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/DataSource'
-                required: [ "meta", "@graph" ]
+                required: [ "@context", "meta", "@graph" ]
 components:
   securitySchemes:
     main_auth:
@@ -2456,11 +2489,8 @@ components:
               occurrence of the problem.  It may or may not yield further
               information if dereferenced.
     JsonLdCtx:
-      type: object
-      description: ""
-      properties:
-        "@context":
-          title: |
+      type: array
+      description: |
             JSON-LD context for SKG-IF OpenAPI output.
             ``` json
             "@context": [
@@ -2471,50 +2501,49 @@ components:
               }
             ]
             ```
-          type: array
-          minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
-          uniqueItems: true
-          items:
-            anyOf:
-              - type: string
-                description: "URL to SKG-IF data model context supported by the current OpenAPI"
-                enum:
-                  - https://w3id.org/skg-if/context/1.1.0/skg-if.json
+      minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+      uniqueItems: true
+      items:
+        anyOf:
+          - type: string
+            description: "URL to SKG-IF data model context supported by the current OpenAPI"
+            enum:
+              - https://w3id.org/skg-if/context/1.1.0/skg-if.json
+            x-faker:
+              fake: ['https://w3id.org/skg-if/context/1.1.0/skg-if.json']
+          - type: string
+            description: "URL to SKG-IF API context (meta section) supported by the current OpenAPI"
+            enum:
+              - https://w3id.org/skg-if/context/1.0.0/skg-if-api.json
+            x-faker:
+              fake: ['https://w3id.org/skg-if/context/1.0.0/skg-if-api.json']
+          - type: object
+            description : "additional context mappings (ex: @base)"
+            properties:
+              "@base":
+                type: string
+                description : |
+                  Default base URL specific to the implementer.\
+                  common format : `https://w3id.org/skg-if/sandbox/{my-skg-acronym}` \
+                  example : `https://w3id.org/skg-if/sandbox/openaire/`
                 x-faker:
-                  fake: ['https://w3id.org/skg-if/context/1.1.0/skg-if.json']
-              - type: string
-                description: "URL to SKG-IF API context (meta section) supported by the current OpenAPI"
-                enum:
-                  - https://w3id.org/skg-if/context/1.0.0/skg-if-api.json
-                x-faker:
-                  fake: ['https://w3id.org/skg-if/context/1.0.0/skg-if-api.json']
-              - type: object
-                description : "additional context mappings (ex: @base)"
-                properties:
-                  "@base":
-                    type: string
-                    description : |
-                      Default base URL specific to the implementer.\
-                      common format : `https://w3id.org/skg-if/sandbox/{my-skg-acronym}` \
-                      example : `https://w3id.org/skg-if/sandbox/openaire/`
-                    x-faker:
-                      fake: ['https://w3id.org/skg-if/sandbox/{{random.alpha(5)}}/']
-                    examples:
-                     - "https://w3id.org/skg-if/sandbox/openaire/"
-                     - "https://w3id.org/skg-if/sandbox/cessda/"
-                     - "https://w3id.org/skg-if/sandbox/foobar/"
-                #required: ["@base"]
-                additionalProperties:
-                  type: string
-                  description: "context URL of extension entities"
-                  x-faker:
-                    fake : ['http://www.example.com/skg-if/{{random.alpha(3)}}']
-            #required: [ skgifjson]
-          #anyOf: [
-          #  required: [ skgifjson, skgifimpl],
-          #  required: [ skgifjson]
-          #]
-          additionalProperties: false
-          examples:
-            - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
-      required: [ "@context" ]
+                  fake: ['https://w3id.org/skg-if/sandbox/{{random.alpha(5)}}/']
+                examples:
+                  - "https://w3id.org/skg-if/sandbox/openaire/"
+                  - "https://w3id.org/skg-if/sandbox/cessda/"
+                  - "https://w3id.org/skg-if/sandbox/foobar/"
+            #required: ["@base"]
+            additionalProperties:
+              type: string
+              description: "context URL of extension entities"
+              x-faker:
+                fake : ['http://www.example.com/skg-if/{{random.alpha(3)}}']
+        #required: [ skgifjson]
+      #anyOf: [
+      #  required: [ skgifjson, skgifimpl],
+      #  required: [ skgifjson]
+      #]
+      additionalProperties: false
+      examples:
+        - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
+
