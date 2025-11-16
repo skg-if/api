@@ -2340,6 +2340,7 @@ components:
           type: string
     Meta:
       type: object
+      required: [ "local_identifier", "entity_type" ]
       properties:
         local_identifier:
           type: string
@@ -2353,34 +2354,40 @@ components:
           enum:
             - search_result_page
         prev_page:
+          description: Previous page reference
           type: object
           $ref: '#/components/schemas/SearchResultPage'
         next_page:
+          description: Next page reference
           type: object
           $ref: '#/components/schemas/SearchResultPage'
         part_of:
+          description: Reference for the search result as a whole (all pages)
           type: object
+          required: [ "local_identifier", "entity_type" ]
           properties:
             local_identifier:
               type: string
-              description: search id. URL
+              description: search result id as URL
               examples:
                 - https://example.com/skg-if/api/products?filter=xxx
                 - https://example.com/skg-if/api/persons?filter=xxx
             entity_type:
               type: string
-              description: search type
+              description: search type. Value must be `search_result`
               enum:
                 - search_result
             total_items:
-              description: search number of items
+              description: total number of item entities for the search
               type: integer
               x-faker:
                 datatype.number: [{min: 10, max: 100}]
             first_page:
+              description: First page reference of the search
               type: object
               $ref: '#/components/schemas/SearchResultPage'
             last_page:
+              description: Last page reference of the search
               type: object
               $ref: '#/components/schemas/SearchResultPage'
     SearchResultPage:
@@ -2388,10 +2395,13 @@ components:
         properties:
           local_identifier:
                 type: string
-                description: search result page id. URL
+                description: search result page id as URL
+                examples:
+                  - https://example.com/skg-if/api/products?filter=xxx&page=y
+                  - https://example.com/skg-if/api/persons?filter=xxx&page=y
           entity_type:
             type: string
-            description: search result page type
+            description: search result page type. Value must be `search_result_page`
             enum:
               - search_result_page
     Error:
