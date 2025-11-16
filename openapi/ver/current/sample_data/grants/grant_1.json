@@ -1,13 +1,14 @@
 {
     "@context": [
         "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+        "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
         {
-            "@base": "https://w3id.org/skg-if/sandbox/myprov/"
+            "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
         }
     ],
     "@graph": [
         {
-            "local_identifier": "6f368a3a-b1cf-498f-b2de-27135d1e0011",
+            "local_identifier": "http://example.com/skg-if/api/grants/6f368a3a-b1cf-498f-b2de-27135d1e0011",
             "identifiers": [
                 {
                     "scheme": "doi",
@@ -24,7 +25,7 @@
             },
             "acronym": "GraspOS",
             "funding_agency": {
-                "local_identifier": "xxx",
+                "local_identifier": "http://example.com/skg-if/api/organisations/org-xxx",
                 "entity_type": "organisation",
                 "identifiers": [
                     {
@@ -47,7 +48,7 @@
             "website": "https://graspos.eu",
             "beneficiaries": [
                 {
-                    "local_identifier": "xxx",
+                    "local_identifier": "http://example.com/skg-if/api/organisations/xxx",
                     "entity_type": "organisation",
                     "identifiers": [
                         {
@@ -64,7 +65,7 @@
             "contributions": [
                 {
                     "by": {
-                        "local_identifier": "xxx",
+                        "local_identifier": "http://example.com/skg-if/api/persons/xxx",
                         "entity_type": "person",
                         "identifiers": [
                             {
@@ -78,7 +79,7 @@
                     },
                     "declared_affiliations": [
                         {
-                            "local_identifier": "xxx",
+                            "local_identifier": "http://example.com/skg-if/api/organisations/xxx",
                             "entity_type": "organisation",
                             "identifiers": [
                                 {

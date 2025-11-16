@@ -13,20 +13,14 @@ info:
   description: |
     OpenAPI end points specifications for [SKG-IF](https://skg-if.github.io/interoperability-framework/)
 
+    Last version of the SKG-IF OpenAPI is available at : https://skg-if.github.io/api/
+
     # Note for implementers :
       - Please refer to [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?usp=sharing)
       - [RDA SKG-IF WG](https://skg-if.github.io/) does not provide any official implementation of the current specification.
-      - Recommended OpenAPI viewer : [StopLight/Elements](https://elements-demo.stoplight.io/)  (Use a public URL exposing the current file)
-      - This OpenAPI is compatible with [StopLight PRISM](https://docs.stoplight.io/docs/prism/).
-        - You can run a mock server, for testing purpose, before implementation.
-        - You can test your server implementation compatibility.
-      - All the errors returned MUST conform to format [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807)
-
-    # JSON Output compatibility
-      - The JSON output of single entity operations _/entity-type/{local_identifier}_ are compatible with SKG-IF JSON-LD context (see @context version in response specifications).
-      - The JSON output of search entity operations _/entity-type?filter=xxx_ are JSON only.
-
-    __2025/03 : This is alpha unversionned release make sure you refresh/download the YAML regularly to get the last fixes__
+      - Recommended OpenAPI viewer :
+        - StopLight/Elements Viewer [Current/last SKG-IF OpenAPI version](https://elements-demo.stoplight.io/?spec=https://w3id.org/skg-if/api/skg-if-openapi.yaml).
+        - Swagger : [Current/last SKG-IF OpenAPI version](https://editor-next.swagger.io/)
 
 externalDocs:
   description: SKG-IF
@@ -52,9 +46,9 @@ tags: # upper case name
     description: Pagination description (can use markdown syntax)
     x-traitTag: true
 servers:
-  - url: 'http://example.com/api'
+  - url: 'http://example.com/skg-if/api'
 paths:
-  '/products/{local_identifier}':
+  '/products/{short_local_identifier}':
     get:
       tags:
           - Product
@@ -63,12 +57,11 @@ paths:
           Get single `product`. See definition in SKG-IF [Research product](https://skg-if.github.io/interoperability-framework/docs/research-product.html) ( entity_type:product ).
       operationId: getProductById
       parameters:
-        - $ref : '#/components/parameters/localIdPathParam'
+        - $ref : '#/components/parameters/shortLocalIdPathParam'
       responses:
         '200':
           description: |
             Success.
-            Important : the output is JSON-LD and contains a `@context` and `@graph` keys.
           content:
             # not 'application/json-ld' to be compatible with StopLight PRISM tool
             application/json:
@@ -90,10 +83,11 @@ paths:
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
-                      {"@base" : "https://w3id.org/skg-if/sandbox/myprov/"}
+                      "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+                      {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}
                     ]
                     "@graph" :
-                      - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869333
+                      - local_identifier: http://example.com/skg-if/api/products/prd-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: product
                         product_type: literature
                         titles :
@@ -118,11 +112,11 @@ paths:
                               identifiers:
                               - value: "0000-0001-6960-357X"
                                 scheme: "orcid"
-                              local_identifier: "otf___1730027051396___person-1"
+                              local_identifier: http://example.com/skg-if/api/persons/otf___1730027051396___person-1
                               entity_type: "person"
                             declared_affiliations:
                               - name: "Center for Plant Biotechnology and Genomics, Universidad Politécnica de Madrid, Madrid, 28223, Spain"
-                                local_identifier: "otf___1730027051396___person-1-aff-1"
+                                local_identifier: http://example.com/skg-if/api/otf___1730027051396___person-1-aff-1
                                 entity_type: "organisation"
                                 country: "ES"
                         manifestations:
@@ -133,7 +127,7 @@ paths:
                               class: http://www.example.com/types/onto/localtypemethodology
                             biblio:
                               hosting_data_source:
-                                local_identifier: arch-6f368a3a-b1cf-498f-b2de-27135d1e0075
+                                local_identifier: http://example.com/skg-if/api/arch-6f368a3a-b1cf-498f-b2de-27135d1e0075
                                 entity_type: datasource
                                 name: "An Archive"
                               in:
@@ -142,7 +136,7 @@ paths:
                                 identifiers:
                                   - "value": "2052-4463"
                                     "scheme": "issn"
-                                local_identifier: "journal-46bc1-00f8-42dd-8221-ac4deb52fb25"
+                                local_identifier: http://example.com/skg-if/api/venues/journal-46bc1-00f8-42dd-8221-ac4deb52fb25
                                 entity_type: "venue"
                             dates: # http://api.crossref.org/works/10.1038/sdata.2016.18
                               publication:
@@ -161,10 +155,11 @@ paths:
                   value :
                     "@context": [
                        "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
-                       {"@base" : "https://w3id.org/skg-if/sandbox/myprov/"}
+                       "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+                       {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}
                     ]
                     "@graph" :
-                      - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869555
+                      - local_identifier: http://example.com/skg-if/api/products/prd-c66c6-38be-4d5f-85db-d44c9f869555
                         entity_type: product
                         product_type: research data
                         titles :
@@ -192,13 +187,13 @@ paths:
           | product_type |  `product_type:literature` |
           | identifiers.id | `identifiers.id:10.1038/sdata.2016.18` |
           | identifiers.scheme | `identifiers.scheme:doi` |
-          | contributions.by. local_identifier |   `contributions.by. local_identifier:prod_1` |
+          | contributions.by. local_identifier |   `contributions.by. local_identifier:https://example.com/skg-if/api/products/prod_c66c6-38be-4d5f-85db-d44c9f869881` |
           | contributions.by. identifiers.id | `contributions.by. identifiers.id:0000-0002-1825-0097` |
           | contributions.by. identifiers.scheme | `contributions.by. identifiers.scheme:orcid` |
           | contributions.by. family_name |   `contributions.by. family_name:smith` |
           | contributions.by. given_name |   `contributions.by. given_name:john` |
           | contributions.by. name |   `contributions.by. name:john smith` |
-          | contributions.declared_affiliations. local_identifier | `contributions.declared_affiliations. local_identifier:org_1` |
+          | contributions.declared_affiliations. local_identifier | `contributions.declared_affiliations. local_identifier:https://example.com/skg-if/api/organisations/org_c66c6-38be-4d5f-85db-d44c9f869881` |
           | contributions.declared_affiliations. identifiers.id | `contributions.declared_affiliations. identifiers.id:05gq02987` |
           | contributions.declared_affiliations. identifiers.scheme | `contributions.declared_affiliations. identifiers.scheme:ror` |
           | contributions.declared_affiliations. name | `contributions.declared_affiliations. name:brown university` |
@@ -261,7 +256,6 @@ paths:
         '200':
           description: |
             Success.
-            Important : The output is JSON with `meta` and `results` keys. It is not JSON-LD, it does not contain any `@context` or `@graph` keys. There is an issue [#9](https://github.com/skg-if/context/issues/9) to fix this.
           content:
             application/json:
               schema:
@@ -269,38 +263,50 @@ paths:
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
-                  results:
+                  "@graph":
                     type: array
                     items:
                       $ref: '#/components/schemas/Product'
-                required: [ "meta", "results" ]
+                required: [ "meta", "@graph" ]
               examples:
                 JournalArticleListEx01:
                     summary: A list of journal articles
                     value :
                       meta:
-                        count: 2
-                        page: 1
-                        page_size: 10
-                      results:
-                        - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869333
+                        local_identifier: https://example.com/skg-if/api/products?filter=product_type:literature&page=1
+                        entity_type: search_result_page
+                        next_page:
+                          local_identifier: https://example.com/skg-if/api/products?filter=product_type:literature&page=2
+                          entity_type: search_result_page
+                        part_of:
+                          local_identifier: https://example.com/skg-if/api/products?filter=product_type:literature
+                          entity_type: search_result
+                          total_items: 54231
+                      "@graph":
+                        - local_identifier: http://example.com/skg-if/api/products/prd-c66c6-38be-4d5f-85db-d44c9f869333
                           entity_type: product
                           product_type: literature
-                        - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869999
+                        - local_identifier: http://example.com/skg-if/api/products/prd-c66c6-38be-4d5f-85db-d44c9f869999
                           entity_type: product
                           product_type: research data
                 DatasetListEx02:
                     summary: A list of datasets
                     value :
                       meta:
-                        count: 2
-                        page: 1
-                        page_size: 10
-                      results:
-                        - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869888
+                        local_identifier: http://example.com/skg-if/api/products?filter=product_type:research%20data&page=1
+                        entity_type: search_result_page
+                        next_page:
+                          local_identifier: http://example.com/skg-if/api/products?filter=product_type:research%20data&page=2
+                          entity_type: search_result_page
+                        part_of:
+                          local_identifier: http://example.com/skg-if/api/products?filter=product_type:research%20data
+                          entity_type: search_result
+                          total_items: 13202
+                      "@graph":
+                        - local_identifier: http://example.com/skg-if/api/products/prd-c66c6-38be-4d5f-85db-d44c9f869888
                           entity_type: product
                           product_type: research data
-                        - local_identifier: prd-c66c6-38be-4d5f-85db-d44c9f869881
+                        - local_identifier: http://example.com/skg-if/api/products/prd-c66c6-38be-4d5f-85db-d44c9f869881
                           entity_type: product
                           product_type: research data
         '422':
@@ -318,7 +324,7 @@ paths:
                       status: '422'
                       detail: 'The filter b is not supported by this implementation, valid filters are x, y, z'
                       occurence: 'http://my-api/products?filter=b:foo,x:bar'
-  '/persons/{local_identifier}':
+  '/persons/{short_local_identifier}':
     get:
       tags:
           - Person
@@ -327,7 +333,7 @@ paths:
           Get `person` by id. See definition in SKG-IF [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html) ( entity_type:person ) .\
       operationId: getPersonById
       parameters:
-        - $ref : '#/components/parameters/localIdPathParam'
+        - $ref : '#/components/parameters/shortLocalIdPathParam'
       responses:
         '200':
           description: Success
@@ -351,10 +357,11 @@ paths:
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: pers-c66c6-38be-4d5f-85db-d44c9f869333
+                      - local_identifier: http://example.com/skg-if/api/persons/pers-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "person"
                         identifiers:
                           - scheme: orcid
@@ -367,10 +374,11 @@ paths:
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+                      "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
                       {"@base" : "http://example.com/"}
                     ]
                     "@graph" :
-                      - local_identifier: otf_126848135_prod-1-pers-1
+                      - local_identifier: http://example.com/skg-if/api/persons/otf_126848135_prod-1-pers-1
                         entity_type: "person"
                         name: "John Doe"
   '/persons':
@@ -391,7 +399,7 @@ paths:
           | given_name | `given_name:Josiah` |
           | family_name |  `family_name:Carberry` |
           | name |  `name:Josiah Carberro` |
-          | affiliations.affiliation.local_identifier | `affiliations.affiliation.local_identifier:pers_1` |
+          | affiliations.affiliation.local_identifier | `affiliations.affiliation.local_identifier:http://example.com/skg-if/api/organisations/org-c66c6-38be-4d5f-85db-d44c9f869333` |
           | affiliations.affiliation.name | `affiliations.affiliation.name:Brown University` |
           | affiliations.affiliation.short_name |  `affiliations.affiliation.short_name:BU` |
           | affiliations.role | `affiliations.role:affiliate` |
@@ -436,21 +444,27 @@ paths:
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
-                  results:
+                  "@graph":
                     type: array
                     items:
                       $ref: '#/components/schemas/Person'
-                required: [ "meta", "results" ]
+                required: [ "meta", "@graph" ]
               examples:
                 PersonEx01:
                     summary: a list of persons
                     value :
                       meta:
-                        count: 2
-                        page: 1
-                        page_size: 10
-                      results:
-                        - local_identifier: pers-c66c6-38be-4d5f-85db-d44c9f869333
+                          local_identifier: https://example.com/skg-if/api/persons?filter=family_name:Carberry&page=1
+                          entity_type: search_result_page
+                          next_page:
+                            local_identifier: https://example.com/skg-if/api/persons?filter=family_name:Carberry&page=2
+                            entity_type: search_result_page
+                          part_of:
+                            local_identifier: https://example.com/skg-if/api/persons?filter=family_name:Carberry
+                            entity_type: search_result
+                            total_items: 4
+                      "@graph":
+                        - local_identifier: http://example.com/skg-if/api/persons/pers-c66c6-38be-4d5f-85db-d44c9f869333
                           entity_type: "person"
                           identifiers:
                             - scheme: orcid
@@ -458,11 +472,11 @@ paths:
                           given_name: "Josiah"
                           family_name:  "Carberry"
                           name: "Josiah Carberry"
-                        - local_identifier: pers-c66c6-38be-4d5f-85db-d44c9f869888
+                        - local_identifier: http://example.com/skg-if/api/persons/pers-c66c6-38be-4d5f-85db-d44c9f869888
                           entity_type: "person"
-                          given_name: "Botul"
-                          family_name:  "Jean-Baptiste"
-                          name: "Jean-Baptiste Botul"
+                          given_name: "Gerard"
+                          family_name:  "Carberry"
+                          name: "Gerard Carberry"
                 #PersonEx02: # commented KO on StopLight UI, OK on Redoc UI, Not used in PRISM
                 #  summary: "a list of persons - external URL"
                 #  externalValue: "https://raw.githubusercontent.com/skg-if/examples/refs/heads/main/OpenCitations/oc_1.json"
@@ -470,8 +484,8 @@ paths:
             address:
               operationId: getPersonById
               parameters:
-                local_identifier: $response.body#/results/local_identifier
-  '/organisations/{local_identifier}':
+                local_identifier: $response.body#/@graph/local_identifier
+  '/organisations/{short_local_identifier}':
     get:
       tags:
           - Organisation
@@ -480,7 +494,7 @@ paths:
           Get `organisation` by id.  See definition in SKG-IF [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html) ( entity_type:organisation) .\
       operationId: getOrganisationById
       parameters:
-        - $ref : '#/components/parameters/localIdPathParam'
+        - $ref : '#/components/parameters/shortLocalIdPathParam'
       responses:
         '200':
           description: Success
@@ -505,9 +519,10 @@ paths:
                   value :
                     "@context":
                       - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
-                      - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+                      - "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json"
+                      - "@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
                     "@graph":
-                      - local_identifier: 'otf_session12324_org_1124'
+                      - local_identifier: http://example.com/skg-if/api/organisations/otf_session12324_org_1124
                         entity_type: 'organisation'
                         identifiers:
                           - scheme: ror
@@ -522,9 +537,10 @@ paths:
                   value :
                     "@context":
                       - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
-                      - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+                      - "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json"
+                      - "@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
                     "@graph":
-                      - local_identifier: 'otf_session12325_org_1125'
+                      - local_identifier: http://example.com/skg-if/api/organisations/otf_session12325_org_1125
                         entity_type: 'organisation'
                         identifiers:
                           - scheme: ror
@@ -541,9 +557,10 @@ paths:
                   value :
                     "@context":
                       - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
-                      - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+                      - "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json"
+                      - "@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
                     "@graph":
-                      - local_identifier: 'otf_session12325_org_1126'
+                      - local_identifier: http://example.com/skg-if/api/organisations/otf_session12325_org_1126
                         entity_type: 'organisation'
                         name: Lab of science, unknown University, Antarctica
                 OrgEuropeanCommission:
@@ -551,9 +568,10 @@ paths:
                   value :
                     "@context":
                       - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
-                      - "@base" : "https://w3id.org/skg-if/sandbox/myprov/"
+                      - "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json"
+                      - "@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
                     "@graph":
-                      - local_identifier: 'otf_session12324_org_1127'
+                      - local_identifier: http://example.com/skg-if/api/organisations/otf_session12324_org_1127
                         entity_type: 'organisation'
                         identifiers:
                           - scheme: ror
@@ -621,12 +639,12 @@ paths:
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
-                  results:
+                  "@graph":
                     type: array
                     items:
                       $ref: '#/components/schemas/Organisation'
-                required: [ "meta", "results" ]
-  '/grants/{local_identifier}':
+                required: [ "meta", "@graph" ]
+  '/grants/{short_local_identifier}':
     get:
       tags:
           - Grant
@@ -635,7 +653,7 @@ paths:
           Get single `grant`. See definition in SKG-IF [Grant](https://skg-if.github.io/interoperability-framework/docs/grant.html) ( entity_type:grant ).
       operationId: getGrantById
       parameters:
-        - $ref : '#/components/parameters/localIdPathParam'
+        - $ref : '#/components/parameters/shortLocalIdPathParam'
       responses:
         '200':
           description: Success
@@ -660,10 +678,11 @@ paths:
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
-                      {"@base" : "http://example.com/"}
+                      "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+                      {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}
                     ]
                     "@graph" :
-                      - local_identifier: grant-c66c6-38be-4d5f-85db-d44c9f869333
+                      - local_identifier: http://example.com/skg-if/api/grants/grant-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "grant"
                         identifiers:
                           - scheme: "doi"
@@ -676,7 +695,7 @@ paths:
                         }
                         acronym: "GraspOS"
                         funding_agency:
-                          local_identifier: "otf___1730027051396___org-1"
+                          local_identifier: http://example.com/skg-if/api/grants/otf___1730027051396___org-1
                           entity_type: "organisation"
                           identifiers:
                             - scheme: "ror"
@@ -693,7 +712,7 @@ paths:
                           end: "2025-12-31T23:59:59Z"
                         website: "https://graspos.eu"
                         beneficiaries:
-                          - local_identifier: "otf___1730027051396___org-2"
+                          - local_identifier: http://example.com/skg-if/api/organisations/otf___1730027051396___org-2
                             entity_type: "organisation"
                             identifiers:
                               - scheme: "ror"
@@ -704,7 +723,7 @@ paths:
                             website: "https://www.brown.edu/"
                         contributions:
                           - by:
-                              local_identifier: "otf___1730027051396___pers-1"
+                              local_identifier: http://example.com/skg-if/api/persons/otf___1730027051396___pers-1
                               entity_type: "person"
                               identifiers:
                                 - scheme: "orcid"
@@ -749,13 +768,13 @@ paths:
           | beneficiaries.short_name |  `beneficiaries.short_name:BU` |
           | beneficiaries.website | `beneficiaries.website:https://www.brown.edu` |
           | beneficiaries.country | `beneficiaries.country:US` |
-          | contributions.by.local_identifier | `contributions.by.local_identifier:xxx` |
+          | contributions.by.local_identifier | `contributions.by.local_identifier:http://example.com/skg-if/api/persons/yyy` |
           | contributions.by.identifiers.scheme | `contributions.by.identifiers.scheme:orcid` |
           | contributions.by.identifiers.value | `contributions.by.identifiers.value:0000-0002-1825-0097` |
           | contributions.by.given_name | `contributions.by.given_name:Josiah` |
           | contributions.by.family_name |  `contributions.by.family_name:Carberry` |
           | contributions.by.name |  `contributions.by.name:Josiah Carberro` |
-          | contributions.declared_affiliations.local_identifier | `contributions.declared_affiliations.local_identifier:yyy` |
+          | contributions.declared_affiliations.local_identifier | `contributions.declared_affiliations.local_identifier:http://example.com/skg-if/api/organisations/ooo` |
           | contributions.declared_affiliations.identifiers.scheme | `contributions.declared_affiliations.identifiers.scheme:ror` |
           | contributions.declared_affiliations.identifiers.value | `contributions.declared_affiliations.identifiers.value:https://ror.org/05gq02987` |
           | contributions.declared_affiliations.name | `contributions.declared_affiliations.name:Brown University` |
@@ -819,12 +838,12 @@ paths:
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
-                  results:
+                  "@graph":
                     type: array
                     items:
                       $ref: '#/components/schemas/Grant'
-                required: [ "meta", "results" ]
-  '/venues/{local_identifier}':
+                required: [ "meta", "@graph" ]
+  '/venues/{short_local_identifier}':
     get:
       tags:
           - Venue
@@ -833,7 +852,7 @@ paths:
           Get single `venue`. See definition in SKG-IF [Venue](https://skg-if.github.io/interoperability-framework/docs/venue.html) ( entity_type:venue ).
       operationId: getVenueById
       parameters:
-        - $ref : '#/components/parameters/localIdPathParam'
+        - $ref : '#/components/parameters/shortLocalIdPathParam'
       responses:
         '200':
           description: Success
@@ -858,10 +877,11 @@ paths:
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
-                      {"@base" : "http://example.com/"}
+                      "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+                      {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}
                     ]
                     "@graph" :
-                      - local_identifier: venue-c66c6-38be-4d5f-85db-d44c9f869333
+                      - local_identifier: http://example.com/skg-if/api/venues/venue-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "venue"
                         identifiers:
                           - scheme: issn
@@ -920,12 +940,12 @@ paths:
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
-                  results:
+                  "@graph":
                     type: array
                     items:
                       $ref: '#/components/schemas/Venue'
-                required: [ "meta", "results" ]
-  '/topics/{local_identifier}':
+                required: [ "meta", "@graph" ]
+  '/topics/{short_local_identifier}':
     get:
       tags:
           - Topic
@@ -934,7 +954,7 @@ paths:
           Get single `topic`. See definition in SKG-IF [Topic](https://skg-if.github.io/interoperability-framework/docs/topic.html) ( entity_type:topic ).
       operationId: getTopicById
       parameters:
-        - $ref : '#/components/parameters/localIdPathParam'
+        - $ref : '#/components/parameters/shortLocalIdPathParam'
       responses:
         '200':
           description: Success
@@ -959,10 +979,11 @@ paths:
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
-                      {"@base" : "http://example.com/"}
+                      "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+                      {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}
                     ]
                     "@graph" :
-                      - local_identifier: topic-c66c6-38be-4d5f-85db-d44c9f869333
+                      - local_identifier: http://example.com/skg-if/api/topics/topic-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "topic"
                         identifiers:
                           - scheme: wikidata
@@ -1032,12 +1053,12 @@ paths:
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
-                  results:
+                  "@graph":
                     type: array
                     items:
                       $ref: '#/components/schemas/Topic'
-                required: [ "meta", "results" ]
-  '/datasources/{local_identifier}':
+                required: [ "meta", "@graph" ]
+  '/datasources/{short_local_identifier}':
     get:
       tags:
           - Data Source
@@ -1046,7 +1067,7 @@ paths:
           Get single `datasource`. See definition in SKG-IF [Data Source](https://skg-if.github.io/interoperability-framework/docs/data-source.html) ( entity_type:datasource ).
       operationId: getDataSourceById
       parameters:
-        - $ref : '#/components/parameters/localIdPathParam'
+        - $ref : '#/components/parameters/shortLocalIdPathParam'
       responses:
         '200':
           description: Success
@@ -1071,10 +1092,11 @@ paths:
                   value :
                     "@context": [
                       "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
-                      {"@base" : "http://example.com/"}
+                      "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+                      {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}
                     ]
                     "@graph" :
-                      - local_identifier: datasrc-c66c6-38be-4d5f-85db-d44c9f869333
+                      - local_identifier: http://example.com/skg-if/api/datasources/datasrc-c66c6-38be-4d5f-85db-d44c9f869333
                         entity_type: "datasource"
                         identifiers:
                           - scheme: doi
@@ -1135,11 +1157,11 @@ paths:
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
-                  results:
+                  "@graph":
                     type: array
                     items:
                       $ref: '#/components/schemas/DataSource'
-                required: [ "meta", "results" ]
+                required: [ "meta", "@graph" ]
 components:
   securitySchemes:
     main_auth:
@@ -1158,10 +1180,13 @@ components:
       type: http
       scheme: basic
   parameters:
-    localIdPathParam:
-      name: local_identifier
+    shortLocalIdPathParam:
+      name: short_local_identifier
       in: path
-      description: The [local identifier](https://skg-if.github.io/interoperability-framework/#local-identifiers-of-entities) that needs to be fetched
+      description: |
+        entity id. URL suffix used in OpenAPI get by id operations. \
+        `https://[your-server-root-skg-if-url]/[products|persons|organisations|datasources|venues|topics]/{short_local_identifier}` \
+        example `http://example.com/skg-if/api/products/c66c6-38be-4d5f-85db-d44c9`
       required: true
       schema:
         type: string
@@ -1177,14 +1202,14 @@ components:
       name: page
       in: query
       description: |
-            Search page number.
+            Search page reference (page number or search iteration token)
       schema:
-        type: integer
+        type: string
     pageSizeQueryParam:
       name: page_size
       in: query
       description: |
-            Search page size.
+            Search page size. limit search result size.
       schema:
         type: integer
   schemas:
@@ -1284,7 +1309,7 @@ components:
               $ref: '#/components/schemas/ProductRelated'
 
       examples:
-        - local_identifier: xxx
+        - local_identifier: http://example.com/skg-if/api/products/xxx
           entity_type: product
           product_type: literature
           titles :
@@ -1308,11 +1333,11 @@ components:
                 identifiers:
                 - value: "0000-0001-6960-357X"
                   scheme: "orcid"
-                local_identifier: "614a6575-5d6c-416c-a8e1-f49a5d589bf8"
+                local_identifier: http://example.com/skg-if/api/persons/614a6575-5d6c-416c-a8e1-f49a5d589bf8
                 entity_type: "person"
               declared_affiliations:
                 - name: "Center for Plant Biotechnology and Genomics, Universidad Politécnica de Madrid, Madrid, 28223, Spain"
-                  local_identifier: "32bc66c6-38be-4d5f-85db-d44c9f86921f"
+                  local_identifier: http://example.com/skg-if/api/persons/32bc66c6-38be-4d5f-85db-d44c9f86921f
                   entity_type: "organisation"
                   country: "ES"
           manifestations:
@@ -1323,7 +1348,7 @@ components:
                 class: http://www.example.com/types/onto/localtypemethodology
               biblio:
                 hosting_data_source:
-                  local_identifier: 6f368a3a-b1cf-498f-b2de-27135d1e0075
+                  local_identifier: http://example.com/skg-if/api/datasources/6f368a3a-b1cf-498f-b2de-27135d1e0075
                   entity_type: datasource
                   name: "An Archive"
                 in:
@@ -1332,7 +1357,7 @@ components:
                   identifiers:
                     - "value": "2052-4463"
                       "scheme": "issn"
-                  local_identifier: "51f46bc1-00f8-42dd-8221-ac4deb52fb25"
+                  local_identifier: http://example.com/skg-if/api/datasources/51f46bc1-00f8-42dd-8221-ac4deb52fb25
                   entity_type: "venue"
               dates: # http://api.crossref.org/works/10.1038/sdata.2016.18
                 publication:
@@ -1343,7 +1368,7 @@ components:
                 deposit:
                   - "2023-01-04"
           funding:
-            - local_identifier: "614a6575-5d6c-416c-a8e1-f49a5d58999"
+            - local_identifier: http://example.com/skg-if/api/grants/614a6575-5d6c-416c-a8e1-f49a5d58999
               entity_type: "grant"
               titles:
                - en: "EU grant ZZ"
@@ -1770,7 +1795,7 @@ components:
           country: US
           types":
             - education
-        - local_identifier: 'otf_session12325_org_1125'
+        - local_identifier: http://example.com/skg-if/api/organisations/otf_session12325_org_1125
           entity_type: 'organisation'
           identifiers:
             - scheme: ror
@@ -1782,10 +1807,10 @@ components:
           country: US
           types:
             - archive
-        - local_identifier: 'otf_session12325_org_1126'
+        - local_identifier: http://example.com/skg-if/api/organisations/otf_session12325_org_1126
           entity_type: 'organisation'
           name: Lab of science, unknown University, Antarctica
-        - local_identifier: 'otf_session12324_org_1127'
+        - local_identifier: http://example.com/skg-if/api/organisations/otf_session12324_org_1127
           entity_type: 'organisation'
           identifiers:
             - scheme: ror
@@ -1830,7 +1855,7 @@ components:
                         type: string
                         description: end date. Format [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) compliant string ( "2024-10-01", "2024-10", "2024" ).'
       examples:
-        - local_identifier: 'otf_session12324_person_1124'
+        - local_identifier: http://example.com/skg-if/api/persons/otf_session12324_person_1124
           entity_type: 'person'
           identifiers:
             - scheme: orcid
@@ -1844,7 +1869,7 @@ components:
               start: "2010-08-24"
               end: "2020-08-24"
             affiliation:
-              local_identifier: 'otf_session12324_org_1124'
+              local_identifier: http://example.com/skg-if/api/organisatios/otf_session12324_org_1124
               entity_type: 'organisation'
               identifiers:
                 - scheme: ror
@@ -1905,7 +1930,7 @@ components:
               examples :
                 - Josiah Carberro
       examples:
-        - local_identifier: 'otf_session12324_person_1124'
+        - local_identifier: http://example.com/skg-if/api/persons/otf_session12324_person_1124
           entity_type: 'person'
           identifiers:
             - scheme: orcid
@@ -2284,8 +2309,9 @@ components:
         local_identifier:
           type: string
           description: |
-            Unique local identifier of the entity. \
-              It should be resolvable with the URL `/<entity_type_get_operation>/<local_identifier>` ex: `/products/c66c6-38be-4d5f-85db-d44c9` \
+            Unique local identifier as URL. \
+              `https://[your-server-root-skg-if-url]/[products|persons|organisations|datasources|venues|topics]/{short_local_identifier}` \
+              example `http://example.com/skg-if/api/products/c66c6-38be-4d5f-85db-d44c9` \
             \
             If the entity does not have any stable identifier an on-the-fly identifier is returned : `otf___<session identifier>___<identifier string>`.
             -  `otf` stands for on-the-fly to explicitly clarify the local identifiers it has been created for the purpose of creating this SKG-IF document;
@@ -2295,7 +2321,10 @@ components:
           x-faker:
             fake : ['{{random.uuid}}']
           examples:
-            - c66c6-38be-4d5f-85db-d44c9
+            - http://example.com/skg-if/api/products/c66c6-38be-4d5f-85db-d44c9
+            - http://example.com/skg-if/api/products/otf___1730027051396___prod-1
+            - http://example.com/skg-if/api/persons/c7777-38be-4d5f-85db-d7777
+            - http://example.com/skg-if/api/persons/otf___1730027051396___person-1
         identifiers:
           type: array
           items:
@@ -2312,21 +2341,59 @@ components:
     Meta:
       type: object
       properties:
-        count:
-          description: total results count
-          type: integer
-          x-faker:
-            datatype.number: [{min: 100, max: 200}]
-        page:
-          description: current result page
-          type: integer
-          x-faker:
-            datatype.number: [{min: 1, max: 3}]
-        page_size:
-          description: page size
-          type: integer
-          x-faker:
-            datatype.number: [{min: 10, max: 10}]
+        local_identifier:
+          type: string
+          description: search result page id
+          examples:
+            - https://example.com/skg-if/api/products?filter=xxx&page=y
+            - https://example.com/skg-if/api/persons?filter=xxx&page=y
+        entity_type:
+          type: string
+          description: search result page type
+          enum:
+            - search_result_page
+        prev_page:
+          type: object
+          $ref: '#/components/schemas/SearchResultPage'
+        next_page:
+          type: object
+          $ref: '#/components/schemas/SearchResultPage'
+        part_of:
+          type: object
+          properties:
+            local_identifier:
+              type: string
+              description: search id. URL
+              examples:
+                - https://example.com/skg-if/api/products?filter=xxx
+                - https://example.com/skg-if/api/persons?filter=xxx
+            entity_type:
+              type: string
+              description: search type
+              enum:
+                - search_result
+            total_items:
+              description: search number of items
+              type: integer
+              x-faker:
+                datatype.number: [{min: 10, max: 100}]
+            first_page:
+              type: object
+              $ref: '#/components/schemas/SearchResultPage'
+            last_page:
+              type: object
+              $ref: '#/components/schemas/SearchResultPage'
+    SearchResultPage:
+        type: object
+        properties:
+          local_identifier:
+                type: string
+                description: search result page id. URL
+          entity_type:
+            type: string
+            description: search result page type
+            enum:
+              - search_result_page
     Error:
         type: object
         properties:
@@ -2358,33 +2425,41 @@ components:
               information if dereferenced.
     JsonLdCtx:
       type: object
-      description: "This JSON-LD context for SKG-IF entities"
+      description: "JSON-LD context for SKG-IF OpenAPI output"
       properties:
         "@context":
-          description: JSON-LD context for SKG-IF entities
+          description: JSON-LD context
           type: array
-          minItems: 1
-          maxItems: 2
+          minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+          uniqueItems: true
           items:
             anyOf:
               - type: string
-                description: "URL to SKG-IF context supported by the current OpenApi"
+                description: "URL to SKG-IF data model context supported by the current OpenAPI"
                 enum:
                   - https://w3id.org/skg-if/context/1.1.0/skg-if.json
-                #default: "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
                 x-faker:
                   fake: ['https://w3id.org/skg-if/context/1.1.0/skg-if.json']
-                #examples:
-                # - "https://w3id.org/skg-if/context/1.1.0/skg-if.json"
+              - type: string
+                description: "URL to SKG-IF API context supported by the current OpenAPI"
+                enum:
+                  - https://w3id.org/skg-if/context/1.0.0/skg-if-api.json
+                x-faker:
+                  fake: ['https://w3id.org/skg-if/context/1.0.0/skg-if-api.json']
               - type: object
                 properties:
                   "@base":
                     type: string
-                    description : "Default base URL specific to the implementer. https://w3id.org/skg-if/sandbox/provider_accronym/"
+                    description : |
+                      Default base URL specific to the implementer.\
+                      common format : `https://w3id.org/skg-if/sandbox/{my-skg-acronym}` \
+                      example : `https://w3id.org/skg-if/sandbox/openaire/`
                     x-faker:
-                      fake: ['https://w3id.org/skg-if/sandbox/my_prov/']
+                      fake: ['https://w3id.org/skg-if/sandbox/{{random.alpha(5)}}/']
                     examples:
-                     - "https://w3id.org/skg-if/sandbox/my_prov/"
+                     - "https://w3id.org/skg-if/sandbox/openaire/"
+                     - "https://w3id.org/skg-if/sandbox/cessda/"
+                     - "https://w3id.org/skg-if/sandbox/foobar/"
                 #required: ["@base"]
                 additionalProperties:
                   type: string
@@ -2398,5 +2473,5 @@ components:
           #]
           additionalProperties: false
           examples:
-            - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", {"@base" : "https://w3id.org/skg-if/sandbox/my_prov/"}]
+            - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
       required: [ "@context" ]

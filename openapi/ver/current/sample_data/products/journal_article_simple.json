@@ -1,13 +1,14 @@
 {
   "@context": [
     "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+    "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
     {
-      "@base": "https://example.com/skg-if/api/"
+      "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
     }
   ],
   "@graph": [
     {
-      "local_identifier": "nl_47_id_47_dataset_47_toegang_47_2.05.32.01",
+      "local_identifier": "http://example.com/skg-if/api/products/nl_47_id_47_dataset_47_toegang_47_2.05.32.01",
       "identifiers": [
         {
           "scheme": "doi",
