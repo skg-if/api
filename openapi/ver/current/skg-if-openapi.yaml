@@ -70,7 +70,7 @@ paths:
                 properties:
                   "@context":
                     type: object
-                    description: JSON-LD context
+                    description: JSON-LD context # not displayed in Stoplight elements
                     $ref: '#/components/schemas/JsonLdCtx'
                   "@graph":
                     type: array
@@ -2491,7 +2491,7 @@ components:
               information if dereferenced.
     JsonLdCtx:
       type: array
-      description: |
+      description: | # not displayed in Stoplight elements
             JSON-LD context for SKG-IF OpenAPI output.
             ``` json
             "@context": [
@@ -2507,19 +2507,19 @@ components:
       items:
         anyOf:
           - type: string
-            description: "URL to SKG-IF data model context supported by the current OpenAPI"
+            description: "URL to SKG-IF data model context supported by the current OpenAPI `https://w3id.org/skg-if/context/1.1.0/skg-if.json`"
             enum:
               - https://w3id.org/skg-if/context/1.1.0/skg-if.json
             x-faker:
               fake: ['https://w3id.org/skg-if/context/1.1.0/skg-if.json']
           - type: string
-            description: "URL to SKG-IF API context (meta section) supported by the current OpenAPI"
+            description: "URL to SKG-IF API context (meta section) supported by the current OpenAPI `https://w3id.org/skg-if/context/1.0.0/skg-if-api.json`"
             enum:
               - https://w3id.org/skg-if/context/1.0.0/skg-if-api.json
             x-faker:
               fake: ['https://w3id.org/skg-if/context/1.0.0/skg-if-api.json']
           - type: object
-            description : "additional context mappings (ex: @base)"
+            description : 'Additional context mappings ex: `{ "@base":"https://w3id.org/skg-if/sandbox/my-skg-acronym" }`'
             properties:
               "@base":
                 type: string
