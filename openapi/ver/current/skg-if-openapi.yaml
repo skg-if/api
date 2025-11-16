@@ -171,6 +171,9 @@ paths:
                             scheme: "doi"
                           - value: "W4393781519"
                             scheme: "openalex"
+        '404':
+          description: |
+            Error if entity does not exists
   '/products':
     get:
       tags:
@@ -381,6 +384,9 @@ paths:
                       - local_identifier: http://example.com/skg-if/api/persons/otf_126848135_prod-1-pers-1
                         entity_type: "person"
                         name: "John Doe"
+        '404':
+          description: |
+            Error if entity does not exists
   '/persons':
     get:
       tags:
@@ -580,6 +586,9 @@ paths:
                         short_name: EU
                         types:
                           - funder
+        '404':
+          description: |
+            Error if entity does not exists
   '/organisations':
     get:
       tags:
@@ -743,6 +752,9 @@ paths:
                                   website: "https://www.brown.edu/"
                               roles:
                                 - "co-applicant"
+        '404':
+          description: |
+            Error if entity does not exists
   '/grants':
     get:
       tags:
@@ -889,6 +901,9 @@ paths:
                         name: Journal of Psychoceramics
                         acronym: JPC
                         type: journal
+        '404':
+          description: |
+            Error if entity does not exists
   '/venues':
     get:
       tags:
@@ -991,6 +1006,9 @@ paths:
                         labels:
                           en: "Computer Science"
                           it: "Informatica"
+        '404':
+          description: |
+            Error if entity does not exists
   '/topics':
     get:
       tags:
@@ -1106,6 +1124,9 @@ paths:
                         research_product_types:
                           - "research data"
                           - "literature"
+        '404':
+          description: |
+            Error if entity does not exists
   '/datasources':
     get:
       tags:
@@ -1202,7 +1223,8 @@ components:
       name: page
       in: query
       description: |
-            Search page reference (page number or search iteration token)
+            Search page reference (page number or search iteration token).\
+            Note: As a client application you should build your iterating logic using the `meta.next_page.local_identifier` and `meta.prev_page.local_identifier` URLs
       schema:
         type: string
     pageSizeQueryParam:
@@ -2435,7 +2457,17 @@ components:
               information if dereferenced.
     JsonLdCtx:
       type: object
-      description: "JSON-LD context for SKG-IF OpenAPI output"
+      description: |
+        JSON-LD context for SKG-IF OpenAPI output \
+        ``` json
+          "@context": [
+            "https://w3id.org/skg-if/context/1.1.0/skg-if.json", => SKG-IF data model context elements
+            "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", => SKG-IF API context elements (meta section)
+            {
+              "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/" => JSON-LD @base fallback.
+            }
+          ]
+        ```
       properties:
         "@context":
           description: JSON-LD context
@@ -2451,7 +2483,7 @@ components:
                 x-faker:
                   fake: ['https://w3id.org/skg-if/context/1.1.0/skg-if.json']
               - type: string
-                description: "URL to SKG-IF API context supported by the current OpenAPI"
+                description: "URL to SKG-IF API context (meta section) supported by the current OpenAPI"
                 enum:
                   - https://w3id.org/skg-if/context/1.0.0/skg-if-api.json
                 x-faker:
