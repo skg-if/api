@@ -1,0 +1,32 @@
+{
+    "@context": {
+        "@version": 1.1,
+        "@protected": true,
+        "as": "http://www.w3.org/ns/activitystreams#",
+        "search_result_page": {
+            "@id": "as:CollectionPage"
+        },
+        "search_result": {
+            "@id": "as:Collection"
+        },
+        "part_of": {
+            "@id": "as:partOf"
+        },
+        "total_items": {
+            "@id": "as:totalItems"
+        },
+        "next_page": {
+            "@id": "as:next"
+        },
+        "first_page": {
+            "@id": "as:first"
+        },
+        "last_page": {
+            "@id": "as:last"
+        },
+        "prev_page": {
+            "@id": "as:prev"
+        },
+        "meta": "@nest"
+    }
+}

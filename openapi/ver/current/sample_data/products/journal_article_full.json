@@ -1,13 +1,14 @@
 {
     "@context": [
         "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+        "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
         {
-            "@base": "https://w3id.org/skg-if/sandbox/myprov/"
+            "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
         }
     ],
     "@graph": [
         {
-            "local_identifier": "614a6575-5d6c-416c-a8e1-ddd456d132",
+            "local_identifier": "http://example.com/skg-if/api/products/614a6575-5d6c-416c-a8e1-ddd456d132",
             "entity_type": "product",
             "product_type": "literature",
             "titles": {
@@ -47,13 +48,13 @@
                                 "scheme": "orcid"
                             }
                         ],
-                        "local_identifier": "614a6575-5d6c-416c-a8e1-f49a5d589bf8",
+                        "local_identifier": "http://example.com/skg-if/api/persons/614a6575-5d6c-416c-a8e1-f49a5d589bf8",
                         "entity_type": "person"
                     },
                     "declared_affiliations": [
                         {
                             "name": "Center for Plant Biotechnology and Genomics, Universidad Politécnica de Madrid, Madrid, 28223, Spain",
-                            "local_identifier": "32bc66c6-38be-4d5f-85db-d44c9f86921f",
+                            "local_identifier": "http://example.com/skg-if/api/organisations/32bc66c6-38be-4d5f-85db-d44c9f86921f",
                             "entity_type": "organisation",
                             "country": "ES"
                         }
@@ -71,7 +72,7 @@
                     },
                     "biblio": {
                         "hosting_data_source": {
-                            "local_identifier": "6f368a3a-b1cf-498f-b2de-27135d1e0075",
+                            "local_identifier": "http://example.com/skg-if/api/datasources/6f368a3a-b1cf-498f-b2de-27135d1e0075",
                             "entity_type": "datasource",
                             "name": "An Archive"
                         },
@@ -84,7 +85,7 @@
                                     "scheme": "issn"
                                 }
                             ],
-                            "local_identifier": "51f46bc1-00f8-42dd-8221-ac4deb52fb25",
+                            "local_identifier": "http://example.com/skg-if/api/venues/51f46bc1-00f8-42dd-8221-ac4deb52fb25",
                             "entity_type": "venue"
                         }
                     },
@@ -104,7 +105,7 @@
             ],
             "funding": [
                 {
-                    "local_identifier": "614a6575-5d6c-416c-a8e1-f49a5d58999",
+                    "local_identifier": "http://example.com/skg-if/api/grants/614a6575-5d6c-416c-a8e1-f49a5d58999",
                     "entity_type": "grant",
                     "titles": {
                         "en": "The EU grant ZZ",
