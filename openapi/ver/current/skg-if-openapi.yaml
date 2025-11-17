@@ -69,9 +69,17 @@ paths:
                 required: ['@context','@graph']
                 properties:
                   "@context":
-                    type: object
+                    type: array
                     description: JSON-LD context # not displayed in Stoplight elements
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   "@graph":
                     type: array
                     minItems: 1
@@ -265,8 +273,17 @@ paths:
               schema:
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -358,8 +375,17 @@ paths:
                 required: ['@context','@graph']
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   "@graph":
                     type: array
                     minItems: 1
@@ -460,8 +486,17 @@ paths:
               schema:
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -530,8 +565,17 @@ paths:
                 required: ['@context','@graph']
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   "@graph":
                     type: array
                     minItems: 1
@@ -665,8 +709,17 @@ paths:
               schema:
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -695,8 +748,17 @@ paths:
                 required: ['@context','@graph']
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   "@graph":
                     type: array
                     minItems: 1
@@ -870,8 +932,17 @@ paths:
               schema:
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -900,8 +971,17 @@ paths:
                 required: ['@context','@graph']
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   "@graph":
                     type: array
                     minItems: 1
@@ -978,8 +1058,17 @@ paths:
               schema:
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -1008,8 +1097,17 @@ paths:
                 required: ['@context','@graph']
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   "@graph":
                     type: array
                     minItems: 1
@@ -1097,8 +1195,17 @@ paths:
               schema:
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -1127,8 +1234,17 @@ paths:
                 required: ['@context','@graph']
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   "@graph":
                     type: array
                     minItems: 1
@@ -1207,8 +1323,17 @@ paths:
               schema:
                 properties:
                   "@context":
-                    type: object
-                    $ref: '#/components/schemas/JsonLdCtx'
+                    type: array
+                    description: JSON-LD context # not displayed in Stoplight elements
+                    minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                    uniqueItems: true
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                        - $ref: '#/components/schemas/JsonLdCtxSearch'
+                        - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                    examples:
+                      - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
                   meta:
                     type: object
                     $ref: '#/components/schemas/Meta'
@@ -2489,62 +2614,37 @@ components:
             description: A URI reference that identifies the specific
               occurrence of the problem.  It may or may not yield further
               information if dereferenced.
-    JsonLdCtx:
-      type: array
-      description: | # not displayed in Stoplight elements
-            JSON-LD context for SKG-IF OpenAPI output.
-            ``` json
-            "@context": [
-              "https://w3id.org/skg-if/context/1.1.0/skg-if.json", => SKG-IF data model context elements
-              "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", => SKG-IF API context elements (meta section)
-              {
-                "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/" => JSON-LD @base fallback.
-              }
-            ]
-            ```
-      minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
-      uniqueItems: true
-      items:
-        anyOf:
-          - type: string
-            description: "URL to SKG-IF data model context supported by the current OpenAPI `https://w3id.org/skg-if/context/1.1.0/skg-if.json`"
-            enum:
-              - https://w3id.org/skg-if/context/1.1.0/skg-if.json
-            x-faker:
-              fake: ['https://w3id.org/skg-if/context/1.1.0/skg-if.json']
-          - type: string
-            description: "URL to SKG-IF API context (meta section) supported by the current OpenAPI `https://w3id.org/skg-if/context/1.0.0/skg-if-api.json`"
-            enum:
-              - https://w3id.org/skg-if/context/1.0.0/skg-if-api.json
-            x-faker:
-              fake: ['https://w3id.org/skg-if/context/1.0.0/skg-if-api.json']
-          - type: object
-            description : 'Additional context mappings ex: `{ "@base":"https://w3id.org/skg-if/sandbox/my-skg-acronym" }`'
-            properties:
-              "@base":
-                type: string
-                description : |
-                  Default base URL specific to the implementer.\
-                  common format : `https://w3id.org/skg-if/sandbox/{my-skg-acronym}` \
-                  example : `https://w3id.org/skg-if/sandbox/openaire/`
-                x-faker:
-                  fake: ['https://w3id.org/skg-if/sandbox/{{random.alpha(5)}}/']
-                examples:
-                  - "https://w3id.org/skg-if/sandbox/openaire/"
-                  - "https://w3id.org/skg-if/sandbox/cessda/"
-                  - "https://w3id.org/skg-if/sandbox/foobar/"
-            #required: ["@base"]
-            additionalProperties:
-              type: string
-              description: "context URL of extension entities"
-              x-faker:
-                fake : ['http://www.example.com/skg-if/{{random.alpha(3)}}']
-        #required: [ skgifjson]
-      #anyOf: [
-      #  required: [ skgifjson, skgifimpl],
-      #  required: [ skgifjson]
-      #]
-      additionalProperties: false
-      examples:
-        - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}]
-
+    JsonLdCtxDataModel:
+      type: string
+      description: "URL to SKG-IF data model context supported by the current OpenAPI `https://w3id.org/skg-if/context/1.1.0/skg-if.json`"
+      enum:
+        - https://w3id.org/skg-if/context/1.1.0/skg-if.json
+      x-faker:
+        fake: ['https://w3id.org/skg-if/context/1.1.0/skg-if.json']
+    JsonLdCtxSearch:
+      type: string
+      description: "URL to SKG-IF API context (meta section) supported by the current OpenAPI `https://w3id.org/skg-if/context/1.0.0/skg-if-api.json`"
+      enum:
+        - https://w3id.org/skg-if/context/1.0.0/skg-if-api.json
+      x-faker:
+        fake: ['https://w3id.org/skg-if/context/1.0.0/skg-if-api.json']
+    JsonLdCtxBaseOrMore:
+      description : 'Additional context mappings ex: `{ "@base":"https://w3id.org/skg-if/sandbox/my-skg-acronym" }`'
+      properties:
+        "@base":
+          type: string
+          description : |
+            Default base URL specific to the implementer.\
+            common format : `https://w3id.org/skg-if/sandbox/{my-skg-acronym}` \
+            example : `https://w3id.org/skg-if/sandbox/openaire/`
+          x-faker:
+            fake: ['https://w3id.org/skg-if/sandbox/{{random.alpha(5)}}/']
+          examples:
+            - "https://w3id.org/skg-if/sandbox/openaire/"
+            - "https://w3id.org/skg-if/sandbox/cessda/"
+            - "https://w3id.org/skg-if/sandbox/foobar/"
+      additionalProperties:
+        type: string
+        description: "context URL of extension entities"
+        x-faker:
+          fake : ['http://www.example.com/skg-if/{{random.alpha(3)}}']
