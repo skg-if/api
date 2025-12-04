@@ -240,10 +240,10 @@ paths:
           | cf.contributions_orcid | a string | `product` with contributor with orcid value | `cf.contributions_orcid:0000-0002-1825-0097` |
           | cf.contributions_aff_ror | a string | `product` with contributor with declared_affiliations ror value | `cf.contributions_aff_ror:05gq02987` |
           | cf.contributions_aff_country | a string | `product` with contributor with declared_affiliations country value | `cf.contributions_aff_country:us` |
-          | cf.cites | a local_identifier | `product` that cites the `product` having local_identifier filter value | `cf.cites:prod_1` |
-          | cf.cited_by | a local_identifier | `product` that cites the `product` having local_identifier filter value | `cf.cited_by:prod_1` |
-          | cf.cites_doi | a doi | `product` that cites the `product` having doi filter value | `cf.cites_doi:10.1038/sdata.2016.18` |
-          | cf.cited_by_doi | a doi | `product` that cites the `product` having doi filter value | `cf.cited_by_doi:10.1038/sdata.2016.18` |
+          | cf.cites | a local_identifier | `product` citing the `product` having local_identifier filter value | `cf.cites:prod_1` |
+          | cf.cited_by | a local_identifier | `product` cited by the `product` having local_identifier filter value | `cf.cited_by:prod_1` |
+          | cf.cites_doi | a doi | `product` citing the `product` having doi filter value | `cf.cites_doi:10.1038/sdata.2016.18` |
+          | cf.cited_by_doi | a doi | `product` cited by the `product` having doi filter value | `cf.cited_by_doi:10.1038/sdata.2016.18` |
 
 
           __Query parameter syntax examples__ \
