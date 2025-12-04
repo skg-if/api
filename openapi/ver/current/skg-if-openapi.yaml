@@ -46,11 +46,20 @@ tags: # upper case name
     description: Pagination description (can use markdown syntax)
     x-traitTag: true
 servers:
-  - url: 'https://{serv}/{skg_if_api_path}'
+  - url: '{protocol}://{server}:{port}/{skg_if_api_path}'
     variables:
-      serv:
+      protocol:
+        enum:
+          - "https"
+          - "http"
+        default: "https"
+        description: service provider protocol.
+      server:
         default: localhost
-        description: service provider host
+        description: service provider server.
+      port:
+        default: "8443"
+        description: service provider port.
       skg_if_api_path:
         default: skg-if/api
         description: service provider skg-if api path
