@@ -55,7 +55,7 @@ servers:
         default: "https"
         description: service provider protocol.
       server:
-        default: localhost
+        default: example.com
         description: service provider server.
       port:
         default: "8443"
