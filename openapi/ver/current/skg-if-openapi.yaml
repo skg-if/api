@@ -46,7 +46,14 @@ tags: # upper case name
     description: Pagination description (can use markdown syntax)
     x-traitTag: true
 servers:
-  - url: 'http://example.com/skg-if/api'
+  - url: 'https://{serv}/{skg_if_api_path}'
+    variables:
+      serv:
+        default: localhost
+        description: service provider host
+      skg_if_api_path:
+        default: skg-if/api
+        description: service provider skg-if api path
 paths:
   '/products/{short_local_identifier}':
     get:
