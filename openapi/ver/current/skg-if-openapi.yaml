@@ -2550,6 +2550,21 @@ components:
           description: search result page type
           enum:
             - search_result_page
+        page:
+          description: current page number
+          type: integer
+          examples:
+            - 1
+        page_size:
+          description: maximum number of items per page
+          type: integer
+          examples:
+            - 10
+        items_count:
+          description: number of items returned on this page
+          type: integer
+          examples:
+            - 10
         prev_page:
           description: Previous page reference
           type: object
