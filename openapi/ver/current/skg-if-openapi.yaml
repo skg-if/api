@@ -1480,7 +1480,11 @@ components:
                 required: [ "term" ]
                 properties:
                   term:
-                    $ref: '#/components/schemas/Topic'
+                    description: Identifier of a `topic`. May be a plain identifier string or a full Topic object.
+                    anyOf:
+                      - type: string
+                        description: Topic identifier (local_identifier or external URI)
+                      - $ref: '#/components/schemas/Topic'
                   # TODO provenance ?
             contributions:
               type: array
@@ -1494,14 +1498,27 @@ components:
                 $ref: '#/components/schemas/ProductManifestation'
             relevant_organisations:
               type: array
-              description: List of relevant Organisation  associated with the `product`, in case the individual affiliations of a `person` are not available.
+              description: >
+                List of relevant Organisation identifiers associated with the `product`, in case
+                the individual affiliations of a `person` are not available. Each item may be a
+                plain identifier string (local_identifier or external URI) or a full Organisation
+                object. API responses may expand identifiers to full Organisation objects.
               items:
-                $ref: '#/components/schemas/Organisation'
+                anyOf:
+                  - type: string
+                    description: Organisation identifier (local_identifier or external URI)
+                  - $ref: '#/components/schemas/Organisation'
             funding:
               type: array
-              description:  List of `grant` associated with the `product`
+              description: >
+                List of Grant identifiers associated with the `product`. Each item may be a
+                plain identifier string (local_identifier or external URI) or a full Grant
+                object. API responses may expand identifiers to full Grant objects.
               items:
-                $ref: '#/components/schemas/GrantLite'
+                anyOf:
+                  - type: string
+                    description: Grant identifier (local_identifier or external URI)
+                  - $ref: '#/components/schemas/GrantLite'
             related_products:
               $ref: '#/components/schemas/ProductRelated'
 
@@ -1581,8 +1598,12 @@ components:
       required: [ "by" ]
       properties:
         by:
-          description: The identifier of a `person` or `organisation` contributing to a `product`.
-          oneOf:
+          description: >
+            Identifier of a `person` or `organisation` contributing to a `product`. May be
+            a plain identifier string or a typed object (discriminated by entity_type).
+          anyOf:
+            - type: string
+              description: Agent identifier (local_identifier or external URI)
             - $ref: '#/components/schemas/PersonLite'
             - $ref: '#/components/schemas/Organisation'
             - $ref: '#/components/schemas/Agent'
@@ -1593,10 +1614,16 @@ components:
               organisation: '#/components/schemas/Organisation'
               agent: '#/components/schemas/Agent'
         declared_affiliations:
-          description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `product`.
+          description: >
+            List of Organisation identifiers reflecting the declared affiliations of a `person`
+            contributing to a `product`. Each item may be a plain identifier string or a full
+            Organisation object.
           type: array
           items:
-            $ref: '#/components/schemas/Organisation'
+            anyOf:
+              - type: string
+                description: Organisation identifier (local_identifier or external URI)
+              - $ref: '#/components/schemas/Organisation'
         rank:
           type: integer
           x-faker:
@@ -1819,9 +1846,21 @@ components:
               x-faker:
                 fake : ['{{datatype.number(5)}}']
             in:
-              $ref: '#/components/schemas/VenueLite'
+              description: >
+                Venue identifier for the manifestation. May be a plain identifier string
+                or a full Venue object.
+              anyOf:
+                - type: string
+                  description: Venue identifier (local_identifier or external URI)
+                - $ref: '#/components/schemas/VenueLite'
             hosting_data_source :
-              $ref: '#/components/schemas/DataSourceLite'
+              description: >
+                Data source identifier for the manifestation. May be a plain identifier
+                string or a full Data Source object.
+              anyOf:
+                - type: string
+                  description: Data source identifier (local_identifier or external URI)
+                - $ref: '#/components/schemas/DataSourceLite'
     ProductRelated:
       type: object
       description : A dictionary of objects representing related `product`, where the semantics of such relationships is specified as a key.
@@ -2034,8 +2073,13 @@ components:
                 required: [ "affiliation"]
                 properties:
                   affiliation:
-                    description : "`organisation` a `person` is affiliated with"
-                    $ref: "#/components/schemas/Organisation"
+                    description: >
+                      Organisation a `person` is affiliated with. May be a plain identifier
+                      string or a full Organisation object.
+                    anyOf:
+                      - type: string
+                        description: Organisation identifier (local_identifier or external URI)
+                      - $ref: "#/components/schemas/Organisation"
                   role :
                     type: string
                     default: "affiliate"
@@ -2231,10 +2275,15 @@ components:
               examples:
                 - "https://graspos.eu"
             beneficiaries:
-              description: "List of `organisation` funded by the `grant`"
+              description: >
+                List of Organisation identifiers funded by the `grant`. Each item may be a
+                plain identifier string or a full Organisation object.
               type: array
               items:
-                $ref: '#/components/schemas/Organisation'
+                anyOf:
+                  - type: string
+                    description: Organisation identifier (local_identifier or external URI)
+                  - $ref: '#/components/schemas/Organisation'
             contributions:
               type: array
               description: List of objects describing a `person` or `organisation`, its role, contribution, rank, when working on the `grant`.
@@ -2246,8 +2295,12 @@ components:
       description: 'Grant contribution. Describes a `person` or `organisation`, its role, contribution, rank, when working on a `grant`. See SKG-IF definition [Grant contribution](https://skg-if.github.io/interoperability-framework/docs/grant.html#contributions) ( entity_type:grant ).'
       properties:
         by:
-          description: The identifier of a `person` or `organisation` contributing to a `grant`.
-          oneOf:
+          description: >
+            Identifier of a `person` or `organisation` contributing to a `grant`. May be
+            a plain identifier string or a typed object (discriminated by entity_type).
+          anyOf:
+            - type: string
+              description: Agent identifier (local_identifier or external URI)
             - $ref: '#/components/schemas/PersonLite'
             - $ref: '#/components/schemas/Organisation'
           discriminator:
@@ -2256,10 +2309,16 @@ components:
               person: '#/components/schemas/PersonLite'
               organisation: '#/components/schemas/Organisation'
         declared_affiliations:
-          description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `grant`.
+          description: >
+            List of Organisation identifiers reflecting the declared affiliations of a `person`
+            contributing to a `grant`. Each item may be a plain identifier string or a full
+            Organisation object.
           type: array
           items:
-            $ref: '#/components/schemas/Organisation'
+            anyOf:
+              - type: string
+                description: Organisation identifier (local_identifier or external URI)
+              - $ref: '#/components/schemas/Organisation'
         roles:
           description: |
             The roles that a `person` or `organisation` had in a `grant`.\
@@ -2350,8 +2409,13 @@ components:
               examples:
                  - "GraspOS"
             funding_agency:
-              description : "`organisation` funding the `grant`."
-              $ref: "#/components/schemas/Organisation"
+              description: >
+                Organisation funding the `grant`. May be a plain identifier string
+                or a full Organisation object.
+              anyOf:
+                - type: string
+                  description: Organisation identifier (local_identifier or external URI)
+                - $ref: "#/components/schemas/Organisation"
             funding_stream:
               description : "funding stream of the `grant`"
               type: string
