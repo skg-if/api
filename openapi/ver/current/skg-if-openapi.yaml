@@ -1380,12 +1380,35 @@ components:
       name: short_local_identifier
       in: path
       description: |
-        entity id. URL suffix used in OpenAPI get by id operations. \
-        `https://[your-server-root-skg-if-url]/[products|persons|organisations|datasources|venues|topics]/{short_local_identifier}` \
-        example `http://example.com/skg-if/api/products/c66c6-38be-4d5f-85db-d44c9`
+        The `local_identifier` of the entity to retrieve. Follows the SKG-IF convention —
+        always interpreted as a URL, in one of three forms:
+
+        1. **Full URL** — any URL, used as-is as the entity identifier (e.g. a server API URL,
+           a DOI, a ROR URL, or an SKG-IF sandbox URL)
+        2. **Plain string** — resolved by prepending the `@base` from the JSON-LD preamble;
+           the framework prescribes `https://w3id.org/skg-if/sandbox/<provider-acronym>/` as the
+           `@base` for entities that have no independently dereferenceable identifier of their own,
+           producing a *sandbox URL* — but any `@base` value is valid
+        3. **On-the-fly** — plain string using the template `otf___<session-id>___<identifier-string>`,
+           also resolved via `@base`, for identifiers created on-the-fly during document generation
+
+        **Note:** identifiers containing `/` must have slashes percent-encoded as `%2F` in the URL.
       required: true
       schema:
         type: string
+      examples:
+        full_url_server:
+          summary: Full URL — server API URL as local_identifier
+          value: "http://example.com/skg-if/api/products/prd-c66c6-38be-4d5f-85db-d44c9f869333"
+        full_url_sandbox:
+          summary: Full URL — SKG-IF sandbox identifier (pre-expanded form of a plain string)
+          value: "https://w3id.org/skg-if/sandbox/clarin-vlo/11234/1-4816"
+        short_string:
+          summary: Plain string resolved via @base (slashes percent-encoded in URL as %2F)
+          value: "11234/1-4816"
+        on_the_fly:
+          summary: On-the-fly identifier resolved via @base
+          value: "otf___1730027051396___person-1"
 #    filterQueryParam: # filterQueryParam duplicated in each search endpoint ( only way to add distinct examples for each endpoint )
 #      name: filter
 #      in: query
