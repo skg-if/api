@@ -2,28 +2,27 @@
     "@context": [
         "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
         "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
-        {
-            "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
-        }
+        {"@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}
     ],
     "@graph": [
         {
-            "local_identifier": "http://example.com/skg-if/api/organisations/org_brown_university",
+            "local_identifier": "http://example.com/skg-if/api/organisations/org_john_carter_brown_library",
             "entity_type": "organisation",
             "identifiers": [
                 {
                     "scheme": "ror",
                     "value": "https://ror.org/05gq02987"
+                },
+                {
+                    "scheme": "ror",
+                    "value": "https://ror.org/0274ane14"
                 }
             ],
-            "name": "Brown University",
-            "other_names": [
-                "Brownie"
-            ],
+            "name": "John Carter Brown Library, Brown University, Providence RI, US",
             "short_name": "BU",
             "country": "US",
             "types": [
-                "education"
+                "archive"
             ]
         }
     ]

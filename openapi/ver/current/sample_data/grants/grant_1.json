@@ -8,7 +8,7 @@
     ],
     "@graph": [
         {
-            "local_identifier": "http://example.com/skg-if/api/grants/6f368a3a-b1cf-498f-b2de-27135d1e0011",
+            "local_identifier": "http://example.com/skg-if/api/grants/grant_1",
             "identifiers": [
                 {
                     "scheme": "doi",

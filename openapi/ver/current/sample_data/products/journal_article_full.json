@@ -8,7 +8,7 @@
     ],
     "@graph": [
         {
-            "local_identifier": "http://example.com/skg-if/api/products/614a6575-5d6c-416c-a8e1-ddd456d132",
+            "local_identifier": "http://example.com/skg-if/api/products/journal_article_full",
             "entity_type": "product",
             "product_type": "literature",
             "titles": {

@@ -280,6 +280,7 @@ paths:
               summary : search product which title contains 'ocean'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/expandQueryParam'
       responses:
         '200':
           description: |
@@ -494,6 +495,7 @@ paths:
               summary: Get all person with identifier scheme 'orcid' and id '0000-0002-1825-0097'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/expandQueryParam'
       responses:
         '200':
           description: Success
@@ -717,6 +719,7 @@ paths:
             pattern: '^(,?.+:.+)*$'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/expandQueryParam'
       responses:
         '200':
           description: Success
@@ -940,6 +943,7 @@ paths:
               summary: Get all grants with title containing `GraspOS`
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/expandQueryParam'
       responses:
         '200':
           description: Success
@@ -1066,6 +1070,7 @@ paths:
               summary: Get all venues with name containing 'Psychoceramics'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/expandQueryParam'
       responses:
         '200':
           description: Success
@@ -1203,6 +1208,7 @@ paths:
               summary: Get all topics with label containing 'Solar' in the scheme 'myvocabulary'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/expandQueryParam'
       responses:
         '200':
           description: Success
@@ -1331,6 +1337,7 @@ paths:
               summary: Get all datasources with name containing `Oxford`
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/expandQueryParam'
       responses:
         '200':
           description: Success
@@ -1432,6 +1439,39 @@ components:
             Search page size. limit search result size.
       schema:
         type: integer
+    expandQueryParam:
+      name: expand
+      in: query
+      description: |
+        When `true`, instruct the server to expand cross-reference properties from plain
+        `local_identifier` strings to inline entity objects wherever possible.
+        The schema for each property defines the expected representation — some properties
+        expand to Lite entities (e.g. `GrantLite` for `funding`, `VenueLite` for
+        `manifestations[].biblio.in`) while others expand to full entity objects
+        (e.g. `Organisation` for `relevant_organisations`).
+
+        Applies to: `relevant_organisations`, `funding`, `contributions[].by`,
+        `contributions[].declared_affiliations`, `manifestations[].biblio.in`,
+        `manifestations[].biblio.hosting_data_source`, `topics[].term`,
+        `affiliations[].affiliation`, `beneficiaries`, and `funding_agency`.
+
+        > **Background:** All cross-reference properties in the SKG-IF JSON-LD context
+        > (verified across all context versions, 0.1.0 onwards) are defined with
+        > `"@type": "@vocab"` — meaning they are IRI references (local_identifiers) at the
+        > ontology level. The inline Lite/entity object forms are an API-level convenience
+        > supported by the OpenAPI spec on top of the data model. Without `expand=true`
+        > (default), responses reflect whatever representation the data store holds.
+        > With `expand=true`, the server resolves string identifiers to entity objects
+        > where possible.
+
+        If a referenced entity cannot be resolved, the server returns the original
+        identifier string suffixed by ` UNEXPANDABLE` to signal the failure.
+
+        > **Note for implementers:** This parameter is optional. Servers that do not support
+        > expansion may ignore it or return HTTP 422.
+      schema:
+        type: boolean
+        default: false
   schemas:
     Product:
       type: object
