@@ -3,12 +3,12 @@
         "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
         "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
         {
-            "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
+            "@base": "https://w3id.org/skg-if/sandbox/skg-if-api/"
         }
     ],
     "@graph": [
         {
-            "local_identifier": "http://example.com/skg-if/api/organisations/org_brown_university",
+            "local_identifier": "https://w3id.org/skg-if/sandbox/skg-if-api/org_brown_university",
             "entity_type": "organisation",
             "identifiers": [
                 {

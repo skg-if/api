@@ -74,6 +74,7 @@ paths:
       operationId: getProductById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: |
@@ -280,7 +281,7 @@ paths:
               summary : search product which title contains 'ocean'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
-        - $ref : '#/components/parameters/expandQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: |
@@ -383,6 +384,7 @@ paths:
       operationId: getPersonById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -495,7 +497,7 @@ paths:
               summary: Get all person with identifier scheme 'orcid' and id '0000-0002-1825-0097'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
-        - $ref : '#/components/parameters/expandQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -573,6 +575,7 @@ paths:
       operationId: getOrganisationById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -719,7 +722,7 @@ paths:
             pattern: '^(,?.+:.+)*$'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
-        - $ref : '#/components/parameters/expandQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -757,6 +760,7 @@ paths:
       operationId: getGrantById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -943,7 +947,7 @@ paths:
               summary: Get all grants with title containing `GraspOS`
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
-        - $ref : '#/components/parameters/expandQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -981,6 +985,7 @@ paths:
       operationId: getVenueById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1070,7 +1075,7 @@ paths:
               summary: Get all venues with name containing 'Psychoceramics'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
-        - $ref : '#/components/parameters/expandQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1108,6 +1113,7 @@ paths:
       operationId: getTopicById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1208,7 +1214,7 @@ paths:
               summary: Get all topics with label containing 'Solar' in the scheme 'myvocabulary'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
-        - $ref : '#/components/parameters/expandQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1246,6 +1252,7 @@ paths:
       operationId: getDataSourceById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1337,7 +1344,7 @@ paths:
               summary: Get all datasources with name containing `Oxford`
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
-        - $ref : '#/components/parameters/expandQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1439,8 +1446,8 @@ components:
             Search page size. limit search result size.
       schema:
         type: integer
-    expandQueryParam:
-      name: expand
+    embeddingQueryParam:
+      name: embedding
       in: query
       description: |
         When `true`, instruct the server to expand cross-reference properties from plain
@@ -1459,9 +1466,9 @@ components:
         > (verified across all context versions, 0.1.0 onwards) are defined with
         > `"@type": "@vocab"` — meaning they are IRI references (local_identifiers) at the
         > ontology level. The inline Lite/entity object forms are an API-level convenience
-        > supported by the OpenAPI spec on top of the data model. Without `expand=true`
+        > supported by the OpenAPI spec on top of the data model. Without `embedding=true`
         > (default), responses reflect whatever representation the data store holds.
-        > With `expand=true`, the server resolves string identifiers to entity objects
+        > With `embedding=true`, the server resolves string identifiers to entity objects
         > where possible.
 
         If a referenced entity cannot be resolved, the server returns the original
