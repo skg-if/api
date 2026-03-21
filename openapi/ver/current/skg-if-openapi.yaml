@@ -335,7 +335,7 @@ paths:
                   "@graph":
                     type: array
                     items:
-                      anyOf:
+                      oneOf:
                         - $ref: '#/components/schemas/Product'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
@@ -575,7 +575,7 @@ paths:
                   "@graph":
                     type: array
                     items:
-                      anyOf:
+                      oneOf:
                         - $ref: '#/components/schemas/Person'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
@@ -824,7 +824,7 @@ paths:
                   "@graph":
                     type: array
                     items:
-                      anyOf: 
+                      oneOf: 
                         - $ref: '#/components/schemas/Organisation'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
@@ -864,9 +864,7 @@ paths:
                     minItems: 1
                     maxItems: 1
                     items:
-                      anyOf:
-                        - $ref: "#/components/schemas/Grant"
-                        - $ref: '#/components/schemas/LocalIdentifierRef'
+                      $ref: "#/components/schemas/Grant"            
               examples:
                 GrantEx01:
                   summary: GraspOS grant
@@ -1071,7 +1069,7 @@ paths:
                   "@graph":
                     type: array
                     items:
-                      anyOf:
+                      oneOf:
                         - $ref: '#/components/schemas/Grant'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
@@ -1203,7 +1201,7 @@ paths:
                   "@graph":
                     type: array
                     items:
-                      anyOf: 
+                      oneOf: 
                         - $ref: '#/components/schemas/Venue'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
@@ -1243,9 +1241,7 @@ paths:
                     minItems: 1
                     maxItems: 1
                     items:
-                      anyOf:
-                        - $ref: "#/components/schemas/Topic"
-                        - $ref: '#/components/schemas/LocalIdentifierRef'
+                      $ref: "#/components/schemas/Topic"
               examples:
                 TopicEx01:
                   summary: Computer Science topic
@@ -1348,7 +1344,7 @@ paths:
                   "@graph":
                     type: array
                     items:
-                      anyOf: 
+                      oneOf: 
                         - $ref: '#/components/schemas/Topic'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
@@ -1388,9 +1384,7 @@ paths:
                     minItems: 1
                     maxItems: 1
                     items:
-                      anyOf:
-                        - $ref: "#/components/schemas/DataSource"
-                        - $ref: '#/components/schemas/LocalIdentifierRef'
+                      $ref: "#/components/schemas/DataSource"                    
               examples:
                 DatasourceEx01:
                   summary: Oxford University Research Archive datasource
@@ -1484,7 +1478,7 @@ paths:
                   "@graph":
                     type: array
                     items:
-                      anyOf:
+                      oneOf:
                         - $ref: '#/components/schemas/DataSource'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
@@ -1541,23 +1535,29 @@ components:
   schemas:
     LocalIdentifierRef:
       type: string
-      title: 'local_identifier'
-      description: "a local_identifier.\
-                    You can pass a local_identifier string and not a full object entity structure, but it is not recommnended.\ 
-                    When you pass a local_identifier string as reference for a linked entity, you cannot pass the `_links` field. The `_links` allows entity API linking for the client API.\
-                    We recommend to pass one of the object structure entities compatible with this property, and also fill its properties and `_links`.\
-                    One additional benefit of object structure is to limit the client API calls to resolve entities. This is also very useful for client using your API for autocomplete features.\
-                    This feature is included in the current SKG-IF OpenAPI specifications to remain compatible with SKG-IF model documentation and raw exports.\
-                    This approach creates important limitations for the client applications.  
-                    "
+      description: |
+        A local identifier reference.\
+        \
+        You can pass a local identifier as a string and not a full object entity structure, but it is not recommended.\ 
+        ex: `"foo":"product-1"`
+        \     
+        This feature is included in the current SKG-IF OpenAPI specifications to remain compatible with SKG-IF model documentation and raw exports.\
+        This approach creates important limitations for the client applications explained below.
+        \
+        Instead, we recommend to pass one of the object structure entities compatible with this property, and also fill its properties and `_links`.\
+        One additional benefit of object structure is to limit the client API calls to resolve entities and sub-entities.\ 
+        ex: `"foo": { "local_identifier":"product-1", "entity_type:product", "_links":[{"entity_type:link", "rel":"self", "href":"http://example.com/skg-if/api/prodcuts/product-1"}], "title":"xxx", ... }\ `
+        \
+        This is also very useful for client using your API for autocomplete features. \
+        A typical autocomplete use case is : search products by term and get a list of products with the contributors names in a single API call.\
     Link:
       type: object
       title: 'Link'
-      description:  "Link to resource (API, web...\
-                    The main expected link on entities, is a `self` relation with `href` link pointing to the SKG-IF API endpoint for this entity.\
-                    ex: `https://example.com/skg-if/api/products/product-1`.
-                    Note: as a client you should not expect to have an HTTP 200 response on a `self` API link on entities with an `otf` `local_identifier`  
-                    "
+      description:  |
+         Link to resource (API, web...\
+         The main expected link on entities, is a `self` relation with `href` link pointing to the SKG-IF API endpoint for this entity.\
+         ex: `https://example.com/skg-if/api/products/product-1`.
+         Note: as a client you should not expect to have an HTTP 200 response on a `self` API link on entities with an `otf` `local_identifier`  
       properties:
         entity_type:
           default: "link"
@@ -1566,11 +1566,11 @@ components:
             helpers.arrayElement: [["link"]]
         rel:
           default: "self"
-          description: "Link relation. \
-                        Use `self` value for SKG-IF API only.\
-                        You can also use values defined in [IANA](https://www.iana.org/assignments/link-relations/link-relations.xhtml)\
-                        You can use `describedBy`, combined with the `media_type` property, to link to other API and representation of the entity.
-                        "
+          description: |
+             Link relation.
+             Use `self` value for SKG-IF API only.
+             You can also use values defined in [IANA](https://www.iana.org/assignments/link-relations/link-relations.xhtml).
+             You can use `describedBy`, combined with the `media_type` property, to link to other API and representation of the entity.
           type: string
           x-faker:
             helpers.arrayElement: [["self"]]
@@ -1655,7 +1655,7 @@ components:
                 required: [ "term" ]
                 properties:
                   term:
-                    anyOf:
+                    oneOf:
                       - $ref: '#/components/schemas/Topic'
                       - $ref: '#/components/schemas/LocalIdentifierRef'
                   # TODO provenance ?
@@ -1673,14 +1673,14 @@ components:
               type: array
               description: List of relevant Organisation  associated with the `product`, in case the individual affiliations of a `person` are not available.
               items:
-                anyOf: 
+                oneOf: 
                   - $ref: '#/components/schemas/Organisation'
                   - $ref: '#/components/schemas/LocalIdentifierRef'
             funding:
               type: array
               description:  List of `grant` associated with the `product`
               items:
-                anyOf:
+                oneOf:
                   - $ref: '#/components/schemas/GrantLite'
                   - $ref: '#/components/schemas/LocalIdentifierRef'
             related_products:
@@ -1801,7 +1801,7 @@ components:
           description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `product`.
           type: array
           items:
-            anyOf: 
+            oneOf: 
               - $ref: '#/components/schemas/Organisation'
               - $ref: '#/components/schemas/LocalIdentifierRef'
         rank:
@@ -2026,16 +2026,15 @@ components:
               x-faker:
                 fake : ['{{datatype.number(5)}}']
             in:
-              anyOf:
+              oneOf:
                 - $ref: '#/components/schemas/VenueLite'
                 - $ref: '#/components/schemas/LocalIdentifierRef'
             hosting_data_source :
-              anyOf:
+              oneOf:
                 - $ref: '#/components/schemas/DataSourceLite'
                 - $ref: '#/components/schemas/LocalIdentifierRef'
     ProductsRelatedItem:
       type: object
-      title: 'Related Products Item'
       description:  "Reference to a `product` object"
       allOf:
         - $ref: "#/components/schemas/Entity"
@@ -2051,37 +2050,36 @@ components:
                 helpers.arrayElement: [["product"]]
     ProductsRelated:
       type: object
-      title: 'Related Products'
       description : A dictionary of objects representing related `product`, where the semantics of such relationships is specified as a key.
       properties :
         cites:
           type: array
           items:
-            anyOf : 
+            oneOf : 
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
         is_supplemented_by:
           type: array
           items:
-            anyOf :
+            oneOf :
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
         is_documented_by:
           type: array
           items:
-            anyOf: 
+            oneOf: 
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
         is_new_version_of:
           type: array
           items:
-            anyOf :
+            oneOf :
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
         is_part_of:
           type: array
           items:
-            anyOf :
+            oneOf :
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
     Agent:
@@ -2490,14 +2488,14 @@ components:
               description: "List of `organisation` funded by the `grant`"
               type: array
               items:
-                anyOf: 
+                oneOf: 
                   - $ref: '#/components/schemas/Organisation'
                   - $ref: '#/components/schemas/LocalIdentifierRef'
             contributions:
               type: array
               description: List of objects describing a `person` or `organisation`, its role, contribution, rank, when working on the `grant`.
               items:
-                anyOf:
+                oneOf:
                   - $ref: '#/components/schemas/GrantContribution'
                   - $ref: '#/components/schemas/LocalIdentifierRef'
     GrantContribution:
@@ -2520,7 +2518,7 @@ components:
           description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `grant`.
           type: array
           items:
-            anyOf:
+            oneOf:
               - $ref: '#/components/schemas/Organisation'
               - $ref: '#/components/schemas/LocalIdentifierRef'
         roles:
@@ -2772,18 +2770,20 @@ components:
             Unique local identifier as URL. \
               `https://[your-@base-url]/{identifier string}` \
               example `https://w3id.org/skg-if/sandbox/acme/prod-c66c6-38be-4d5f-85db-d44c9` \
+            
             The local identifier value can contain only the `{identifier string}` part only if the `@base` is present in the `@context` output. \
             The local identifier value can also be an URL reference not included in your `@base` domain. 
             This can be useful for entities identified in your system by their external PID only (RoR, DOI...) \ 
-            \
+            
             If the entity does not have any stable identifier, an on-the-fly identifier is returned : `otf___<session identifier>___<identifier string>`.
             -  `otf` stands for on-the-fly to explicitly clarify the local identifiers it has been created for the purpose of creating this SKG-IF document;
             -  `<session identifier>` is a string portion that enables the source to uniquely identifier the session in which such SKG-IF document has been created - e.g. it could be the current time of the software run to create the SKG expressed in milliseconds;
             -  `<identifier string>` is a string portion that identifies the particular entity in consideration.
-            For instance, a possible example of such a local identifier would be : `otf___1730027051396___person-1`. 
-            An on-the-fly may not resolve with URL `/<entity_type_get_operation>/<otf_...>`.
-            You indicate to the client of your API that this local identifier cannot be resolved outside the session context.
-          x-faker:.
+            For instance, a possible example of such a local identifier would be : `otf___1730027051396___person-1`.
+
+            An on-the-fly may not resolve with its `self` API link URL ex: `https://example.com/skg-if/api/persons/otf___1730027051396___person-1`.
+            on-the-fly means that this local identifier cannot be resolved outside the session context.
+          x-faker:
             fake : ['{{random.uuid}}']
           examples:
             - http://w3id.org/skg-if/sandbox/acme/prod-c66c6-38be-4d5f-85db-d44c9
