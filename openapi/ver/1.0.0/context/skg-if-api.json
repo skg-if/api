@@ -27,6 +27,17 @@
         "prev_page": {
             "@id": "as:prev"
         },
-        "meta": "@nest"
+        "meta": "@nest",
+        "_links":"as:url",
+        "link":"as:Link",
+        "rel":{
+            "@id": "as:rel"
+        }, 
+        "media_type":{
+            "@id": "as:mediaType" 
+        }, 
+        "href": {
+            "@id": "as:href"
+        }
     }
 }
