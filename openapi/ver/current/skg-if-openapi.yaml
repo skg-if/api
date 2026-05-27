@@ -74,6 +74,7 @@ paths:
       operationId: getProductById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: |
@@ -280,6 +281,7 @@ paths:
               summary : search product which title contains 'ocean'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: |
@@ -382,6 +384,7 @@ paths:
       operationId: getPersonById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -494,6 +497,7 @@ paths:
               summary: Get all person with identifier scheme 'orcid' and id '0000-0002-1825-0097'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -571,6 +575,7 @@ paths:
       operationId: getOrganisationById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -717,6 +722,7 @@ paths:
             pattern: '^(,?.+:.+)*$'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -754,6 +760,7 @@ paths:
       operationId: getGrantById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -940,6 +947,7 @@ paths:
               summary: Get all grants with title containing `GraspOS`
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -977,6 +985,7 @@ paths:
       operationId: getVenueById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1066,6 +1075,7 @@ paths:
               summary: Get all venues with name containing 'Psychoceramics'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1103,6 +1113,7 @@ paths:
       operationId: getTopicById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1203,6 +1214,7 @@ paths:
               summary: Get all topics with label containing 'Solar' in the scheme 'myvocabulary'
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1240,6 +1252,7 @@ paths:
       operationId: getDataSourceById
       parameters:
         - $ref : '#/components/parameters/shortLocalIdPathParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1331,6 +1344,7 @@ paths:
               summary: Get all datasources with name containing `Oxford`
         - $ref : '#/components/parameters/pageQueryParam'
         - $ref : '#/components/parameters/pageSizeQueryParam'
+        - $ref : '#/components/parameters/embeddingQueryParam'
       responses:
         '200':
           description: Success
@@ -1380,12 +1394,35 @@ components:
       name: short_local_identifier
       in: path
       description: |
-        entity id. URL suffix used in OpenAPI get by id operations. \
-        `https://[your-server-root-skg-if-url]/[products|persons|organisations|datasources|venues|topics]/{short_local_identifier}` \
-        example `http://example.com/skg-if/api/products/c66c6-38be-4d5f-85db-d44c9`
+        The `local_identifier` of the entity to retrieve. Follows the SKG-IF convention —
+        always interpreted as a URL, in one of three forms:
+
+        1. **Full URL** — any URL, used as-is as the entity identifier (e.g. a server API URL,
+           a DOI, a ROR URL, or an SKG-IF sandbox URL)
+        2. **Plain string** — resolved by prepending the `@base` from the JSON-LD preamble;
+           the framework prescribes `https://w3id.org/skg-if/sandbox/<provider-acronym>/` as the
+           `@base` for entities that have no independently dereferenceable identifier of their own,
+           producing a *sandbox URL* — but any `@base` value is valid
+        3. **On-the-fly** — plain string using the template `otf___<session-id>___<identifier-string>`,
+           also resolved via `@base`, for identifiers created on-the-fly during document generation
+
+        **Note:** identifiers containing `/` must have slashes percent-encoded as `%2F` in the URL.
       required: true
       schema:
         type: string
+      examples:
+        full_url_server:
+          summary: Full URL — server API URL as local_identifier
+          value: "http://example.com/skg-if/api/products/prd-c66c6-38be-4d5f-85db-d44c9f869333"
+        full_url_sandbox:
+          summary: Full URL — SKG-IF sandbox identifier (pre-expanded form of a plain string)
+          value: "https://w3id.org/skg-if/sandbox/clarin-vlo/11234/1-4816"
+        short_string:
+          summary: Plain string resolved via @base (slashes percent-encoded in URL as %2F)
+          value: "11234/1-4816"
+        on_the_fly:
+          summary: On-the-fly identifier resolved via @base
+          value: "otf___1730027051396___person-1"
 #    filterQueryParam: # filterQueryParam duplicated in each search endpoint ( only way to add distinct examples for each endpoint )
 #      name: filter
 #      in: query
@@ -1409,6 +1446,39 @@ components:
             Search page size. limit search result size.
       schema:
         type: integer
+    embeddingQueryParam:
+      name: embedding
+      in: query
+      description: |
+        When `true`, instruct the server to expand cross-reference properties from plain
+        `local_identifier` strings to inline entity objects wherever possible.
+        The schema for each property defines the expected representation — some properties
+        expand to Lite entities (e.g. `GrantLite` for `funding`, `VenueLite` for
+        `manifestations[].biblio.in`) while others expand to full entity objects
+        (e.g. `Organisation` for `relevant_organisations`).
+
+        Applies to: `relevant_organisations`, `funding`, `contributions[].by`,
+        `contributions[].declared_affiliations`, `manifestations[].biblio.in`,
+        `manifestations[].biblio.hosting_data_source`, `topics[].term`,
+        `affiliations[].affiliation`, `beneficiaries`, and `funding_agency`.
+
+        > **Background:** All cross-reference properties in the SKG-IF JSON-LD context
+        > (verified across all context versions, 0.1.0 onwards) are defined with
+        > `"@type": "@vocab"` — meaning they are IRI references (local_identifiers) at the
+        > ontology level. The inline Lite/entity object forms are an API-level convenience
+        > supported by the OpenAPI spec on top of the data model. Without `embedding=true`
+        > (default), responses reflect whatever representation the data store holds.
+        > With `embedding=true`, the server resolves string identifiers to entity objects
+        > where possible.
+
+        If a referenced entity cannot be resolved, the server returns the original
+        identifier string suffixed by ` UNEXPANDABLE` to signal the failure.
+
+        > **Note for implementers:** This parameter is optional. Servers that do not support
+        > expansion may ignore it or return HTTP 422.
+      schema:
+        type: boolean
+        default: false
   schemas:
     Product:
       type: object
@@ -1480,7 +1550,11 @@ components:
                 required: [ "term" ]
                 properties:
                   term:
-                    $ref: '#/components/schemas/Topic'
+                    description: Identifier of a `topic`. May be a plain identifier string or a full Topic object.
+                    anyOf:
+                      - type: string
+                        description: Topic identifier (local_identifier or external URI)
+                      - $ref: '#/components/schemas/Topic'
                   # TODO provenance ?
             contributions:
               type: array
@@ -1494,14 +1568,27 @@ components:
                 $ref: '#/components/schemas/ProductManifestation'
             relevant_organisations:
               type: array
-              description: List of relevant Organisation  associated with the `product`, in case the individual affiliations of a `person` are not available.
+              description: >
+                List of relevant Organisation identifiers associated with the `product`, in case
+                the individual affiliations of a `person` are not available. Each item may be a
+                plain identifier string (local_identifier or external URI) or a full Organisation
+                object. API responses may expand identifiers to full Organisation objects.
               items:
-                $ref: '#/components/schemas/Organisation'
+                anyOf:
+                  - type: string
+                    description: Organisation identifier (local_identifier or external URI)
+                  - $ref: '#/components/schemas/Organisation'
             funding:
               type: array
-              description:  List of `grant` associated with the `product`
+              description: >
+                List of Grant identifiers associated with the `product`. Each item may be a
+                plain identifier string (local_identifier or external URI) or a full Grant
+                object. API responses may expand identifiers to full Grant objects.
               items:
-                $ref: '#/components/schemas/GrantLite'
+                anyOf:
+                  - type: string
+                    description: Grant identifier (local_identifier or external URI)
+                  - $ref: '#/components/schemas/GrantLite'
             related_products:
               $ref: '#/components/schemas/ProductRelated'
 
@@ -1581,8 +1668,12 @@ components:
       required: [ "by" ]
       properties:
         by:
-          description: The identifier of a `person` or `organisation` contributing to a `product`.
-          oneOf:
+          description: >
+            Identifier of a `person` or `organisation` contributing to a `product`. May be
+            a plain identifier string or a typed object (discriminated by entity_type).
+          anyOf:
+            - type: string
+              description: Agent identifier (local_identifier or external URI)
             - $ref: '#/components/schemas/PersonLite'
             - $ref: '#/components/schemas/Organisation'
             - $ref: '#/components/schemas/Agent'
@@ -1593,10 +1684,16 @@ components:
               organisation: '#/components/schemas/Organisation'
               agent: '#/components/schemas/Agent'
         declared_affiliations:
-          description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `product`.
+          description: >
+            List of Organisation identifiers reflecting the declared affiliations of a `person`
+            contributing to a `product`. Each item may be a plain identifier string or a full
+            Organisation object.
           type: array
           items:
-            $ref: '#/components/schemas/Organisation'
+            anyOf:
+              - type: string
+                description: Organisation identifier (local_identifier or external URI)
+              - $ref: '#/components/schemas/Organisation'
         rank:
           type: integer
           x-faker:
@@ -1819,9 +1916,21 @@ components:
               x-faker:
                 fake : ['{{datatype.number(5)}}']
             in:
-              $ref: '#/components/schemas/VenueLite'
+              description: >
+                Venue identifier for the manifestation. May be a plain identifier string
+                or a full Venue object.
+              anyOf:
+                - type: string
+                  description: Venue identifier (local_identifier or external URI)
+                - $ref: '#/components/schemas/VenueLite'
             hosting_data_source :
-              $ref: '#/components/schemas/DataSourceLite'
+              description: >
+                Data source identifier for the manifestation. May be a plain identifier
+                string or a full Data Source object.
+              anyOf:
+                - type: string
+                  description: Data source identifier (local_identifier or external URI)
+                - $ref: '#/components/schemas/DataSourceLite'
     ProductRelated:
       type: object
       description : A dictionary of objects representing related `product`, where the semantics of such relationships is specified as a key.
@@ -2034,8 +2143,13 @@ components:
                 required: [ "affiliation"]
                 properties:
                   affiliation:
-                    description : "`organisation` a `person` is affiliated with"
-                    $ref: "#/components/schemas/Organisation"
+                    description: >
+                      Organisation a `person` is affiliated with. May be a plain identifier
+                      string or a full Organisation object.
+                    anyOf:
+                      - type: string
+                        description: Organisation identifier (local_identifier or external URI)
+                      - $ref: "#/components/schemas/Organisation"
                   role :
                     type: string
                     default: "affiliate"
@@ -2231,10 +2345,15 @@ components:
               examples:
                 - "https://graspos.eu"
             beneficiaries:
-              description: "List of `organisation` funded by the `grant`"
+              description: >
+                List of Organisation identifiers funded by the `grant`. Each item may be a
+                plain identifier string or a full Organisation object.
               type: array
               items:
-                $ref: '#/components/schemas/Organisation'
+                anyOf:
+                  - type: string
+                    description: Organisation identifier (local_identifier or external URI)
+                  - $ref: '#/components/schemas/Organisation'
             contributions:
               type: array
               description: List of objects describing a `person` or `organisation`, its role, contribution, rank, when working on the `grant`.
@@ -2246,8 +2365,12 @@ components:
       description: 'Grant contribution. Describes a `person` or `organisation`, its role, contribution, rank, when working on a `grant`. See SKG-IF definition [Grant contribution](https://skg-if.github.io/interoperability-framework/docs/grant.html#contributions) ( entity_type:grant ).'
       properties:
         by:
-          description: The identifier of a `person` or `organisation` contributing to a `grant`.
-          oneOf:
+          description: >
+            Identifier of a `person` or `organisation` contributing to a `grant`. May be
+            a plain identifier string or a typed object (discriminated by entity_type).
+          anyOf:
+            - type: string
+              description: Agent identifier (local_identifier or external URI)
             - $ref: '#/components/schemas/PersonLite'
             - $ref: '#/components/schemas/Organisation'
           discriminator:
@@ -2256,10 +2379,16 @@ components:
               person: '#/components/schemas/PersonLite'
               organisation: '#/components/schemas/Organisation'
         declared_affiliations:
-          description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `grant`.
+          description: >
+            List of Organisation identifiers reflecting the declared affiliations of a `person`
+            contributing to a `grant`. Each item may be a plain identifier string or a full
+            Organisation object.
           type: array
           items:
-            $ref: '#/components/schemas/Organisation'
+            anyOf:
+              - type: string
+                description: Organisation identifier (local_identifier or external URI)
+              - $ref: '#/components/schemas/Organisation'
         roles:
           description: |
             The roles that a `person` or `organisation` had in a `grant`.\
@@ -2350,8 +2479,13 @@ components:
               examples:
                  - "GraspOS"
             funding_agency:
-              description : "`organisation` funding the `grant`."
-              $ref: "#/components/schemas/Organisation"
+              description: >
+                Organisation funding the `grant`. May be a plain identifier string
+                or a full Organisation object.
+              anyOf:
+                - type: string
+                  description: Organisation identifier (local_identifier or external URI)
+                - $ref: "#/components/schemas/Organisation"
             funding_stream:
               description : "funding stream of the `grant`"
               type: string
@@ -2550,6 +2684,21 @@ components:
           description: search result page type
           enum:
             - search_result_page
+        page:
+          description: current page number
+          type: integer
+          examples:
+            - 1
+        page_size:
+          description: maximum number of items per page
+          type: integer
+          examples:
+            - 10
+        items_count:
+          description: number of items returned on this page
+          type: integer
+          examples:
+            - 10
         prev_page:
           description: Previous page reference
           type: object

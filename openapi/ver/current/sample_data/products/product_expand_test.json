@@ -1,0 +1,53 @@
+{
+    "@context": [
+        "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+        "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+        {"@base": "https://w3id.org/skg-if/sandbox/skg-if-api/"}
+    ],
+    "@graph": [
+        {
+            "local_identifier": "https://w3id.org/skg-if/sandbox/skg-if-api/product_expand_test",
+            "entity_type": "product",
+            "product_type": "literature",
+            "titles": {
+                "en": ["Expand flag test product — cross-references as plain identifier strings"]
+            },
+            "abstracts": {
+                "en": ["This record is designed to test the embedding=true flag. All cross-reference properties hold plain local_identifier strings. Most point to entities that exist as sample data files; one (the second relevant_organisation) points to a non-existent entity and will be marked UNEXPANDABLE."]
+            },
+            "topics": [
+                {
+                    "term": "https://w3id.org/skg-if/sandbox/skg-if-api/topic_computer_science"
+                }
+            ],
+            "relevant_organisations": [
+                "https://w3id.org/skg-if/sandbox/skg-if-api/org_european_commission",
+                "https://w3id.org/skg-if/sandbox/skg-if-api/org_does_not_exist"
+            ],
+            "funding": [
+                "https://w3id.org/skg-if/sandbox/skg-if-api/grant_1"
+            ],
+            "contributions": [
+                {
+                    "role": "author",
+                    "rank": 1,
+                    "by": "https://w3id.org/skg-if/sandbox/skg-if-api/pers_josiah_carberry",
+                    "declared_affiliations": [
+                        "https://w3id.org/skg-if/sandbox/skg-if-api/org_brown_university"
+                    ]
+                }
+            ],
+            "manifestations": [
+                {
+                    "biblio": {
+                        "in": "https://w3id.org/skg-if/sandbox/skg-if-api/venue_journal_of_psychoceramics",
+                        "hosting_data_source": "https://w3id.org/skg-if/sandbox/skg-if-api/datasource_oxford_research_archive"
+                    },
+                    "dates": {
+                        "publication": ["2025-01-01"]
+                    }
+                }
+            ]
+        }
+    ]
+}

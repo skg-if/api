@@ -8,6 +8,7 @@ import json
 import dotenv
 import logging
 import re
+import copy
 import concurrent.futures
 from typing import List, Dict
 from markdown_plain_text.extention import convert_to_plain_text
@@ -26,6 +27,222 @@ processed_datasets_folder = 'processed_jsonfiles_datasets'
 basex_host = "basex-test"
 
 data_root = "/app/data"
+
+
+def parse_filter(filter_str: str) -> list[tuple[str, str]]:
+    """Parse filter string like 'key1:val1,key2:val2' into [(key, val), ...].
+    Handles values containing colons (e.g. identifiers.value:https://ror.org/024d6js02)."""
+    if not filter_str:
+        return []
+    filters = []
+    for part in filter_str.split(","):
+        idx = part.find(":")
+        if idx > 0:
+            filters.append((part[:idx].strip(), part[idx + 1:].strip()))
+    return filters
+
+
+def resolve_dotted_path(obj, path: str):
+    """Resolve a dotted path like 'relevant_organisations.identifiers.scheme' against a
+    nested dict/list structure. Returns a list of all leaf values found."""
+    parts = path.split(".", 1)
+    key = parts[0]
+    rest = parts[1] if len(parts) > 1 else None
+
+    if isinstance(obj, dict):
+        val = obj.get(key)
+        if val is None:
+            return []
+        if rest is None:
+            return [val] if not isinstance(val, list) else val
+        return resolve_dotted_path(val, rest)
+    elif isinstance(obj, list):
+        results = []
+        for item in obj:
+            results.extend(resolve_dotted_path(item, path))
+        return results
+    return []
+
+
+def matches_filter(graph_item: dict, key: str, value: str) -> bool:
+    """Check if a @graph item matches a single filter key:value.
+    Supports nested dotted paths and cf.search.* convenience filters."""
+    # Convenience filters
+    if key == "cf.search.name":
+        val = graph_item.get("name", "")
+        if isinstance(val, list):
+            return any(value.lower() in n.lower() for n in val if isinstance(n, str))
+        return bool(val and value.lower() in str(val).lower())
+    if key == "cf.search.keyword":
+        keywords = graph_item.get("keywords", [])
+        if isinstance(keywords, str):
+            keywords = [keywords]
+        return any(value.lower() in kw.lower() for kw in keywords if isinstance(kw, str))
+    if key == "cf.search.org_name":
+        # Search name and short_name across all organisation-related properties
+        org_props = [
+            "relevant_organisations",
+            "srv_has_hosting_legal_entity",
+            "srv_has_hosting_organisation",
+            "srv_has_research_infrastructure",
+        ]
+        val_lower = value.lower()
+        for prop in org_props:
+            orgs = graph_item.get(prop, [])
+            if isinstance(orgs, dict):
+                orgs = [orgs]
+            for org in orgs:
+                if not isinstance(org, dict):
+                    continue
+                for field in ("name", "short_name"):
+                    v = org.get(field, "")
+                    if isinstance(v, str) and val_lower in v.lower():
+                        return True
+        return False
+
+    # country filter resolves via hosting organisation
+    if key == "country":
+        resolved = resolve_dotted_path(graph_item, "srv_has_hosting_organisation.country")
+        return any(str(v).lower() == value.lower() for v in resolved)
+
+    # Attribute filters — resolve dotted path
+    resolved = resolve_dotted_path(graph_item, key)
+    return any(str(v).lower() == value.lower() for v in resolved)
+
+
+# Supported filter keys per entity type. Keys not in this set return HTTP 422.
+SUPPORTED_FILTERS = {
+    "services": {
+        "entity_type", "identifiers.scheme", "identifiers.value",
+        "name", "website", "country", "srv_invocation_type",
+        "relevant_organisations.name",
+        "relevant_organisations.identifiers.scheme",
+        "relevant_organisations.identifiers.value",
+        "srv_has_hosting_legal_entity.name",
+        "srv_has_hosting_legal_entity.identifiers.scheme",
+        "srv_has_hosting_legal_entity.identifiers.value",
+        "srv_has_hosting_organisation.name",
+        "srv_has_hosting_organisation.identifiers.scheme",
+        "srv_has_hosting_organisation.identifiers.value",
+        "srv_has_research_infrastructure.name",
+        "srv_has_research_infrastructure.identifiers.scheme",
+        "srv_has_research_infrastructure.identifiers.value",
+        "cf.search.name", "cf.search.keyword", "cf.search.org_name",
+    },
+}
+
+
+def validate_filters(filters: list[tuple[str, str]], type_path: str) -> str | None:
+    """Return an error message if any filter key is not supported, else None."""
+    supported = SUPPORTED_FILTERS.get(type_path)
+    if supported is None:
+        # No filter registry for this type — accept all
+        return None
+    for key, _ in filters:
+        if key not in supported:
+            return f"Unsupported filter key: '{key}'. Supported filters for /{type_path}: {sorted(supported)}"
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Entity expansion (embedding=true)
+# ---------------------------------------------------------------------------
+# Each entry maps an entity type path to a list of (path_segments, target_dirs)
+# tuples. path_segments navigates the entity dict; None means "iterate over
+# list items at this position". The final segment (or None) is the leaf value
+# to expand from a string identifier to an inline entity object.
+EXPAND_SPECS: dict[str, list[tuple[list, list[str]]]] = {
+    "products": [
+        (["topics", None, "term"],                              ["topics"]),
+        (["contributions", None, "by"],                         ["persons", "organisations"]),
+        (["contributions", None, "declared_affiliations", None],["organisations"]),
+        (["manifestations", None, "biblio", "in"],              ["venues"]),
+        (["manifestations", None, "biblio", "hosting_data_source"], ["datasources"]),
+        (["relevant_organisations", None],                      ["organisations"]),
+        (["funding", None],                                     ["grants"]),
+    ],
+    "persons": [
+        (["affiliations", None, "affiliation"],                 ["organisations"]),
+    ],
+    "grants": [
+        (["beneficiaries", None],                               ["organisations"]),
+        (["contributions", None, "by"],                         ["persons", "organisations"]),
+        (["contributions", None, "declared_affiliations", None],["organisations"]),
+        (["funding_agency"],                                    ["organisations"]),
+    ],
+}
+
+
+def _load_entity_by_id(identifier: str, type_dir: str) -> dict | None:
+    """Try to load an entity from type_dir matching the given identifier string.
+    The identifier may be a full URL or a plain short string; we match by the
+    last path component as a filename."""
+    dir_path = os.path.join(data_root, type_dir)
+    if not os.path.isdir(dir_path):
+        return None
+    short = identifier.rstrip("/").split("/")[-1]
+    candidates = [short, short + ".json"]
+    if not identifier.startswith("http"):
+        candidates = [identifier, identifier + ".json"] + candidates
+    for candidate in candidates:
+        full_path = os.path.join(dir_path, candidate)
+        if os.path.isfile(full_path):
+            with open(full_path) as f:
+                data = json.load(f)
+            if "@graph" in data and data["@graph"]:
+                return data["@graph"][0]
+            return data
+    return None
+
+
+def _try_expand(identifier: str, target_dirs: list[str]) -> dict:
+    """Return the loaded entity dict, or a stub with UNEXPANDABLE marker."""
+    for type_dir in target_dirs:
+        entity = _load_entity_by_id(identifier, type_dir)
+        if entity is not None:
+            return entity
+    return f"{identifier} UNEXPANDABLE"
+
+
+def _expand_at_path(obj, path: list, target_dirs: list[str]) -> None:
+    """In-place expansion: navigate obj using path, expanding string leaves."""
+    if not path:
+        return
+    head, *tail = path
+    if head is None:
+        # current obj should be a list; operate on each item
+        if not isinstance(obj, list):
+            return
+        for i, item in enumerate(obj):
+            if not tail:
+                if isinstance(item, str):
+                    obj[i] = _try_expand(item, target_dirs)
+            else:
+                _expand_at_path(item, tail, target_dirs)
+    else:
+        if not isinstance(obj, dict):
+            return
+        val = obj.get(head)
+        if val is None:
+            return
+        if not tail:
+            if isinstance(val, str):
+                obj[head] = _try_expand(val, target_dirs)
+        else:
+            _expand_at_path(val, tail, target_dirs)
+
+
+def expand_entity(entity: dict, type_path: str) -> dict:
+    """Expand string cross-references in an entity to inline entity objects.
+    Returns a (deep-copied) modified entity; leaves non-string values untouched."""
+    specs = EXPAND_SPECS.get(type_path)
+    if not specs:
+        return entity
+    entity = copy.deepcopy(entity)
+    for path, target_dirs in specs:
+        _expand_at_path(entity, path, target_dirs)
+    return entity
+
 
 # Solr API
 dotenv.load_dotenv()
@@ -835,22 +1052,38 @@ async def read_root():
     return "<h1>Hello, World!</h1><p>Example: <a href='/products/test.json'>/products/test.json</a></p>"
 
 
-# @app.get("/validate/{file_path}")
-@app.get("/{type_path}/{file_path}")
-async def get_file(type_path: str, file_path: str, accept: str | None = Query(None)):
-    logger.warning(f"type_path: {type_path}")
-    logger.warning(f"original file_path: {file_path}")
-    filename = os.path.basename(file_path)
-    logger.warning(f"filename basename: {filename}")
-    file_path = os.path.join(data_root, type_path, filename)
-    logger.warning(f"file_path: {file_path}")
+# short_local_identifier may be a plain string, a slash-containing string (e.g. 11234/1-1451),
+# or a full URL (e.g. https://w3id.org/skg-if/sandbox/myprov/entity-1 or a DOI URL).
+# Full URLs are percent-encoded by the caller (%2F for slashes); Starlette decodes them back.
+# In all cases we resolve to a file using only the last path segment (see id_for_lookup below).
+@app.get("/{type_path}/{short_local_identifier:path}")
+async def get_file(
+    type_path: str,
+    short_local_identifier: str,
+    accept: str | None = Query(None),
+    embedding: bool = Query(False),
+):
+    logger.warning(f"type_path: {type_path}, short_local_identifier: {short_local_identifier}")
     accept_header = get_accept_header(accept)
-    if os.path.isfile(file_path):
-        with open(file_path, "r") as file:
-            data = json.load(file)
-        return create_response(data, accept_header)
-    else:
-        return JSONResponse(content={"error": f"File not found {file_path}"}, status_code=404)
+
+    # If a full URL was passed, use only the last path segment for file lookup
+    id_for_lookup = short_local_identifier.rstrip("/").split("/")[-1] if short_local_identifier.startswith("http") else short_local_identifier
+    filename_base = id_for_lookup.replace("/", "_")
+    candidates = [id_for_lookup, filename_base]
+    for base in [id_for_lookup, filename_base]:
+        if not base.endswith(".json"):
+            candidates.append(base + ".json")
+
+    for candidate in candidates:
+        full_path = os.path.join(data_root, type_path, candidate)
+        if os.path.isfile(full_path):
+            with open(full_path, "r") as file:
+                data = json.load(file)
+            if embedding and "@graph" in data:
+                data = {**data, "@graph": [expand_entity(item, type_path) for item in data["@graph"]]}
+            return create_response(data, accept_header)
+
+    return JSONResponse(content={"error": f"No record found for: {short_local_identifier}"}, status_code=404)
 
 
 # @app.get("/products/{product_id}")
@@ -885,15 +1118,100 @@ async def get_file(type_path: str, file_path: str, accept: str | None = Query(No
 
 
 @app.get("/{type_path}")
-async def get_items_per_type(type_path: str, accept: str | None = Query(None)):
+async def get_items_per_type(
+    type_path: str,
+    accept: str | None = Query(None),
+    filter: str | None = Query(None, alias="filter"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(10, ge=1),
+    embedding: bool = Query(False),
+):
     """
-    Get all items of a specific type (datasets or tools).
+    Get all items of a specific type.
+    Returns spec-compliant JSON-LD with @context, meta, and @graph.
+    Supports filter, page, page_size, and embedding query parameter.
     """
     accept_header = get_accept_header(accept)
 
     items = load_files(os.path.join(data_root, type_path))
 
-    return create_response({"accept": accept_header, "total": len(items), "items": items}, accept_header)
+    # Extract @graph content from each file and collect @context from the first
+    all_graph = []
+    context = None
+    for file_id, file_data in items.items():
+        if context is None and "@context" in file_data:
+            context = file_data["@context"]
+        if "@graph" in file_data:
+            all_graph.extend(file_data["@graph"])
+        else:
+            all_graph.append(file_data)
+
+    logger.warning(f"get_items_per_type: loaded {len(items)} files, total @graph items: {len(all_graph)}")
+
+    # Apply filters (AND logic)
+    filters = parse_filter(filter)
+    if filters:
+        error = validate_filters(filters, type_path)
+        if error:
+            return JSONResponse(content={"error": error}, status_code=422)
+    if filters:
+        filtered = []
+        for item in all_graph:
+            if all(matches_filter(item, k, v) for k, v in filters):
+                filtered.append(item)
+        logger.warning(f"filter={filter} matched {len(filtered)}/{len(all_graph)} items")
+        all_graph = filtered
+
+    if context is None:
+        context = [
+            "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+            "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+            {"@base": "https://w3id.org/skg-if/sandbox/"},
+            "https://w3id.org/skg-if/extension/srv/context/skg-if.json"
+        ]
+
+    # Pagination
+    total_items = len(all_graph)
+    start = (page - 1) * page_size
+    end = start + page_size
+    page_graph = all_graph[start:end]
+
+    # Expand cross-reference string identifiers to inline entity objects
+    if embedding:
+        page_graph = [expand_entity(item, type_path) for item in page_graph]
+    total_pages = (total_items + page_size - 1) // page_size if total_items > 0 else 1
+
+    base_url = f"http://localhost:4010/{type_path}"
+    meta = {
+        "local_identifier": f"{base_url}?page={page}&page_size={page_size}",
+        "entity_type": "search_result_page",
+        "page": page,
+        "page_size": page_size,
+        "items_count": len(page_graph),
+        "part_of": {
+            "local_identifier": base_url,
+            "entity_type": "search_result",
+            "total_items": total_items
+        }
+    }
+    if page < total_pages:
+        meta["next_page"] = {
+            "local_identifier": f"{base_url}?page={page + 1}&page_size={page_size}",
+            "entity_type": "search_result_page"
+        }
+    if page > 1:
+        meta["prev_page"] = {
+            "local_identifier": f"{base_url}?page={page - 1}&page_size={page_size}",
+            "entity_type": "search_result_page"
+        }
+
+    result = {
+        "@context": context,
+        "meta": meta,
+        "@graph": page_graph
+    }
+
+    return create_response(result, accept_header)
 
 
 @app.get("/fetchall", response_class=HTMLResponse)

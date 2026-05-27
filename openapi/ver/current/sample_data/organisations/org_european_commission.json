@@ -1,0 +1,24 @@
+{
+    "@context": [
+        "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+        "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+        {"@base": "https://w3id.org/skg-if/sandbox/skg-if-api/"}
+    ],
+    "@graph": [
+        {
+            "local_identifier": "https://w3id.org/skg-if/sandbox/skg-if-api/org_european_commission",
+            "entity_type": "organisation",
+            "identifiers": [
+                {
+                    "scheme": "ror",
+                    "value": "https://ror.org/00k4n6c32"
+                }
+            ],
+            "name": "European Commission",
+            "short_name": "EU",
+            "types": [
+                "funder"
+            ]
+        }
+    ]
+}
