@@ -3,12 +3,48 @@
         "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
         "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
         {
-            "@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"
+            "@base": "https://w3id.org/skg-if/sandbox/acme/"
         }
     ],
+    "meta": {
+        "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1",
+        "entity_type": "single_entity",
+        "api_items": [
+            {
+                "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1",
+                "urls": [
+                    {
+                        "entity_type": "link",
+                        "rel": "self",
+                        "href": "https://acme.com/skg-if/api/products/prod-1"
+                    }
+                ]
+            },
+            {
+                "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1",
+                "urls": [
+                    {
+                        "entity_type": "link",
+                        "rel": "self",
+                        "href": "https://acme.com/skg-if/api/persons/pers-1"
+                    }
+                ]
+            },
+             {
+                "local_identifier": "https://w3id.org/skg-if/sandbox/acme/venue-1",
+                "urls": [
+                    {
+                        "entity_type": "link",
+                        "rel": "self",
+                        "href": "https://acme.com/skg-if/api/venues/venue-1"
+                    }
+                ]
+            }
+        ]
+    },
     "@graph": [
         {
-            "local_identifier": "http://example.com/skg-if/api/products/614a6575-5d6c-416c-a8e1-ddd456d132",
+            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1",
             "entity_type": "product",
             "product_type": "literature",
             "titles": {
@@ -48,13 +84,13 @@
                                 "scheme": "orcid"
                             }
                         ],
-                        "local_identifier": "http://example.com/skg-if/api/persons/614a6575-5d6c-416c-a8e1-f49a5d589bf8",
+                        "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1",
                         "entity_type": "person"
                     },
                     "declared_affiliations": [
                         {
                             "name": "Center for Plant Biotechnology and Genomics, Universidad Politécnica de Madrid, Madrid, 28223, Spain",
-                            "local_identifier": "http://example.com/skg-if/api/organisations/32bc66c6-38be-4d5f-85db-d44c9f86921f",
+                            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/org-1",
                             "entity_type": "organisation",
                             "country": "ES"
                         }
@@ -72,7 +108,7 @@
                     },
                     "biblio": {
                         "hosting_data_source": {
-                            "local_identifier": "http://example.com/skg-if/api/datasources/6f368a3a-b1cf-498f-b2de-27135d1e0075",
+                            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/datasource-1",
                             "entity_type": "datasource",
                             "name": "An Archive"
                         },
@@ -85,7 +121,7 @@
                                     "scheme": "issn"
                                 }
                             ],
-                            "local_identifier": "http://example.com/skg-if/api/venues/51f46bc1-00f8-42dd-8221-ac4deb52fb25",
+                            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/venue-1",
                             "entity_type": "venue"
                         }
                     },
@@ -105,7 +141,7 @@
             ],
             "funding": [
                 {
-                    "local_identifier": "http://example.com/skg-if/api/grants/614a6575-5d6c-416c-a8e1-f49a5d58999",
+                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/grant-1",
                     "entity_type": "grant",
                     "titles": {
                         "en": "The EU grant ZZ",

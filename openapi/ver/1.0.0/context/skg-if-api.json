@@ -9,6 +9,9 @@
         "search_result": {
             "@id": "as:Collection"
         },
+        "single_entity": {
+            "@id": "as:Object"
+        },
         "part_of": {
             "@id": "as:partOf"
         },
@@ -27,6 +30,24 @@
         "prev_page": {
             "@id": "as:prev"
         },
-        "meta": "@nest"
+        "meta": "@nest",
+        "api_items": { 
+            "@id": "as:items", 
+            "@container": "@set" 
+        },
+        "urls": { 
+            "@id": "as:url", 
+            "@container": "@set" 
+        },
+        "rel": { 
+            "@id": "as:rel" 
+        },
+        "href": { 
+            "@id": "as:href", 
+            "@type": "@id" 
+        },
+        "media_type":{
+            "@id": "as:mediaType" 
+        }
     }
 }
