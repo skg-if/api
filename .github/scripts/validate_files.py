@@ -16,7 +16,7 @@ print(f"CHANGED_FILES: {CHANGED_FILES}")
 
 
 def get_pushed_files():
-    return [f"./{file}" for file in changed_files if file.endswith(".json") and file != "skg-if-api.json" ]
+    return [f"./{file}" for file in changed_files if ( file.endswith(".json") and not file.endswith("skg-if-api.json") ) ]
 
 
 def validate_file(file_path):
