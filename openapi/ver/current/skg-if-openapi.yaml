@@ -20,7 +20,7 @@ info:
       - [RDA SKG-IF WG](https://skg-if.github.io/) does not provide any official implementation of the current specification.
       - Recommended OpenAPI viewer :
         - StopLight/Elements Viewer [Current/last SKG-IF OpenAPI version](https://elements-demo.stoplight.io/?spec=https://w3id.org/skg-if/api/skg-if-openapi.yaml).
-        - Swagger : [Current/last SKG-IF OpenAPI version](https://editor-next.swagger.io/)
+        - Swagger : [Current/last SKG-IF OpenAPI version](https://editor.swagger.io/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
 
 externalDocs:
   description: SKG-IF
