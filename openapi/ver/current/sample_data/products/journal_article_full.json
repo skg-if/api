@@ -7,19 +7,9 @@
         }
     ],
     "meta": {
-        "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1",
+        "local_identifier": "https://acme.com/skg-if/api/products/prod-1",
         "entity_type": "single_entity",
         "api_items": [
-            {
-                "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1",
-                "urls": [
-                    {
-                        "entity_type": "link",
-                        "rel": "self",
-                        "href": "https://acme.com/skg-if/api/products/prod-1"
-                    }
-                ]
-            },
             {
                 "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1",
                 "urls": [

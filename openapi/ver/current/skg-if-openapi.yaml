@@ -115,14 +115,9 @@ paths:
                       {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}
                     ]
                     "meta" :
-                      local_identifier: product-1-fgp
+                      local_identifier: https://example.com/skg-if/api/products/product-1-fgp
                       entity_type: single_entity
                       api_items:
-                          - local_identifier: product-1-fgp
-                            urls:
-                              - entity_type: "link"
-                                rel: "self"
-                                href: "https://example.com/skg-if/api/products/product-1-fgp"
                           - local_identifier: person-5-mw
                             urls:
                               - entity_type: "link"
@@ -217,14 +212,8 @@ paths:
                        {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}
                     ]
                     "meta" :
-                      local_identifier: product-2-ogd
+                      local_identifier: https://example.com/skg-if/api/products/product-2-ogd
                       entity_type: single_entity
-                      api_items:
-                          - local_identifier: product-2-ogd
-                            urls:
-                              - entity_type: "link"
-                                rel: "self"
-                                href: "https://example.com/skg-if/api/products/product-2-ogd"
                     "@graph" :
                       - local_identifier: product-2-ogd
                         entity_type: product
@@ -883,14 +872,9 @@ paths:
                       {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}
                     ]
                     "meta" :
-                      local_identifier: grant-1-go
+                      local_identifier: https://example.com/skg-if/api/grants/grant-1-go
                       entity_type: "single_entity"
                       api_items:
-                            - local_identifier: grant-1-go
-                              urls:
-                                - entity_type: "link"
-                                  rel: "self"
-                                  href: "https://example.com/skg-if/api/grants/grant-1-go"
                             - local_identifier: person-1-jc
                               urls:
                                 - entity_type: "link"
@@ -1135,14 +1119,8 @@ paths:
                       {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}
                     ]
                     "meta" :
-                      local_identifier: venue-1-jp
+                      local_identifier: https://example.com/skg-if/api/venues/venue-1-jp
                       entity_type: "single_entity"
-                      api_items:
-                            - local_identifier: venue-1-jp
-                              urls:
-                                - entity_type: "link"
-                                  rel: "self"
-                                  href: "https://example.com/skg-if/api/venues/venue-1-jp"
                     "@graph" :
                       - local_identifier: venue-1-jp
                         entity_type: "venue"
@@ -1275,14 +1253,8 @@ paths:
                       {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}
                     ]
                     "meta" :
-                      local_identifier: topic-1-cs
+                      local_identifier: https://example.com/skg-if/api/topics/topc-1-cs
                       entity_type: "single_entity"
-                      api_items:
-                            - local_identifier: topic-1-cs
-                              urls:
-                                - entity_type: "link"
-                                  rel: "self"
-                                  href: "https://example.com/skg-if/api/topics/topc-1-cs"
                     "@graph" :
                       - local_identifier: topic-1-cs
                         entity_type: "topic"
@@ -1426,14 +1398,8 @@ paths:
                       {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}
                     ]
                     "meta" :
-                      local_identifier: datasource-1-oura
+                      local_identifier: https://example.com/skg-if/api/venues/datasource-1-oura
                       entity_type: "single_entity"
-                      api_items:
-                            - local_identifier: datasource-1-oura
-                              urls:
-                                - entity_type: "link"
-                                  rel: "self"
-                                  href: "https://example.com/skg-if/api/venues/datasource-1-oura"
                     "@graph" :
                       - local_identifier: datasource-1-oura
                         entity_type: "datasource"
@@ -2836,10 +2802,12 @@ components:
       properties:
         local_identifier:
           type: string
-          description: entity id as URL
+          description: Entity API URL. local_identifier can be expressed with ot without full domain. Full domain, including your @base, MUST also resolve
           examples:
-            - http://w3id.org/skg-if/sandbox/acme/product-1
-            - http://w3id.org/skg-if/sandbox/acme/person-1
+            - https://example.com/skg-if/api/products/product-1
+            - https://example.com/skg-if/api/persons/person-1
+            - https://acme.com/skg-if/api/products/https://w3id.org/skg-if/sandbox/acme/prod-1
+            - https://acme.com/skg-if/api/persons/https://w3id.org/skg-if/sandbox/acme/person-1
         entity_type:
           type: string
           description: single entity
@@ -2969,7 +2937,7 @@ components:
           type: string
           description : |
             Default root URL of the JSON-LD context. \
-            To define your `@base`, please refer to the [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?usp=sharing) \
+            To define your `@base`, please refer to the [SKG-IF API doc](https://skg-if.github.io/api/) \
             Your `@base` should end with a `/` \
             common formats : \
             - `https://acme.com/skg/` \
