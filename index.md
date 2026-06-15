@@ -11,14 +11,24 @@ nav_order: 6
 ## Versions
 
 **OpenAPI** is used to describe the endpoints and the format of the objects to exchange on the wire, the specifications are shared below.
-For the sake of completeness, you can also check the [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?tab=t.0#heading=h.hso3muyqtlhx).
 
 * The current (i.e., last) version of the SKG-IF OpenAPI specifications is available at [https://w3id.org/skg-if/api/skg-if-openapi.yaml](https://w3id.org/skg-if/api/skg-if-openapi.yaml).
 * One can access the OpenAPI specifications of all (current and previous) versions by using a version number in the `w3id.org` URL, following this pattern:
-`https://w3id.org/skg-if/api/<X.Y.Z>/skg-if-openapi.yaml`. For instance: `https://w3id.org/skg-if/api/1.0.0/skg-if-openapi.yaml` allows to access to version 1.0.0 of the SKG-IF OpenAPI specifications.
+`https://w3id.org/skg-if/api/<X.Y.Z>/skg-if-openapi.yaml`.
 
 
 The SKG-IF OpenAPI version, present in the YAML, is independent from the SKG-IF Data model version.
+
+Please also refer to the [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?tab=t.0#heading=h.hso3muyqtlhx).
+
+## Versions history
+
+| SKG-IF OpenAPI | SKG-IF OpenAPI YAML | SKG-IF compatible data model |
+| ----- | ----- | ----- |
+| 1.0.0 (Current) | `https://w3id.org/skg-if/api/skg-if-openapi.yaml` | 1.1.0 |
+
+
+### Current context
 
 ``` yaml
 openapi: 3.1.0
@@ -37,7 +47,10 @@ info:
 
 ```
 
-## Viewers
+Make sure your server JSON-LD output implementation is using the same context JSON URLs, refer to paragraph below to define your `@base`.
+
+
+## OpenAPI viewers
 
 You can also visualize the OpenAPI specifications with standard tools like :
 
