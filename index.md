@@ -207,5 +207,13 @@ Note : this pattern is also used in standard SKG API like Crossref
 
 
 
+## Content negotiation
 
+If you simply need to expose single entities without any API, you can expose SKG-IF with content-negotiation
+
+The Accept header is `application/vnd.skgif.ld+json`
+
+``` text
+curl --location --request GET 'https://acme.com/skg-if/api/products/prod-1' --header 'Accept: application/vnd.skgif.ld+json'​
+```
 
