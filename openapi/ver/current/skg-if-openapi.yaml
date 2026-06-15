@@ -1506,8 +1506,11 @@ components:
       name: local_identifier
       in: path
       description: |
-        entity id. URL. \
-        example `http://skgbase.example.com/prod-c66c6-38be-4d5f-85db-d44c9`
+        Entity id.
+        - Example entity id with as URL : `http://skg-base-domain.com/prod-c66c6-38be-4d5f-85db-d44c9`. To define your SKG base domain ( `@base` ), please refer to the [SKG-IF API doc](https://skg-if.github.io/api/)
+        - Example entity id without its SKG base domain : `prod-c66c6-38be-4d5f-85db-d44c9`
+
+        The entity endpoint MUST resolve ids as full URL and SHOULD resolve ids without SKG base domain.
       required: true
       schema:
         type: string
