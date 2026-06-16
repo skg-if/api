@@ -5,12 +5,12 @@ on:
     paths:
       - 'openapi/ver/**/*.json'
       - 'openapi/ver/**/skg-if-openapi.yaml'
-      - 'data-model/shacl/**'
+      - 'data-model'
   pull_request:
     paths:
       - 'openapi/ver/**/*.json'
       - 'openapi/ver/**/skg-if-openapi.yaml'
-      - 'data-model/shacl/**'
+      - 'data-model'
 
 jobs:
   validate_yaml_files:
