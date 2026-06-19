@@ -67,7 +67,8 @@ For the `local_identifier` domain (your `@base`), you have a few options for the
 
 * Use `https://w3id.org/skg-if/sandbox/acme/` . We don’t recommend it for prod because it does not resolve anywhere ( related to the ACME organisation )
 * Define a [w3id.org](https://w3id.org) domain ex: `https://w3id.org/acme/` . You can set up w3id.org to redirect to your catalogue. ex: `https://w3id.org/acme/prod-1` => `https://www.acme.com/product-catalogue/prod-1`
-* Use a graph dedicated domain you already have ex: `https://www.acme.com/theskg/`, `https://www.acme.com/theprodgraph/`
+* Use a graph dedicated domain you already have ex: `https://www.acme.com/graph/`
+* If you mint DOIs for your research products, you can also use the DOI itself as local_identifier, you won't have to define a specific `@base`. 
 
 Make sure that you generate distinct URLs ids for person, product... They should not conflict.
 
@@ -90,28 +91,30 @@ Get Product by Id : `https://acme.com/skg-if/api/products/prod-1`
 ``` json
 {
     "meta" : {
-        "local_identifier": "https://acme.com/skg-if/api/products/prod-1", // parent entity : API URL
+        "local_identifier": "https://acme.com/skg-if/api/products/prod-1", // parent entity - product : API URL
         "entity_type": "single_entity",
         "api_items": [
             {
-                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1", // child entity : local_identifier / PID
+                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1", // child entity - person : local_identifier / PID
                     "urls": [
                         {
                             "entity_type": "link",
                             "rel": "self",
-                            "href": "https://acme.com/skg-if/api/persons/pers-1" // child entity : API link
+                            "href": "https://acme.com/skg-if/api/persons/pers-1" // child entity - person : API link
                         }
                     ]
             }
+            // note : The SKG-IF API link for the parent entity - product is already defined by the meta.local_identifier. 
+            //   You are free to duplicate it in the api_items array.
         ]
     },
     "@graph": [
         {
-            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1", //  parent entity : local_identifier / PID
+            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1", //  parent entity - product : local_identifier / PID
             "contributions": [
             {
                 "by" : {
-                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1" // child entity : local_identifier / PID
+                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1" // child entity - person : local_identifier / PID
                     //...
                 }
                 //...
@@ -132,32 +135,32 @@ Get List of Product : `https://acme.com/skg-if/api/products?filter=xxx&page=1`
         "entity_type": "single_entity",
         "api_items": [
             {
-                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1", // search result 1 - parent entity : local_identifier / PID
+                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1", // search result 1 - parent entity - product : local_identifier / PID
                     "urls": [
                         {
                             "entity_type": "link",
                             "rel": "self",
-                            "href": "https://acme.com/skg-if/api/products/prod-1" //  search result 1 - parent entity : API link
+                            "href": "https://acme.com/skg-if/api/products/prod-1" //  search result 1 - parent entity - product : API link
                         }
                     ]
             },
             {
-                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1", // search result 1 - child entity : local_identifier / PID
+                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1", // search result 1 - child entity - person : local_identifier / PID
                     "urls": [
                         {
                             "entity_type": "link",
                             "rel": "self",
-                            "href": "https://acme.com/skg-if/api/persons/pers-1" //  search result 1 - child entity : API link
+                            "href": "https://acme.com/skg-if/api/persons/pers-1" //  search result 1 - child entity - person : API link
                         }
                     ]
             },
             {
-                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-2", // search result 2 - parent entity : local_identifier / PID
+                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-2", // search result 2 - parent entity - product : local_identifier / PID
                     "urls": [
                         {
                             "entity_type": "link",
                             "rel": "self",
-                            "href": "https://acme.com/skg-if/api/products/prod-2" //  search result 2 - parent entity : API link
+                            "href": "https://acme.com/skg-if/api/products/prod-2" //  search result 2 - parent entity - product : API link
                         }
                     ]
             },
@@ -166,11 +169,11 @@ Get List of Product : `https://acme.com/skg-if/api/products?filter=xxx&page=1`
     },
     "@graph": [
         {
-            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1", // search result 1 - parent entity : local_identifier / PID
+            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1", // search result 1 - parent entity - product : local_identifier / PID
             "contributions": [
             {
                 "by" : {
-                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1" // search result 1 - child entity : local_identifier / PID
+                    "local_identifier": "https://w3id.org/skg-if/sandbox/acme/pers-1" // search result 1 - child entity - person : local_identifier / PID
                     //...
                 }
                 //...
@@ -179,7 +182,7 @@ Get List of Product : `https://acme.com/skg-if/api/products?filter=xxx&page=1`
             //...
         },
         {
-            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-2" // search result 2 - parent  entity : local_identifier / PID
+            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-2" // search result 2 - parent entity - product : local_identifier / PID
             //...
         },
 
@@ -217,3 +220,29 @@ The Accept header is `application/vnd.skgif.ld+json`
 curl --location --request GET 'https://acme.com/skg-if/api/products/prod-1' --header 'Accept: application/vnd.skgif.ld+json'​
 ```
 
+
+## API links - custom
+
+You may have custom non SKG-IF API for your entities, they can be integrated in the `meta.api_links` array.
+
+``` json
+    "api_items": [
+    {
+            "local_identifier": "https://w3id.org/skg-if/sandbox/acme/prod-1", //  product : local_identifier / PID
+            "urls": [
+                {
+                    "entity_type": "link",
+                    "rel": "self",
+                    "media_type": "text/xml",
+                    "href": "https://acme.com/myapi/prod-1" //  product : NON SKG-IF API link
+                },
+                 {
+                    "entity_type": "link",
+                    "rel": "self",
+                    "media_type": "application/json",
+                    "href": "myprotocol://acme.com/serv/prod-1" //  product : NON SKG-IF API link
+                },
+
+            ]
+    },
+```
