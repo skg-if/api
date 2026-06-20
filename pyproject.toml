@@ -19,3 +19,8 @@ dependencies = [
 
 [tool.uv.sources]
 plain-text-markdown-extention = { git = "https://github.com/kostyachum/python-markdown-plain-text.git" }
+
+[dependency-groups]
+dev = [
+    "pyshacl>=0.31.0",
+]
