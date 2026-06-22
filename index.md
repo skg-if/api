@@ -223,7 +223,8 @@ curl --location --request GET 'https://acme.com/skg-if/api/products/prod-1' --he
 
 ## API links - custom
 
-You may have custom non SKG-IF API for your entities, they can be integrated in the `meta.api_links` array.
+You may have custom non SKG-IF API for your entities, they can be integrated in the `meta.api_links` array, with the `rel` : service.
+SKG-IF Link entity relies on active stream vocabulary, rel : [https://www.w3.org/TR/activitystreams-vocabulary/#dfn-rel](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-rel)
 
 ``` json
     "api_items": [
@@ -232,13 +233,13 @@ You may have custom non SKG-IF API for your entities, they can be integrated in 
             "urls": [
                 {
                     "entity_type": "link",
-                    "rel": "self",
+                    "rel": "service",
                     "media_type": "text/xml",
                     "href": "https://acme.com/myapi/prod-1" //  product : NON SKG-IF API link
                 },
                  {
                     "entity_type": "link",
-                    "rel": "self",
+                    "rel": "service",
                     "media_type": "application/json",
                     "href": "myprotocol://acme.com/serv/prod-1" //  product : NON SKG-IF API link
                 },
