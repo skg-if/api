@@ -65,10 +65,10 @@ A `local_identifier` value, when not starting with “http”, is interpreted by
 
 For the `local_identifier` domain (your `@base`), you have a few options for the ACME organisation.
 
-* Use `https://w3id.org/skg-if/sandbox/acme/` . We don’t recommend it for prod because it does not resolve anywhere ( related to the ACME organisation )
-* Define a [w3id.org](https://w3id.org) domain ex: `https://w3id.org/acme/` . You can set up w3id.org to redirect to your catalogue. ex: `https://w3id.org/acme/prod-1` => `https://www.acme.com/product-catalogue/prod-1`
-* Use a graph dedicated domain you already have ex: `https://www.acme.com/graph/`
-* If you mint DOIs for your research products, you can also use the DOI itself as local_identifier, you won't have to define a specific `@base`. 
+* Option 1 : Define a [w3id.org](https://w3id.org) domain ex: `https://w3id.org/acme/` . You can set up w3id.org to redirect to your catalogue. ex: `https://w3id.org/acme/prod-1` => `https://www.acme.com/product-catalogue/prod-1`. This approach is a flexible way to define PIDs for your entities.
+* Option 2 : Use a graph dedicated domain you already have ex: `https://www.acme.com/graph/`. Make sure your URL entities resolve, it is a best practice.
+* Option 3 : If you mint DOIs for your main entities you expose (typically the research products), you can use the DOI itself as local_identifier, always as a full URL in the JSON-LD output. You won't have to define a specific `@base`. In this case if you have on-the-fly ids that don't have to resolve ( for specific entities like persons ), you can rely on a sandbox `@base` for them ( `https://w3id.org/skg-if/sandbox/acme/` ).
+* Option 4 : Use `https://w3id.org/skg-if/sandbox/acme/` for all entities. We don’t recommend it for prod because it does not resolve anywhere ( related to your ACME organisation )
 
 Make sure that you generate distinct URLs ids for person, product... They should not conflict.
 
@@ -104,7 +104,7 @@ Get Product by Id : `https://acme.com/skg-if/api/products/prod-1`
                         }
                     ]
             }
-            // note : The SKG-IF API link for the parent entity - product is already defined by the meta.local_identifier. 
+            // note : The SKG-IF API link for the parent entity - product is already defined by the meta.local_identifier.
             //   You are free to duplicate it in the api_items array.
         ]
     },
