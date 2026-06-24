@@ -244,7 +244,7 @@ paths:
           | Filter key | Attribute filter example |
           | -------- | -------- |
           | product_type |  `product_type:literature` |
-          | identifiers.id | `identifiers.id:10.1038/sdata.2016.18` |
+          | identifiers.id | `identifiers.id:10.1038/sdata.2016.18`, see also : [search filter format for identifiers](https://skg-if.github.io/api/#search-filter-formats)|
           | identifiers.scheme | `identifiers.scheme:doi` |
           | contributions.by. local_identifier |   `contributions.by. local_identifier:https://example.com/skg-if/api/products/prod_c66c6-38be-4d5f-85db-d44c9f869881` |
           | contributions.by. identifiers.id | `contributions.by. identifiers.id:0000-0002-1825-0097` |
@@ -285,10 +285,10 @@ paths:
            * `/products?filter=cf.contributions_orcid:0000-0002-1825-0097`
            * `/products?filter=cf.search.title:ocean&page=1&page_size=5`
 
-          <!-- theme: warning  -->
           > #### Filter error
           > Each filter implementation is optional.
           > If the endpoint does not implement one of the requested filters it must return an HTTP 422 response.
+
       parameters:
         - name: filter
           in: query
