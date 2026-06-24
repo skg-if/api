@@ -57,6 +57,13 @@ Example is :
 }
 ``` 
 
+## How can I integrate an agent entity with the API
+
+* The `agent` entity is present in the /products operations in the field `contributions.by` 
+* The `agent` can also be implemented with organisations/ and persons/ operations. 
+* There is no agents/ operation
+
+
 ## My system does not have permanent local_identifiers for organisations and persons. What can I do ?
 
 * Use on-the-fly identifiers identifiers : https://skg-if.github.io/interoperability-framework/#local-identifiers-of-entities
@@ -81,7 +88,8 @@ Example is :
 # How can I validate that my local server implementation is compliant with the SKG-IF OpenAPI ?
 
 * See : https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?tab=t.0
-* Read the “validation process” and “hackathon” paragraphs at the beginning of this document. You can include the PRISM proxy server in your CI/CD pipeline. 
+* Read the “validation process” and “hackathon” paragraphs at the beginning of this document. 
+* You can include the PRISM proxy server in your CI/CD pipeline.
 
 
 # How to extend the API for a model extension ?
