@@ -12,7 +12,7 @@ nav_order: 7
 
 | Organization | Catalogue exposed | SKG-IF API | Git |
 | ----- | ----- | ----- | ----- |
-| Open Citations | [https://opencitations.net/](https://opencitations.net/) | [API Staging](https://api-stg.opencitations.net/skg-if/) | |
+| OpenCitations | [https://opencitations.net/](https://opencitations.net/) | [API Staging](https://api-stg.opencitations.net/skg-if/) | |
 | OpenAIRE | [https://explore.openaire.eu/](https://explore.openaire.eu/) | [API Prod](https://api.openaire.eu/graph/swagger-ui/index.html?urls.primaryName=SKG-IF%20OpenAPI%20V1), [API Beta](https://api-beta.openaire.eu/graph/swagger-ui/index.html?urls.primaryName=SKG-IF%20OpenAPI%20V1) | |
 | CESSDA - Consortium of European Social Science Data Archives | [https://datacatalogue.cessda.eu/](https://datacatalogue.cessda.eu/),  https://thesauri.cessda.eu | [API Staging](https://skg-if-staging.cessda.eu/) | [Git](https://github.com/cessda/cessda.cdc.skg-if.api) |
 | TeslaRIS - University of Novi Sad | [https://cris.uns.ac.rs/en](https://cris.uns.ac.rs/en) | [API Prod](https://cris.uns.ac.rs/api/skg-if) | [Git](https://github.com/sci2zero/TeslaRIS-backend/wiki/SKG%E2%80%90IF-API) |
