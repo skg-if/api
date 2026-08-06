@@ -72,6 +72,9 @@ For the `local_identifier` domain (your `@base`), you have a few options for the
 
 Make sure that you generate distinct URLs ids for person, product... They should not conflict.
 
+Note : You cannot use the API root URL itself as the `@base`. It is an SKG-IF design choice to keep the object identifiers separated from the API. To see how the API URL and local_identifiers are associated for entity resolution, refer below [entity resolving](#api-get-entity-by-id-single-entity-resolving).
+
+
 ## Endpoints and JSON-LD output
 
 * The SKG-IF OpenAPI defines 2 types of endpoints
