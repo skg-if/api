@@ -1593,7 +1593,7 @@ components:
             - http://w3id.org/skg-if/sandbox/acme/product-1
             - http://w3id.org/skg-if/sandbox/acme/person-1
         urls:
-          type: array
+          type: [array, "null"]
           description: |
             List of API URLs to access to the entity metadata
           items:
@@ -1609,7 +1609,7 @@ components:
       properties:
         entity_type:
           default: "link"
-          type: string
+          type: [string, "null"]
           x-faker:
             helpers.arrayElement: [["link"]]
         rel:
@@ -1619,17 +1619,17 @@ components:
              Use `self` value for SKG-IF API only.
              You can also use values defined in [IANA](https://www.iana.org/assignments/link-relations/link-relations.xhtml).
              You can use `describedBy`, combined with the `media_type` property, to link to other API and representation of the entity.
-          type: string
+          type: [string, "null"]
           x-faker:
             helpers.arrayElement: [["self"]]
         href:
-          type: string
+          type: [string, "null"]
           description: "a URL. For `rel:self`should be SKG-IF endpoint"
           x-faker:
             fake : ['https://example.com/skg-if/api/products/product-{{random.alphaNumeric(8)}}']
         media_type:
           default: "link"
-          type: string
+          type: [string, "null"]
           description: "Media type. Leave empty for `rel:self`"
           x-faker:
             helpers.arrayElement: [["text/xml"]]
@@ -1650,7 +1650,7 @@ components:
               x-faker:
                 helpers.arrayElement: [["product"]]
             identifiers:
-              type: array
+              type: [array, "null"]
               items:
                 properties:
                   scheme:
@@ -1670,7 +1670,7 @@ components:
                 - "research software"
                 - "other"
             titles:
-              type: object
+              type: [object, "null"]
               description: |
                 The titles of a `product` (multiple for multilinguism).\
                 The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
@@ -1684,7 +1684,7 @@ components:
                     x-faker:
                        random.words: [ 5 ]
             abstracts:
-              type: object
+              type: [object, "null"]
               description: |
                 The abstracts of a `product` (multiple for multilinguism).\
                 The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
@@ -1697,7 +1697,7 @@ components:
                     x-faker:
                        random.words: [ 20 ]
             topics:
-              type: array
+              type: [array, "null"]
               description:  List of `topic` covered by the `product`
               items:
                 required: [ "term" ]
@@ -1708,31 +1708,33 @@ components:
                       - $ref: '#/components/schemas/LocalIdentifierRef'
                   # TODO provenance ?
             contributions:
-              type: array
+              type: [array, "null"]
               description: List of objects describing a `person` or `organisation`, its role, contribution, rank, when working on the `product`.
               items:
                 $ref: '#/components/schemas/ProductContribution'
             manifestations:
-              type: array
+              type: [array, "null"]
               description: List of objects representing multiple manifestations of the same `product` (e.g., a preprint, a postprint, etc.).
               items:
                 $ref: '#/components/schemas/ProductManifestation'
             relevant_organisations:
-              type: array
+              type: [array, "null"]
               description: List of relevant Organisation  associated with the `product`, in case the individual affiliations of a `person` are not available.
               items:
                 oneOf:
                   - $ref: '#/components/schemas/Organisation'
                   - $ref: '#/components/schemas/LocalIdentifierRef'
             funding:
-              type: array
+              type: [array, "null"]
               description:  List of `grant` associated with the `product`
               items:
                 oneOf:
                   - $ref: '#/components/schemas/GrantLite'
                   - $ref: '#/components/schemas/LocalIdentifierRef'
             related_products:
-              $ref: '#/components/schemas/ProductsRelated'
+              anyOf:
+                - $ref: '#/components/schemas/ProductsRelated'
+                - type: "null"
       examples:
         - local_identifier: product-1-fgp
           entity_type: product
@@ -1823,17 +1825,17 @@ components:
               agent: '#/components/schemas/Agent'
         declared_affiliations:
           description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `product`.
-          type: array
+          type: [array, "null"]
           items:
             oneOf:
               - $ref: '#/components/schemas/Organisation'
               - $ref: '#/components/schemas/LocalIdentifierRef'
         rank:
-          type: integer
+          type: [integer, "null"]
           x-faker:
             helpers.regexpStyleStringParse: ['[0-10]']
         role:
-          type: string
+          type: [string, "null"]
           enum:
             - "author"
             - "editor"
@@ -1842,7 +1844,7 @@ components:
           description: |
             The contributions of `person` or `organisation` had in a `product`.\
             Each element in the list is a String compliant with the [CRediT](https://credit.niso.org/) taxonomy.
-          type: array
+          type: [array, "null"]
           items:
             type: string
             enum:
@@ -1867,24 +1869,24 @@ components:
       properties:
         type:
           description: 'The type of the manifestation (e.g., preprint).'
-          type: object
+          type: [object, "null"]
           properties:
             class:
-              type: string
+              type: [string, "null"]
               description: The URL of the class identifying the entity (e.g., in an ontology) describing that type.
               x-faker:
                 fake : ['http://www.example.com/types/onto/localtype{{random.words(1)}}']
               examples:
                 - "http://purl.org/spar/fabio/Preprint"
             defined_in:
-              type: string
+              type: [string, "null"]
               description: the URL of the schema of the manifestation type, e.g., a link to the vocabulary of allowed product types.
               x-faker:
                 fake : ['http://www.example.com/types/onto']
               examples:
                 - "http://purl.org/spar/fabio"
             labels:
-              type: object
+              type: [object, "null"]
               description: |
                 the labels describing the type (multiple for multilinguism)\
                 The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
@@ -1898,11 +1900,11 @@ components:
                   examples:
                     - preprint
         dates:
-          type: object
+          type: [object, "null"]
           description: 'Manifestation dates, for each date type (acceptance, publication, embargo...) you can define an array of dates. Format [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) compliant string ( "2024-10-01", "2024-10", "2024", "2024-10-01T10:42:14Z" ).'
           properties:
             acceptance:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
                 examples:
@@ -1911,75 +1913,75 @@ components:
                   - "2024"
                   - "2024-10-01T10:42:14Z"
             access:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             collected:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             copyright:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             correction:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             creation:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             decision:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             deposit:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             distribution:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             embargo:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             modified:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             publication:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             received:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             request:
-              type: string
+              type: [string, "null"]
             retraction:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             validity:
-              type: array
+              type: [array, "null"]
               items:
                 type: string
         peer_review:
           description: 'Whether the manifestation has undergone a peer review. It must be specify only if information about peer reviewing exists'
-          type: object
+          type: [object, "null"]
           properties:
             status:
-              type: string
+              type: [string, "null"]
               description: describe if the manifestation peer review status.
               enum:
                 - "peer reviewed"
                 - "under review"
             description :
-              type: string
+              type: [string, "null"]
               description: describe the type of peer review that applies.
               enum:
                 - "single-blind peer review"
@@ -1987,10 +1989,10 @@ components:
                 - "open peer review"
         access_rights:
           description: 'The access right for the specific materialisation'
-          type: object
+          type: [object, "null"]
           properties:
             status:
-              type: string
+              type: [string, "null"]
               description: describe if the manifestation accessrights status.
               enum:
                 - "open"
@@ -1999,30 +2001,30 @@ components:
                 - "restricted"
                 - "unavailable"
             description :
-              type: string
+              type: [string, "null"]
               description: describe and qualify the specific status selected.
         licence:
-          type: string
+          type: [string, "null"]
           description: The URL of the licence specific to the manifestation
           x-faker:
             fake: ['https://creativecommons.org/licenses/by/4.0/']
           examples:
             - https://creativecommons.org/licenses/by/4.0/
         version:
-          type: string
+          type: [string, "null"]
           description: The version for a software or research data product
           examples:
             - "2.3.6"
         biblio:
-          type: object
+          type: [object, "null"]
           properties:
             issue:
-              type : string
+              type : [string, "null"]
               description: Issue number.
               x-faker:
                 fake : ['{{datatype.number(5)}}']
             pages:
-              type : object
+              type : [object, "null"]
               description: the pages where the manifestation in defined (within its Venue).
               required: [ "first", "last" ]
               properties :
@@ -2037,15 +2039,15 @@ components:
                   x-faker:
                     fake : ['{{datatype.number(20)}}']
             volume:
-              type : string
+              type : [string, "null"]
               description: Volume number (for journals, books, conferences).
               x-faker:
                 fake : ['{{datatype.number(50)}}']
             edition:
-              type : string
+              type : [string, "null"]
               description: The edition (for journals and books).
             number:
-              type : string
+              type : [string, "null"]
               description: a number of the manifestation within the Venue (e.g., chapter number).
               x-faker:
                 fake : ['{{datatype.number(5)}}']
@@ -2053,10 +2055,12 @@ components:
               oneOf:
                 - $ref: '#/components/schemas/VenueLite'
                 - $ref: '#/components/schemas/LocalIdentifierRef'
+                - type: "null"
             hosting_data_source :
               oneOf:
                 - $ref: '#/components/schemas/DataSourceLite'
                 - $ref: '#/components/schemas/LocalIdentifierRef'
+                - type: "null"
     ProductsRelatedItem:
       type: object
       description:  "Reference to a `product` object"
@@ -2077,31 +2081,31 @@ components:
       description : A dictionary of objects representing related `product`, where the semantics of such relationships is specified as a key.
       properties :
         cites:
-          type: array
+          type: [array, "null"]
           items:
             oneOf :
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
         is_supplemented_by:
-          type: array
+          type: [array, "null"]
           items:
             oneOf :
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
         is_documented_by:
-          type: array
+          type: [array, "null"]
           items:
             oneOf:
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
         is_new_version_of:
-          type: array
+          type: [array, "null"]
           items:
             oneOf :
             - $ref: '#/components/schemas/ProductsRelatedItem'
             - $ref: '#/components/schemas/LocalIdentifierRef'
         is_part_of:
-          type: array
+          type: [array, "null"]
           items:
             oneOf :
             - $ref: '#/components/schemas/ProductsRelatedItem'
@@ -2125,7 +2129,7 @@ components:
                 fake: ["agent"]
             identifiers:
               description: Objects representing external identifiers for the entity. See [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html#identifiers) documentation for supported schemes
-              type: array
+              type: [array, "null"]
               items:
                 required: [ "scheme", "value" ]
                 properties:
@@ -2144,7 +2148,7 @@ components:
                     examples:
                       - "https://ror.org/05gq02987"
             name:
-              type: string
+              type: [string, "null"]
               x-faker: company.companyName
               examples:
                 - "Brown University"
@@ -2167,7 +2171,7 @@ components:
                 fake: ["organisation"]
             identifiers:
               description: Objects representing external identifiers for the entity. See [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html#identifiers) documentation for supported schemes
-              type: array
+              type: [array, "null"]
               items:
                 required: [ "scheme", "value" ]
                 properties:
@@ -2186,38 +2190,38 @@ components:
                     examples:
                       - "https://ror.org/05gq02987"
             name:
-              type: string
+              type: [string, "null"]
               x-faker: company.companyName
               examples:
                 - "Brown University"
             other_names:
               description:  "Other names, perhaps in different languages, identifying an `organisation`."
-              type: array
+              type: [array, "null"]
               items:
                 type: string
               examples :
                 - ["Brownie"]
             short_name:
-              type: string
+              type: [string, "null"]
               #x-faker: company.bsAdjective
               x-faker:
                 random.alpha: [{count: 4, upcase: true}]
               examples:
                 - "BU"
             website:
-              type: string
+              type: [string, "null"]
               description: The website URL for an Organisation
               examples:
                 - "https://www.brown.edu/"
             country:
-              type: string
+              type: [string, "null"]
               description: The country code expressed as [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
               pattern: '^[A-Z]{2}$'
               examples:
                 - "US"
             types:
               description:  "The types of an `organisation`."
-              type: array
+              type: [array, "null"]
               items:
                 type: string
                 enum:
@@ -2279,7 +2283,7 @@ components:
           properties :
             affiliations:
               description : "All the affiliations of a `person`. (curriculum vitae list )"
-              type: array
+              type: [array, "null"]
               items:
                 required: [ "affiliation"]
                 properties:
@@ -2287,19 +2291,19 @@ components:
                     description : "`organisation` a `person` is affiliated with"
                     $ref: "#/components/schemas/Organisation"
                   role :
-                    type: string
+                    type: [string, "null"]
                     default: "affiliate"
                     x-faker:
                       fake : ['affiliate']
                   period :
-                    type: object
+                    type: [object, "null"]
                     description : "The time period where the Person was affiliated with an Organisation"
                     properties :
                       start:
-                        type: string
+                        type: [string, "null"]
                         description: start date. Format [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) compliant string ( "2024-10-01", "2024-10", "2024" ).'
                       end:
-                        type: string
+                        type: [string, "null"]
                         description: end date. Format [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) compliant string ( "2024-10-01", "2024-10", "2024" ).'
       examples:
         - local_identifier: person-1-jc
@@ -2343,7 +2347,7 @@ components:
                 fake: ["person"]
             identifiers:
               description: Objects representing external identifiers for the entity. See [Agent](https://skg-if.github.io/interoperability-framework/docs/agent.html#identifiers) documentation for supported schemes
-              type: array
+              type: [array, "null"]
               items:
                 required: [ "scheme", "value" ]
                 properties:
@@ -2362,17 +2366,17 @@ components:
                     examples :
                       - "0000-0002-1825-0097"
             given_name:
-              type: string
+              type: [string, "null"]
               x-faker: name.firstName
               examples :
                 - Josiah
             family_name:
-              type: string
+              type: [string, "null"]
               x-faker: name.lastName
               examples :
                 - Carberry
             name:
-              type: string
+              type: [string, "null"]
               x-faker: name.findName
               examples :
                 - Josiah Carberro
@@ -2403,7 +2407,7 @@ components:
                 fake: ["topic"]
             identifiers:
               description: Objects representing external identifiers for the entity. See [Topic](https://skg-if.github.io/interoperability-framework/docs/topic.html#identifiers) documentation for supported schemes
-              type: array
+              type: [array, "null"]
               items:
                 required: [ "scheme", "value" ]
                 properties:
@@ -2423,7 +2427,7 @@ components:
                     x-faker:
                       fake : ['{{internet.url}}/topic_{{random.alphaNumeric(6)}}']
             labels:
-              type: object
+              type: [object, "null"]
               description:  The labels describing a Topic (multiple for multilingualism). The object is a dictionary, the keys represent language codes following ISO 639-1 (`en`, `es`, `it`, `fr`...). The special key `none` is reserved whenever the information about the language is not available or cannot be shared.
               patternProperties:
                 "^([a-z]{2}|none)$":
@@ -2446,22 +2450,22 @@ components:
           properties :
             currency:
               description: "Currency of the funded amount, following [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)."
-              type: string
+              type: [string, "null"]
               examples :
                 - EUR
                 - USD
               x-faker:
                 helpers.arrayElement: [["EUR", "USD"]]
             funded_amount:
-              type: integer
+              type: [integer, "null"]
               description: "Amount funded for the `grant`"
             keywords:
               description:  "keywords for the `grant`"
-              type: array
+              type: [array, "null"]
               items:
                 type: string
             duration :
-              type: object
+              type: [object, "null"]
               description : "The duration of the `grant`"
               required: [ "start"]
               properties :
@@ -2471,24 +2475,24 @@ components:
                   examples:
                     - "2023-01-01"
                 end:
-                  type: string
+                  type: [string, "null"]
                   description: The end date of the Grant. Format [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) compliant string ( "2024-10-01", "2024-10", "2024" ).
                   examples:
                     - "2025-12-31"
             website:
-              type: string
+              type: [string, "null"]
               description: The website URL for the `grant`
               examples:
                 - "https://graspos.eu"
             beneficiaries:
               description: "List of `organisation` funded by the `grant`"
-              type: array
+              type: [array, "null"]
               items:
                 oneOf:
                   - $ref: '#/components/schemas/Organisation'
                   - $ref: '#/components/schemas/LocalIdentifierRef'
             contributions:
-              type: array
+              type: [array, "null"]
               description: List of objects describing a `person` or `organisation`, its role, contribution, rank, when working on the `grant`.
               items:
                 oneOf:
@@ -2505,6 +2509,7 @@ components:
             - $ref: '#/components/schemas/PersonLite'
             - $ref: '#/components/schemas/Organisation'
             - $ref: '#/components/schemas/LocalIdentifierRef'
+            - type: "null"
           discriminator:
             propertyName: entity_type
             mapping:
@@ -2512,7 +2517,7 @@ components:
               organisation: '#/components/schemas/Organisation'
         declared_affiliations:
           description: List of `organisation` that reflect the declared affiliations of a `person` contributing to a `grant`.
-          type: array
+          type: [array, "null"]
           items:
             oneOf:
               - $ref: '#/components/schemas/Organisation'
@@ -2521,7 +2526,7 @@ components:
           description: |
             The roles that a `person` or `organisation` had in a `grant`.\
             Each element in the list is a String compliant with the [SCoRO](https://sparontologies.github.io/scoro/current/scoro.html#http://purl.org/spar/scoro/ProjectRole) taxonomy.
-          type: array
+          type: [array, "null"]
           items:
             type: string
             enum:
@@ -2550,7 +2555,7 @@ components:
                 fake: ["grant"]
             identifiers:
               description: Objects representing external identifiers for the entity. See [Grant](https://skg-if.github.io/interoperability-framework/docs/grant.html#identifiers) documentation for supported schemes
-              type: array
+              type: [array, "null"]
               items:
                 required: [ "scheme", "value" ]
                 properties:
@@ -2569,13 +2574,13 @@ components:
                     examples:
                       - "https://doi.org/10.3030/101095129"
             grant_number:
-              type: string
+              type: [string, "null"]
               x-faker:
                 fake : ['{{internet.url}}/grant/{{random.alphaNumeric(8)}}']
               examples:
                 - "101095129"
             titles:
-              type: object
+              type: [object, "null"]
               description: |
                 The titles of a `grant` (multiple for multilinguism).\
                 The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
@@ -2588,7 +2593,7 @@ components:
               examples:
                 - "en": "GraspOS: next Generation Research Assessment to Promote Open Science"
             abstracts:
-              type: object
+              type: [object, "null"]
               description: |
                 The abstracts of a `grant` (multiple for multilinguism).\
                 The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
@@ -2601,17 +2606,19 @@ components:
               examples:
                 - "en": "GraspOS aims to build and operate a data infrastructure to support the policy reforms and pave the way towards a responsible research assessment system."
             acronym:
-              type: string
+              type: [string, "null"]
               x-faker:
                 random.alpha: [{count: 8, upcase: true}]
               examples:
                  - "GraspOS"
             funding_agency:
               description : "`organisation` funding the `grant`."
-              $ref: "#/components/schemas/Organisation"
+              anyOf:
+                - $ref: "#/components/schemas/Organisation"
+                - type: "null"
             funding_stream:
               description : "funding stream of the `grant`"
-              type: string
+              type: [string, "null"]
               examples :
                 - "Horizon Europe"
     Venue:
@@ -2626,13 +2633,13 @@ components:
           ]
           properties:
             acronym:
-              type: string
+              type: [string, "null"]
               x-faker:
                 random.alpha: [{count: 8, upcase: true}]
               examples:
                 - "JPC"
             type:
-              type: string
+              type: [string, "null"]
               enum: [journal, conference, book, repository, other, unknown]
     VenueLite:
       type: object
@@ -2652,7 +2659,7 @@ components:
                 fake: ["venue"]
             identifiers:
               description: Objects representing external identifiers for the entity. See [Venue](https://skg-if.github.io/interoperability-framework/docs/venue.html#identifiers) documentation for supported schemes
-              type: array
+              type: [array, "null"]
               items:
                 required: [ "scheme", "value" ]
                 properties:
@@ -2676,13 +2683,13 @@ components:
                     examples:
                       - "0264-3561"
             name:
-              type: string
+              type: [string, "null"]
               x-faker:
                 fake : ['{{random.words(5)}} {{helpers.arrayElement(["Journal", "Catalog"])}}']
               examples:
                 - "Journal of Psychoceramics"
             acronym:
-              type: string
+              type: [string, "null"]
               x-faker:
                 random.alpha: [{count: 8, upcase: true}]
               examples:
@@ -2701,11 +2708,11 @@ components:
             #TODO persistent_identity_systems
             #TODO audience
             data_source_classification:
-              type : string
+              type : [string, "null"]
               description: "The specific type of a Data source, based on the vocabulary Data source Classification. It can be chosen among the following values"
               enum : [repository, aggregator, scientific database, journal archive, publisher archive, cris system]
             research_product_types:
-              type: array
+              type: [array, "null"]
               description: "The types of entities managed by a Data source. Each item in the list should be compliant with the following terms"
               items:
                 type: string
@@ -2732,7 +2739,7 @@ components:
                 fake: ["datasource"]
             identifiers:
               description: Objects representing external identifiers for the entity. See [Data Source](https://skg-if.github.io/interoperability-framework/docs/data-source.html#identifiers) documentation for supported schemes
-              type: array
+              type: [array, "null"]
               required: [ "scheme", "value" ]
               items:
                 properties:
@@ -2751,7 +2758,7 @@ components:
                     x-faker:
                       fake : ['{{internet.url}}/datasource/{{random.alphaNumeric(8)}}']
             name:
-              type: string
+              type: [string, "null"]
               examples:
                 - "Oxford University Research Archive"
               x-faker:
@@ -2787,7 +2794,7 @@ components:
             - http://w3id.org/skg-if/sandbox/acme/otf___1730027051396___person-1
             - http://w3id.org/skg-if/sandbox/acme/otf___1730027051396___product-1
         identifiers:
-          type: array
+          type: [array, "null"]
           items:
             required: [ "scheme", "value" ]
             properties:
@@ -2817,7 +2824,7 @@ components:
           enum:
             - single_entity
         api_items:
-          type: array
+          type: [array, "null"]
           items:
             $ref: '#/components/schemas/ApiItem'
     MetaSearch:
@@ -2837,15 +2844,17 @@ components:
             - search_result_page
         prev_page:
           description: Previous page reference
-          type: object
-          $ref: '#/components/schemas/SearchResultPage'
+          anyOf:
+            - $ref: '#/components/schemas/SearchResultPage'
+            - type: "null"
         next_page:
           description: Next page reference
-          type: object
-          $ref: '#/components/schemas/SearchResultPage'
+          anyOf:
+            - $ref: '#/components/schemas/SearchResultPage'
+            - type: "null"
         part_of:
           description: Reference for the search result as a whole (all pages)
-          type: object
+          type: [object, "null"]
           required: [ "local_identifier", "entity_type" ]
           properties:
             local_identifier:
@@ -2861,32 +2870,34 @@ components:
                 - search_result
             total_items:
               description: total number of item entities for the search
-              type: integer
+              type: [integer, "null"]
               x-faker:
                 datatype.number: [{min: 10, max: 100}]
             first_page:
               description: First page reference of the search
-              type: object
-              $ref: '#/components/schemas/SearchResultPage'
+              anyOf:
+                - $ref: '#/components/schemas/SearchResultPage'
+                - type: "null"
             last_page:
               description: Last page reference of the search
-              type: object
-              $ref: '#/components/schemas/SearchResultPage'
+              anyOf:
+                - $ref: '#/components/schemas/SearchResultPage'
+                - type: "null"
         api_items:
-          type: array
+          type: [array, "null"]
           items:
             $ref: '#/components/schemas/ApiItem'
     SearchResultPage:
         type: object
         properties:
           local_identifier:
-                type: string
+                type: [string, "null"]
                 description: search result page id as SKG-IF API URL
                 examples:
                   - https://example.com/skg-if/api/products?filter=xxx&page=y
                   - https://example.com/skg-if/api/persons?filter=xxx&page=y
           entity_type:
-            type: string
+            type: [string, "null"]
             description: search result page type. Value must be `search_result_page`
             enum:
               - search_result_page
@@ -2895,27 +2906,27 @@ components:
         properties:
           # from https://datatracker.ietf.org/doc/html/rfc7807
           "type":
-            type: string
+            type: [string, "null"]
             description: A URI reference that identifies the problem type.
               This specification encourages that, when dereferenced, it provide human-readable documentation
               for the problem type (e.g., using HTML).
               When this member is not present, its value is assumed to be "about:blank"
           "title":
-            type: string
+            type: [string, "null"]
             description: A short, human-readable summary of the problem
               type.  It SHOULD NOT change from occurrence to occurrence of the
               problem, except for purposes of localization (e.g., using
               proactive content negotiation).
           "status":
-            type: string
+            type: [string, "null"]
             description: The HTTP status code
               generated by the origin server for this occurrence of the problem.
           "detail" :
-            type: string
+            type: [string, "null"]
             description: A human-readable explanation specific to this
               occurrence of the problem.
           "instance":
-            type: string
+            type: [string, "null"]
             description: A URI reference that identifies the specific
               occurrence of the problem.  It may or may not yield further
               information if dereferenced.
@@ -2937,7 +2948,7 @@ components:
       description : 'Additional context mappings ex: `{ "@base":"https://w3id.org/skg-if/sandbox/acme" }`'
       properties:
         "@base":
-          type: string
+          type: [string, "null"]
           description : |
             Default root URL of the JSON-LD context. \
             To define your `@base`, please refer to the [SKG-IF API doc](https://skg-if.github.io/api/) \
