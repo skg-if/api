@@ -15,9 +15,41 @@ on:
         default: 'current'
 
 jobs:
-  validate_live_implementation:
+  discover:
     runs-on: ubuntu-latest
-    name: Validate Live Implementation
+    name: Discover live endpoints to check
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: List collection endpoints
+        id: list
+        env:
+          SPEC_VERSION: ${{ inputs.spec_version }}
+        run: |
+          echo "matrix=$(python .github/scripts/validate_live_url.py list-endpoints "openapi/ver/${SPEC_VERSION}/skg-if-openapi.yaml")" >> "$GITHUB_OUTPUT"
+
+  validate:
+    needs: discover
+    runs-on: ubuntu-latest
+    name: "Validate GET ${{ matrix.path }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.discover.outputs.matrix) }}
 
     steps:
       - name: Checkout code
@@ -33,9 +65,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install httpx pyyaml
 
-      - name: Validate live implementation
+      - name: Validate endpoint
         env:
           TARGET_URL: ${{ inputs.target_url }}
           SPEC_VERSION: ${{ inputs.spec_version }}
         run: |
-          python .github/scripts/validate_live_url.py "openapi/ver/${SPEC_VERSION}/skg-if-openapi.yaml" "$TARGET_URL"
+          python .github/scripts/validate_live_url.py check "openapi/ver/${SPEC_VERSION}/skg-if-openapi.yaml" "$TARGET_URL" "${{ matrix.path }}"

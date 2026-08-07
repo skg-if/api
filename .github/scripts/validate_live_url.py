@@ -1,7 +1,10 @@
+import argparse
+import json
 import subprocess
 import sys
 import time
 import os
+from urllib.parse import urlencode
 
 import httpx
 import yaml
@@ -17,11 +20,16 @@ DEFAULT_QUERY_PARAMS = {
 
 
 def get_collection_paths(spec_path):
-    """Return GET paths from the spec that have no {param} segment."""
+    """Return GET paths from the spec that have no {param} segment, each combined with its default query string (if any)."""
     with open(spec_path, "r", encoding="utf-8") as f:
         spec = yaml.safe_load(f)
     paths = spec.get("paths", {})
-    return sorted(p for p, ops in paths.items() if "{" not in p and "get" in ops)
+    collection_paths = sorted(p for p, ops in paths.items() if "{" not in p and "get" in ops)
+    result = []
+    for path in collection_paths:
+        params = DEFAULT_QUERY_PARAMS.get(path)
+        result.append(f"{path}?{urlencode(params)}" if params else path)
+    return result
 
 
 def start_prism_container(spec_path, target_url):
@@ -53,11 +61,10 @@ def wait_for_prism(retries=15, retry_interval=2):
 
 
 def check_path(path):
-    """GET a collection path through the Prism proxy and classify the result."""
+    """GET a collection path (already containing any query string) through the Prism proxy and classify the result."""
     url = PROXY_BASE_URL + path
-    params = DEFAULT_QUERY_PARAMS.get(path)
     try:
-        response = httpx.get(url, params=params, timeout=15)
+        response = httpx.get(url, timeout=15)
     except httpx.HTTPError as exc:
         return "fail", f"Request error: {exc}"
 
@@ -72,20 +79,18 @@ def check_path(path):
     return "fail", f"{response.status_code} ({request_desc}) - {response.text[:500]}"
 
 
-def main():
-    if len(sys.argv) != 3:
-        print("Usage: validate_live_url.py <spec_path> <target_url>")
-        sys.exit(1)
-
-    spec_path, target_url = sys.argv[1], sys.argv[2]
-
+def list_endpoints(spec_path):
+    """Print the collection endpoints as a JSON matrix for a GitHub Actions dynamic matrix."""
     collection_paths = get_collection_paths(spec_path)
     if not collection_paths:
-        print(f"No collection GET paths found in {spec_path}")
+        print(f"No collection GET paths found in {spec_path}", file=sys.stderr)
         sys.exit(1)
+    print(json.dumps([{"path": path} for path in collection_paths]))
 
-    print(f"Validating {target_url} against {spec_path}")
-    print(f"Collection endpoints to check: {collection_paths}")
+
+def check(spec_path, target_url, path):
+    """Validate a single endpoint through its own Prism proxy instance."""
+    print(f"Validating {target_url}{path} against {spec_path}")
 
     start_prism_container(spec_path, target_url)
     try:
@@ -93,27 +98,35 @@ def main():
             print("Prism proxy did not become ready in time.")
             sys.exit(1)
 
-        results = {}
-        for path in collection_paths:
-            status, detail = check_path(path)
-            results[path] = (status, detail)
-            icon = {"pass": "✅", "skip": "⏭️", "fail": "❌"}[status]
-            print(f"{icon} {path}: {detail}")
+        status, detail = check_path(path)
     finally:
         stop_prism_container()
 
-    passed = [p for p, (status, _) in results.items() if status == "pass"]
-    skipped = [p for p, (status, _) in results.items() if status == "skip"]
-    failed = [p for p, (status, _) in results.items() if status == "fail"]
+    icon = {"pass": "✅", "skip": "⏭️", "fail": "❌"}[status]
+    print(f"{icon} {path}: {detail}")
 
-    print(f"\nSummary: {len(passed)} passed, {len(skipped)} skipped, {len(failed)} failed")
-
-    if not passed:
-        print("No live endpoint responded successfully - at least one is required.")
+    if status == "fail":
         sys.exit(1)
 
-    if failed:
-        sys.exit(1)
+
+def main():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    list_parser = subparsers.add_parser("list-endpoints")
+    list_parser.add_argument("spec_path")
+
+    check_parser = subparsers.add_parser("check")
+    check_parser.add_argument("spec_path")
+    check_parser.add_argument("target_url")
+    check_parser.add_argument("path")
+
+    args = parser.parse_args()
+
+    if args.command == "list-endpoints":
+        list_endpoints(args.spec_path)
+    elif args.command == "check":
+        check(args.spec_path, args.target_url, args.path)
 
 
 if __name__ == "__main__":
