@@ -18,7 +18,7 @@ This workflow only runs when triggered manually (`workflow_dispatch`) — it nev
 
 **From the CLI ([GitHub CLI](https://cli.github.com/)):**
 ```sh
-gh workflow run validate_live_implementation.yml -f target_url=https://api-stg.opencitations.net/skg-if/
+gh workflow run validate_live_implementation.yml -f target_url=https://api-stg.opencitations.net/skg-if/v1/
 ```
 
 ### Reading the results
@@ -27,6 +27,8 @@ Each endpoint is reported as:
 - ✅ **pass** — the response came back with a 2xx status and matched the spec's schema.
 - ⏭️ **skip** — the server returned `404`/`501` for that endpoint, treated as "not implemented by this server" rather than a failure.
 - ❌ **fail** — a genuine contract violation (Prism flagged the response, or it returned an unexpected error status). The job fails if any endpoint fails.
+
+At least one endpoint must pass — if every endpoint comes back skipped (or failed), the job fails, since that usually means `target_url` is wrong or unreachable rather than a legitimately minimal implementation.
 
 ### Running it locally
 

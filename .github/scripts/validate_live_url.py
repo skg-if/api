@@ -11,6 +11,10 @@ PROXY_BASE_URL = f"http://localhost:{PRISM_PORT}"
 CONTAINER_NAME = "prism-live-validation"
 NOT_FOUND_STATUSES = {404, 501}
 
+DEFAULT_QUERY_PARAMS = {
+    "/products": {"filter": "cf.search.title:Collections"},
+}
+
 
 def get_collection_paths(spec_path):
     """Return GET paths from the spec that have no {param} segment."""
@@ -51,18 +55,21 @@ def wait_for_prism(retries=15, retry_interval=2):
 def check_path(path):
     """GET a collection path through the Prism proxy and classify the result."""
     url = PROXY_BASE_URL + path
+    params = DEFAULT_QUERY_PARAMS.get(path)
     try:
-        response = httpx.get(url, timeout=15)
+        response = httpx.get(url, params=params, timeout=15)
     except httpx.HTTPError as exc:
         return "fail", f"Request error: {exc}"
 
+    request_desc = str(response.request.url)
+
     if response.status_code in NOT_FOUND_STATUSES:
-        return "skip", f"{response.status_code} - endpoint not implemented on this server"
+        return "skip", f"{response.status_code} - endpoint not implemented on this server ({request_desc})"
 
     if 200 <= response.status_code < 300:
-        return "pass", f"{response.status_code}"
+        return "pass", f"{response.status_code} ({request_desc})"
 
-    return "fail", f"{response.status_code} - {response.text[:500]}"
+    return "fail", f"{response.status_code} ({request_desc}) - {response.text[:500]}"
 
 
 def main():
@@ -100,6 +107,10 @@ def main():
     failed = [p for p, (status, _) in results.items() if status == "fail"]
 
     print(f"\nSummary: {len(passed)} passed, {len(skipped)} skipped, {len(failed)} failed")
+
+    if not passed:
+        print("No live endpoint responded successfully - at least one is required.")
+        sys.exit(1)
 
     if failed:
         sys.exit(1)
