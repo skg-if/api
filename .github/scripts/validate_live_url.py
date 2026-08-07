@@ -4,7 +4,7 @@ import subprocess
 import sys
 import time
 import os
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 
 import httpx
 import yaml
@@ -66,17 +66,41 @@ def check_path(path):
     try:
         response = httpx.get(url, timeout=15)
     except httpx.HTTPError as exc:
-        return "fail", f"Request error: {exc}"
+        return "fail", f"Request error: {exc}", None
 
     request_desc = str(response.request.url)
 
     if response.status_code in NOT_FOUND_STATUSES:
-        return "skip", f"{response.status_code} - endpoint not implemented on this server ({request_desc})"
+        return "skip", f"{response.status_code} - endpoint not implemented on this server ({request_desc})", response
 
     if 200 <= response.status_code < 300:
-        return "pass", f"{response.status_code} ({request_desc})"
+        return "pass", f"{response.status_code} ({request_desc})", response
 
-    return "fail", f"{response.status_code} ({request_desc}) - {response.text[:500]}"
+    return "fail", f"{response.status_code} ({request_desc}) - {response.text[:500]}", response
+
+
+def extract_full_product_id(list_response_json):
+    """Resolve @graph[0]'s local_identifier to a full URL using @context's inline @base, if needed."""
+    base = next(
+        (c["@base"] for c in list_response_json.get("@context", []) if isinstance(c, dict) and "@base" in c),
+        None,
+    )
+    graph = list_response_json.get("@graph") or []
+    if not graph:
+        return None
+
+    item = graph[0]
+    local_id = item if isinstance(item, str) else item.get("local_identifier")
+    if not local_id:
+        return None
+
+    if local_id.startswith("http"):
+        return local_id
+
+    if not base:
+        return None
+
+    return base.rstrip("/") + "/" + local_id.lstrip("/")
 
 
 def list_endpoints(spec_path):
@@ -98,7 +122,7 @@ def check(spec_path, target_url, path):
             print("Prism proxy did not become ready in time.")
             sys.exit(1)
 
-        status, detail = check_path(path)
+        status, detail, _ = check_path(path)
     finally:
         stop_prism_container()
 
@@ -107,6 +131,47 @@ def check(spec_path, target_url, path):
 
     if status == "fail":
         sys.exit(1)
+
+
+def check_product_by_id(spec_path, target_url):
+    """Run the /products list search, then use the first result's own id to validate GET /products/{id}."""
+    icons = {"pass": "✅", "skip": "⏭️", "fail": "❌"}
+    list_path = f"/products?{urlencode(DEFAULT_QUERY_PARAMS['/products'])}"
+    print(f"Validating product-by-id chain against {target_url} ({spec_path})")
+
+    start_prism_container(spec_path, target_url)
+    try:
+        if not wait_for_prism():
+            print("Prism proxy did not become ready in time.")
+            sys.exit(1)
+
+        status, detail, response = check_path(list_path)
+        print(f"{icons[status]} {list_path}: {detail}")
+
+        if status == "fail":
+            sys.exit(1)
+        if status == "skip":
+            return
+
+        try:
+            body = response.json()
+        except ValueError:
+            print("⏭️ Could not parse products list response as JSON - skipping id lookup")
+            return
+
+        product_id = extract_full_product_id(body)
+        if not product_id:
+            print("⏭️ No product with a resolvable id found in @graph - skipping id lookup")
+            return
+
+        id_path = f"/products/{quote(product_id, safe='')}"
+        status, detail, _ = check_path(id_path)
+        print(f"{icons[status]} {id_path}: {detail}")
+
+        if status == "fail":
+            sys.exit(1)
+    finally:
+        stop_prism_container()
 
 
 def main():
@@ -121,12 +186,18 @@ def main():
     check_parser.add_argument("target_url")
     check_parser.add_argument("path")
 
+    check_product_by_id_parser = subparsers.add_parser("check-product-by-id")
+    check_product_by_id_parser.add_argument("spec_path")
+    check_product_by_id_parser.add_argument("target_url")
+
     args = parser.parse_args()
 
     if args.command == "list-endpoints":
         list_endpoints(args.spec_path)
     elif args.command == "check":
         check(args.spec_path, args.target_url, args.path)
+    elif args.command == "check-product-by-id":
+        check_product_by_id(args.spec_path, args.target_url)
 
 
 if __name__ == "__main__":

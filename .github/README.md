@@ -1,17 +1,19 @@
 # CI workflows
 
-## Validate Live Implementation
+## Validate SKG-IF Live Implementation (manual)
 
 `workflows/validate_live_implementation.yml` checks a live, externally-hosted SKG-IF implementation against the OpenAPI spec. It puts a [Stoplight Prism](https://github.com/stoplightio/prism) proxy in front of your server and calls its collection endpoints (`/products`, `/persons`, `/organisations`, `/grants`, `/venues`, `/topics`, `/datasources`) through the proxy — Prism validates every real response against the spec's schemas, so any contract violation shows up as an error. Item endpoints (`/{local_identifier}`) are not checked yet.
 
 It runs as two jobs: a `discover` job reads the spec and builds the list of endpoints to check, then a `validate` job runs once per endpoint (a GitHub Actions matrix) — each endpoint gets its **own job**, named after the exact path (and query params) it hit, e.g. *"Validate GET /products?filter=cf.search.title%3ACollections"*. That way a failing endpoint is immediately visible in the Actions run's job list, without digging through a combined log. Each endpoint job starts its own short-lived Prism proxy container, so all endpoints are checked in parallel and one failing endpoint doesn't stop the others (`fail-fast: false`).
+
+A separate `validate_product_by_id` job goes one step further for products specifically: it runs the `/products` list search, takes the first result's own `local_identifier` (resolving it to a full URL via the response's `@base`, if it isn't one already), and calls `GET /products/{that id}` — proving the id an implementation just returned is itself resolvable, not just that each endpoint is independently schema-valid. It reports **skip** (not failure) if the list search has no results or no id it can resolve.
 
 This workflow only runs when triggered manually (`workflow_dispatch`) — it never runs on push or pull request.
 
 ### Running it
 
 **From the GitHub UI:**
-1. Go to the *Actions* tab → *Validate Live Implementation* (in the left sidebar).
+1. Go to the *Actions* tab → *Validate SKG-IF Live Implementation (manual)* (in the left sidebar).
 2. Click *Run workflow*.
 3. Fill in:
    - `target_url` — base URL of the live implementation to validate (defaults to the OpenCitations staging endpoint).
@@ -44,4 +46,7 @@ python .github/scripts/validate_live_url.py list-endpoints openapi/ver/current/s
 
 # check a single endpoint against a live implementation
 python .github/scripts/validate_live_url.py check openapi/ver/current/skg-if-openapi.yaml <target_url> /products
+
+# run the /products list -> get-by-id chained check
+python .github/scripts/validate_live_url.py check-product-by-id openapi/ver/current/skg-if-openapi.yaml <target_url>
 ```
