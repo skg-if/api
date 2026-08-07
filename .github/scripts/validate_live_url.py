@@ -16,6 +16,10 @@ NOT_FOUND_STATUSES = {404, 501}
 
 DEFAULT_QUERY_PARAMS = {
     "/products": {"filter": "cf.search.title:Collections"},
+    "/grants": {"filter": "cf.search.title:The"},
+    "/persons": {"filter": "cf.search.name:Smith"},
+    "/datasources": {"filter": "cf.search.name:The"},
+    "/organisations": {"filter": "cf.search.name:The"},
 }
 
 
@@ -41,7 +45,7 @@ def start_prism_container(spec_path, target_url):
         "-v", f"{os.path.abspath(spec_path)}:/tmp/skg-if-api.yaml",
         "-p", f"{PRISM_PORT}:4010",
         "stoplight/prism:4",
-        "proxy", "-h", "0.0.0.0", "/tmp/skg-if-api.yaml", target_url, "--errors",
+        "proxy", "-h", "0.0.0.0", "/tmp/skg-if-api.yaml", target_url.rstrip("/"), "--errors",
     ]
     subprocess.run(docker_command, check=True)
 

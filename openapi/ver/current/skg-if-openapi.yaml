@@ -1980,6 +1980,7 @@ components:
               enum:
                 - "peer reviewed"
                 - "under review"
+                - null
             description :
               type: [string, "null"]
               description: describe the type of peer review that applies.
