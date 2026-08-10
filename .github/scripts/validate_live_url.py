@@ -176,6 +176,9 @@ def check_product_by_id(spec_path, target_url, exclude=None):
         print("⏭️ No product with a resolvable id found in @graph - skipping id lookup")
         return
 
+    print(f"Got first search product id: {product_id}")
+    print("Now validating it via GET /products/{id}...")
+
     id_path = f"/products/{quote(product_id, safe='')}"
 
     start_prism_container(spec_path, target_url)
