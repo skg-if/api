@@ -23,12 +23,20 @@ DEFAULT_QUERY_PARAMS = {
 }
 
 
-def get_collection_paths(spec_path):
+def parse_exclude(exclude):
+    """Split a comma-separated string of endpoint paths into a clean set."""
+    return {p.strip() for p in (exclude or "").split(",") if p.strip()}
+
+
+def get_collection_paths(spec_path, exclude=None):
     """Return GET paths from the spec that have no {param} segment, each combined with its default query string (if any)."""
+    exclude = exclude or set()
     with open(spec_path, "r", encoding="utf-8") as f:
         spec = yaml.safe_load(f)
     paths = spec.get("paths", {})
-    collection_paths = sorted(p for p, ops in paths.items() if "{" not in p and "get" in ops)
+    collection_paths = sorted(
+        p for p, ops in paths.items() if "{" not in p and "get" in ops and p not in exclude
+    )
     result = []
     for path in collection_paths:
         params = DEFAULT_QUERY_PARAMS.get(path)
@@ -80,7 +88,7 @@ def check_path(path):
     if 200 <= response.status_code < 300:
         return "pass", f"{response.status_code} ({request_desc})", response
 
-    return "fail", f"{response.status_code} ({request_desc}) - {response.text[:500]}", response
+    return "fail", f"{response.status_code} ({request_desc}) - {response.text[:1000]}", response
 
 
 def extract_full_product_id(list_response_json):
@@ -107,9 +115,9 @@ def extract_full_product_id(list_response_json):
     return base.rstrip("/") + "/" + local_id.lstrip("/")
 
 
-def list_endpoints(spec_path):
+def list_endpoints(spec_path, exclude=None):
     """Print the collection endpoints as a JSON matrix for a GitHub Actions dynamic matrix."""
-    collection_paths = get_collection_paths(spec_path)
+    collection_paths = get_collection_paths(spec_path, exclude=exclude)
     if not collection_paths:
         print(f"No collection GET paths found in {spec_path}", file=sys.stderr)
         sys.exit(1)
@@ -137,8 +145,12 @@ def check(spec_path, target_url, path):
         sys.exit(1)
 
 
-def check_product_by_id(spec_path, target_url):
+def check_product_by_id(spec_path, target_url, exclude=None):
     """Run the /products list search, then use the first result's own id to validate GET /products/{id}."""
+    if "/products" in (exclude or set()):
+        print("⏭️ /products is excluded - skipping product-by-id chain")
+        return
+
     icons = {"pass": "✅", "skip": "⏭️", "fail": "❌"}
     list_path = f"/products?{urlencode(DEFAULT_QUERY_PARAMS['/products'])}"
     print(f"Validating product-by-id chain against {target_url} ({spec_path})")
@@ -184,6 +196,7 @@ def main():
 
     list_parser = subparsers.add_parser("list-endpoints")
     list_parser.add_argument("spec_path")
+    list_parser.add_argument("--exclude", default="")
 
     check_parser = subparsers.add_parser("check")
     check_parser.add_argument("spec_path")
@@ -193,15 +206,16 @@ def main():
     check_product_by_id_parser = subparsers.add_parser("check-product-by-id")
     check_product_by_id_parser.add_argument("spec_path")
     check_product_by_id_parser.add_argument("target_url")
+    check_product_by_id_parser.add_argument("--exclude", default="")
 
     args = parser.parse_args()
 
     if args.command == "list-endpoints":
-        list_endpoints(args.spec_path)
+        list_endpoints(args.spec_path, exclude=parse_exclude(args.exclude))
     elif args.command == "check":
         check(args.spec_path, args.target_url, args.path)
     elif args.command == "check-product-by-id":
-        check_product_by_id(args.spec_path, args.target_url)
+        check_product_by_id(args.spec_path, args.target_url, exclude=parse_exclude(args.exclude))
 
 
 if __name__ == "__main__":

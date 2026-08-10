@@ -18,6 +18,7 @@ This workflow only runs when triggered manually (`workflow_dispatch`) — it nev
 3. Fill in:
    - `target_url` — base URL of the live implementation to validate (defaults to the OpenCitations staging endpoint).
    - `spec_version` — which `openapi/ver/<spec_version>/skg-if-openapi.yaml` to validate against (defaults to `current`).
+   - `exclude_endpoints` — comma-separated endpoint paths to skip entirely, e.g. `/venues,/topics` (defaults to `/venues`, since not every implementer supports it). Excluded endpoints get no job at all, and excluding `/products` also skips the `validate_product_by_id` chain.
 4. Click *Run workflow* and open the run — each endpoint appears as its own job in the job list.
 
 **From the CLI ([GitHub CLI](https://cli.github.com/)):**
@@ -42,11 +43,11 @@ Requires Docker and Python 3.12 with `httpx` and `pyyaml` installed — the scri
 pip install httpx pyyaml
 
 # list the endpoints the spec declares (used by the workflow's discover job)
-python .github/scripts/validate_live_url.py list-endpoints openapi/ver/current/skg-if-openapi.yaml
+python .github/scripts/validate_live_url.py list-endpoints openapi/ver/current/skg-if-openapi.yaml --exclude /venues
 
 # check a single endpoint against a live implementation
 python .github/scripts/validate_live_url.py check openapi/ver/current/skg-if-openapi.yaml <target_url> /products
 
 # run the /products list -> get-by-id chained check
-python .github/scripts/validate_live_url.py check-product-by-id openapi/ver/current/skg-if-openapi.yaml <target_url>
+python .github/scripts/validate_live_url.py check-product-by-id openapi/ver/current/skg-if-openapi.yaml <target_url> --exclude /venues
 ```

@@ -13,6 +13,11 @@ on:
         required: false
         type: string
         default: 'current'
+      exclude_endpoints:
+        description: 'Comma-separated list of endpoint paths to exclude from validation, e.g. /venues,/topics'
+        required: false
+        type: string
+        default: '/venues'
 
 jobs:
   discover:
@@ -39,9 +44,10 @@ jobs:
         id: list
         env:
           SPEC_VERSION: ${{ inputs.spec_version }}
+          EXCLUDE_ENDPOINTS: ${{ inputs.exclude_endpoints }}
         run: |
           set -euo pipefail
-          MATRIX=$(python .github/scripts/validate_live_url.py list-endpoints "openapi/ver/${SPEC_VERSION}/skg-if-openapi.yaml")
+          MATRIX=$(python .github/scripts/validate_live_url.py list-endpoints "openapi/ver/${SPEC_VERSION}/skg-if-openapi.yaml" --exclude "$EXCLUDE_ENDPOINTS")
           echo "Matrix: $MATRIX"
           echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
 
@@ -97,5 +103,6 @@ jobs:
         env:
           TARGET_URL: ${{ inputs.target_url }}
           SPEC_VERSION: ${{ inputs.spec_version }}
+          EXCLUDE_ENDPOINTS: ${{ inputs.exclude_endpoints }}
         run: |
-          python .github/scripts/validate_live_url.py check-product-by-id "openapi/ver/${SPEC_VERSION}/skg-if-openapi.yaml" "$TARGET_URL"
+          python .github/scripts/validate_live_url.py check-product-by-id "openapi/ver/${SPEC_VERSION}/skg-if-openapi.yaml" "$TARGET_URL" --exclude "$EXCLUDE_ENDPOINTS"
