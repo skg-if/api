@@ -95,7 +95,7 @@ def check_path(path):
     if 200 <= response.status_code < 300:
         return "pass", f"{response.status_code} ({request_desc})", response
 
-    return "fail", f"{response.status_code} ({request_desc}) - {response.text[:1000]}", response
+    return "fail", f"{response.status_code} ({request_desc}) - {response.text[:5000]}", response
 
 
 def extract_full_product_id(list_response_json):
@@ -106,17 +106,20 @@ def extract_full_product_id(list_response_json):
     )
     graph = list_response_json.get("@graph") or []
     if not graph:
+        print("@graph is empty - no product to extract an id from")
         return None
 
     item = graph[0]
     local_id = item if isinstance(item, str) else item.get("local_identifier")
     if not local_id:
+        print("@graph[0] has no local_identifier - cannot determine an id")
         return None
 
     if local_id.startswith("http"):
         return local_id
 
     if not base:
+        print(f"local_identifier '{local_id}' is not a full URL and no @base was found in @context - cannot resolve it")
         return None
 
     full_id = base.rstrip("/") + "/" + local_id.lstrip("/")
