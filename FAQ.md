@@ -87,7 +87,7 @@ Example is :
 
 ## How can I validate that my local server implementation is compliant with the SKG-IF OpenAPI ?
 
-* See [.github/WORFLOW.md](.github/WORFLOW.md)
+* See [.github/WORFLOW.md](https://github.com/skg-if/api/blob/main/.github/WORFLOW.md)
 
 
 ## How to extend the API for a model extension ?
