@@ -1,6 +1,12 @@
 # CI workflows
 
-## Validate SKG-IF Live Implementation (manual)
+## Validate SKG-IF Specs and JSON Files
+
+`workflows/validate_specs_and_jsons.yml` runs automatically on every push/PR that touches `openapi/ver/**/skg-if-openapi.yaml` or `openapi/ver/**/*.json`. It first lints the OpenAPI YAML with [Spectral](https://github.com/stoplightio/spectral) (`spectral:oas` ruleset, via `.spectral.yaml`), then, for each changed sample JSON file, validates its content against the spec.
+
+That second check (`.github/scripts/validate_files.py`) spins up a throwaway FastAPI container serving the changed sample file and puts a Prism proxy in front of it configured with the corresponding spec version, then confirms the file resolves through the proxy with a 2xx response — the same "Prism as validator" pattern used by the manual live-implementation workflow below, just applied to committed sample data instead of a real server.
+
+## Validate SKG-IF Live Implementation (manual workflow)
 
 `workflows/validate_live_implementation.yml` checks a live, externally-hosted SKG-IF implementation against the OpenAPI spec. It puts a [Stoplight Prism](https://github.com/stoplightio/prism) proxy in front of your server and calls its collection endpoints (`/products`, `/persons`, `/organisations`, `/grants`, `/venues`, `/topics`, `/datasources`) through the proxy — Prism validates every real response against the spec's schemas, so any contract violation shows up as an error. Item endpoints (`/{local_identifier}`) are not checked yet.
 
