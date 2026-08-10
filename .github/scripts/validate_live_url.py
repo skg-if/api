@@ -113,7 +113,9 @@ def extract_full_product_id(list_response_json):
     if not base:
         return None
 
-    return base.rstrip("/") + "/" + local_id.lstrip("/")
+    full_id = base.rstrip("/") + "/" + local_id.lstrip("/")
+    print(f"local_identifier '{local_id}' is not a full URL - concatenated with @base '{base}' -> {full_id}")
+    return full_id
 
 
 def list_endpoints(spec_path, exclude=None):
@@ -148,7 +150,7 @@ def check(spec_path, target_url, path):
 
 
 def check_product_by_id(spec_path, target_url, exclude=None):
-    """Fetch the /products list search directly (no Prism) purely as a data source, then validate GET /products/{id} through Prism using the first result's own id."""
+    """Fetch the /products list search directly (no Prism) purely as a data source, then validate GET /products/{local_identifier} through Prism using the first result's own id."""
     if "/products" in (exclude or set()):
         print("⏭️ /products is excluded - skipping product-by-id chain")
         return
@@ -176,8 +178,9 @@ def check_product_by_id(spec_path, target_url, exclude=None):
         print("⏭️ No product with a resolvable id found in @graph - skipping id lookup")
         return
 
-    print(f"Got first search product id: {product_id}")
-    print("Now validating it via GET /products/{id}...")
+    print(f"Got first search product local_identifier: {product_id}")
+    print("The API MUST be able to resolve full URL local_identifier including its domain/@base")
+    print("Now validating it via GET /products/{local_identifier}...")
 
     id_path = f"/products/{quote(product_id, safe='')}"
 

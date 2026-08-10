@@ -95,7 +95,7 @@ jobs:
   validate_product_by_id:
     needs: discover
     runs-on: ubuntu-latest
-    name: "Validate ${{ needs.discover.outputs.domain }} GET /products/{id}"
+    name: "Validate ${{ needs.discover.outputs.domain }} GET /products/{local_identifier}"
 
     steps:
       - name: Checkout code
