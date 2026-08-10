@@ -126,6 +126,7 @@ def list_endpoints(spec_path, exclude=None):
 
 def check(spec_path, target_url, path):
     """Validate a single endpoint through its own Prism proxy instance."""
+    target_url = target_url.rstrip("/")
     print(f"Validating {target_url}{path} against {spec_path}")
 
     start_prism_container(spec_path, target_url)
@@ -151,6 +152,7 @@ def check_product_by_id(spec_path, target_url, exclude=None):
         print("⏭️ /products is excluded - skipping product-by-id chain")
         return
 
+    target_url = target_url.rstrip("/")
     icons = {"pass": "✅", "skip": "⏭️", "fail": "❌"}
     list_path = f"/products?{urlencode(DEFAULT_QUERY_PARAMS['/products'])}"
     print(f"Validating product-by-id chain against {target_url} ({spec_path})")

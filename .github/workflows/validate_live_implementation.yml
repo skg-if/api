@@ -22,9 +22,10 @@ on:
 jobs:
   discover:
     runs-on: ubuntu-latest
-    name: Discover live endpoints to check
+    name: Discover SKG-IF OpenAPI specs endpoints to check
     outputs:
       matrix: ${{ steps.list.outputs.matrix }}
+      domain: ${{ steps.domain.outputs.domain }}
 
     steps:
       - name: Checkout code
@@ -51,10 +52,20 @@ jobs:
           echo "Matrix: $MATRIX"
           echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
 
+      - name: Compute target domain
+        id: domain
+        env:
+          TARGET_URL: ${{ inputs.target_url }}
+        run: |
+          set -euo pipefail
+          DOMAIN=$(echo "$TARGET_URL" | sed -E 's#^[a-zA-Z]+://##; s#/.*##')
+          echo "Domain: $DOMAIN"
+          echo "domain=$DOMAIN" >> "$GITHUB_OUTPUT"
+
   validate:
     needs: discover
     runs-on: ubuntu-latest
-    name: "Validate GET ${{ matrix.path }}"
+    name: "Validate ${{ needs.discover.outputs.domain }} GET ${{ matrix.path }}"
     strategy:
       fail-fast: false
       matrix:
@@ -82,8 +93,9 @@ jobs:
           python .github/scripts/validate_live_url.py check "openapi/ver/${SPEC_VERSION}/skg-if-openapi.yaml" "$TARGET_URL" "${{ matrix.path }}"
 
   validate_product_by_id:
+    needs: discover
     runs-on: ubuntu-latest
-    name: "Validate GET /products/{id}"
+    name: "Validate ${{ needs.discover.outputs.domain }} GET /products/{id}"
 
     steps:
       - name: Checkout code
