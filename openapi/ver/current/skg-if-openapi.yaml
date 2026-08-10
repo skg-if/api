@@ -1904,7 +1904,7 @@ components:
           description: 'Manifestation dates, for each date type (acceptance, publication, embargo...) you can define an array of dates. Format [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) compliant string ( "2024-10-01", "2024-10", "2024", "2024-10-01T10:42:14Z" ).'
           properties:
             acceptance:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
                 examples:
@@ -1913,61 +1913,61 @@ components:
                   - "2024"
                   - "2024-10-01T10:42:14Z"
             access:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             collected:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             copyright:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             correction:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             creation:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             decision:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             deposit:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             distribution:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             embargo:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             modified:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             publication:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             received:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             request:
               type: [string, "null"]
             retraction:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
             validity:
-              type: [array, "null"]
+              type: [array, string, "null"]
               items:
                 type: string
         peer_review:
