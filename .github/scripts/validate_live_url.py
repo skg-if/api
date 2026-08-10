@@ -75,6 +75,7 @@ def wait_for_prism(retries=15, retry_interval=2):
 def check_path(path):
     """GET a collection path (already containing any query string) through the Prism proxy and classify the result."""
     url = PROXY_BASE_URL + path
+    print(f"GET {url} (via Prism proxy)")
     try:
         response = httpx.get(url, timeout=15)
     except httpx.HTTPError as exc:
@@ -147,7 +148,7 @@ def check(spec_path, target_url, path):
 
 
 def check_product_by_id(spec_path, target_url, exclude=None):
-    """Fetch the /products list search purely as a data source, then validate GET /products/{id} using the first result's own id."""
+    """Fetch the /products list search directly (no Prism) purely as a data source, then validate GET /products/{id} through Prism using the first result's own id."""
     if "/products" in (exclude or set()):
         print("⏭️ /products is excluded - skipping product-by-id chain")
         return
@@ -155,6 +156,27 @@ def check_product_by_id(spec_path, target_url, exclude=None):
     target_url = target_url.rstrip("/")
     icons = {"pass": "✅", "skip": "⏭️", "fail": "❌"}
     list_path = f"/products?{urlencode(DEFAULT_QUERY_PARAMS['/products'])}"
+    list_url = target_url + list_path
+
+    print(f"GET {list_url} (direct, not through Prism)")
+    try:
+        response = httpx.get(list_url, timeout=15)
+    except httpx.HTTPError as exc:
+        print(f"⏭️ Could not fetch products list ({exc}) - skipping id lookup")
+        return
+
+    try:
+        body = response.json()
+    except ValueError:
+        print("⏭️ Could not parse products list response as JSON - skipping id lookup")
+        return
+
+    product_id = extract_full_product_id(body)
+    if not product_id:
+        print("⏭️ No product with a resolvable id found in @graph - skipping id lookup")
+        return
+
+    id_path = f"/products/{quote(product_id, safe='')}"
 
     start_prism_container(spec_path, target_url)
     try:
@@ -162,24 +184,6 @@ def check_product_by_id(spec_path, target_url, exclude=None):
             print("Prism proxy did not become ready in time.")
             sys.exit(1)
 
-        try:
-            response = httpx.get(PROXY_BASE_URL + list_path, timeout=15)
-        except httpx.HTTPError as exc:
-            print(f"⏭️ Could not fetch products list ({exc}) - skipping id lookup")
-            return
-
-        try:
-            body = response.json()
-        except ValueError:
-            print("⏭️ Could not parse products list response as JSON - skipping id lookup")
-            return
-
-        product_id = extract_full_product_id(body)
-        if not product_id:
-            print("⏭️ No product with a resolvable id found in @graph - skipping id lookup")
-            return
-
-        id_path = f"/products/{quote(product_id, safe='')}"
         status, detail, _ = check_path(id_path)
         print(f"{icons[status]} {id_path}: {detail}")
 
