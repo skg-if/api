@@ -10,6 +10,17 @@ A separate `validate_product_by_id` job goes one step further for products speci
 
 This workflow only runs when triggered manually (`workflow_dispatch`) — it never runs on push or pull request.
 
+### If you're an implementer validating your own server
+
+You need to run this from **your own fork**, not this repo directly (you won't have push/run access here). A few things to get right:
+
+1. Fork [skg-if/api](https://github.com/skg-if/api) to your own GitHub account/org.
+2. GitHub Actions are **disabled by default on forks** — go to your fork's *Settings → Actions → General* and enable them (or accept the banner prompt on the *Actions* tab).
+3. `workflow_dispatch` workflows only become dispatchable once the workflow file exists on your fork's **default branch** (e.g. `main`) — GitHub uses the default branch to decide which workflows are runnable at all. If you only have this file on a feature branch, temporarily switch your fork's default branch to that feature branch (*Settings → General → Default branch*) so the workflow becomes dispatchable, run it, then switch the default branch back once you're done.
+4. Trigger it (Actions tab → *Validate SKG-IF Live Implementation (manual)* → *Run workflow*, or `gh workflow run ... --repo <your-username>/api`) with your own `target_url`.
+
+No repo secrets are needed — `target_url` is just a public endpoint you supply, so there's nothing else to configure.
+
 ### Running it
 
 **From the GitHub UI:**
