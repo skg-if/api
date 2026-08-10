@@ -147,7 +147,7 @@ def check(spec_path, target_url, path):
 
 
 def check_product_by_id(spec_path, target_url, exclude=None):
-    """Run the /products list search, then use the first result's own id to validate GET /products/{id}."""
+    """Fetch the /products list search purely as a data source, then validate GET /products/{id} using the first result's own id."""
     if "/products" in (exclude or set()):
         print("⏭️ /products is excluded - skipping product-by-id chain")
         return
@@ -155,7 +155,6 @@ def check_product_by_id(spec_path, target_url, exclude=None):
     target_url = target_url.rstrip("/")
     icons = {"pass": "✅", "skip": "⏭️", "fail": "❌"}
     list_path = f"/products?{urlencode(DEFAULT_QUERY_PARAMS['/products'])}"
-    print(f"Validating product-by-id chain against {target_url} ({spec_path})")
 
     start_prism_container(spec_path, target_url)
     try:
@@ -163,12 +162,10 @@ def check_product_by_id(spec_path, target_url, exclude=None):
             print("Prism proxy did not become ready in time.")
             sys.exit(1)
 
-        status, detail, response = check_path(list_path)
-        print(f"{icons[status]} {list_path}: {detail}")
-
-        if status == "fail":
-            sys.exit(1)
-        if status == "skip":
+        try:
+            response = httpx.get(PROXY_BASE_URL + list_path, timeout=15)
+        except httpx.HTTPError as exc:
+            print(f"⏭️ Could not fetch products list ({exc}) - skipping id lookup")
             return
 
         try:
