@@ -1,4 +1,4 @@
-name: Validate SKG-IF Live Implementation (manual)
+name: Validate SKG-IF Live impl. (manual workflow)
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ on:
         description: 'Comma-separated list of endpoint paths to exclude from validation, e.g. /venues,/topics'
         required: false
         type: string
-        default: '/venues'
+        default: '/venues,/topics'
 
 jobs:
   discover:
