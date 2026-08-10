@@ -87,9 +87,7 @@ Example is :
 
 ## How can I validate that my local server implementation is compliant with the SKG-IF OpenAPI ?
 
-* See : https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?tab=t.0
-* Read the “validation process” and “hackathon” paragraphs at the beginning of this document.
-* You can include the PRISM proxy server in your CI/CD pipeline.
+* See [.github/WORFLOW.md](.github/WORFLOW.md)
 
 
 ## How to extend the API for a model extension ?

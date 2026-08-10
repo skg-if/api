@@ -21,3 +21,4 @@ nav_order: 7
 
 To update this list, please send issue or PR to the [skg-if/api repo](https://github.com/skg-if/api/issues/)
 
+To validate a live implementation server see : [.github/WORFLOW.md](.github/WORFLOW.md)
