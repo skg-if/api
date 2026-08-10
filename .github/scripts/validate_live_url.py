@@ -23,6 +23,12 @@ DEFAULT_QUERY_PARAMS = {
 }
 
 
+def warn(message):
+    """Emit a GitHub Actions warning annotation (visible as a distinct ⚠️ marker, separate from plain log text)."""
+    escaped = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+    print(f"::warning::{escaped}")
+
+
 def parse_exclude(exclude):
     """Split a comma-separated string of endpoint paths into a clean set."""
     return {p.strip() for p in (exclude or "").split(",") if p.strip()}
@@ -145,6 +151,9 @@ def check(spec_path, target_url, path):
     icon = {"pass": "✅", "skip": "⏭️", "fail": "❌"}[status]
     print(f"{icon} {path}: {detail}")
 
+    if status == "skip":
+        warn(f"{path}: {detail}")
+
     if status == "fail":
         sys.exit(1)
 
@@ -192,6 +201,9 @@ def check_product_by_id(spec_path, target_url, exclude=None):
 
         status, detail, _ = check_path(id_path)
         print(f"{icons[status]} {id_path}: {detail}")
+
+        if status == "skip":
+            warn(f"{id_path}: {detail}")
 
         if status == "fail":
             sys.exit(1)

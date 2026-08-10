@@ -14,7 +14,7 @@ on:
         type: string
         default: 'current'
       exclude_endpoints:
-        description: 'Comma-separated list of endpoint paths to exclude from validation, e.g. /venues,/topics'
+        description: 'Comma-separated list of endpoint paths to exclude from validation, e.g. /venues,/topics. (Note : any endpoint returning 404 will be skipped automatically)'
         required: false
         type: string
         default: '/venues,/topics'
