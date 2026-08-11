@@ -92,11 +92,26 @@ Make sure that you generate distinct URLs for person, product... They should not
   * Get List of _Entity_
 * The SKG-IF OpenAPI endpoints outputs are JSON-LD and compatible with the [SKG-IF data model](https://skg-if.github.io/interoperability-framework/)
 
+
+## API Get Entity by Id, single entity resolving
+
+Single entity resolve API format follows this format `https://acme.com/skg-if/api/{entity-type}/{local_identifier}`.
+
+* Your API _MUST_ be able to resolve full local_identifiers as URL.
+  * Example: `https://acme.com/skg-if/api/products/https://w3id.org/skg-if/sandbox/acme/prod-1`
+* Your API _SHOULD_ be able to resolve local_identifier without prefix.
+  * Example: `https://acme.com/skg-if/api/products/prod-1`
+
+> Note : this pattern is also used in standard SKG proprietary APIs like Crossref
+> * [http://api.crossref.org/works/https://doi.org/10.1039/d1cb00160d](http://api.crossref.org/works/https://doi.org/10.1039/d1cb00160d) => resolve OK
+> * [http://api.crossref.org/works/10.1039/d1cb00160d](http://api.crossref.org/works/10.1039/d1cb00160d) => resolve OK
+
+
 ## API links
 
 * The `@graph` array contains entities, identified by their `local_identifier`, each entity may have relation to other entities also identified by their `local_identifier`.
-* From a client perspective, if the sub entity is not embedded with its fields, you may need to perform sub queries to access these fields.
-* The JSON-LD output contains a `meta` section SHOULD provide you API links for each entity, identified by its `local_identifier`. As a client you are not supposed to guess the API URL from the `local_identifier` format, there is no standard for the API domain prefix, each implementer is free to have a domain for its `local_identifier` and another one for its API (It is even recommended).
+* From a client perspective, if the sub entity is not embedded with its fields, you may need to perform sub queries to access these fields. As a client you should be able to get sub entity API links automatically when necessary, ( [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) pattern ) .
+* The JSON-LD output contains a `meta` section. The `meta.api_items` SHOULD provide the API links for each sub entity identified by its `local_identifier`.
 
 
 Get Product by Id : `https://acme.com/skg-if/api/products/prod-1`
@@ -203,24 +218,6 @@ Get List of Product : `https://acme.com/skg-if/api/products?filter=xxx&page=1`
 }
 
 ```
-
-
-## API Get Entity by Id, single entity resolving
-
-Single entity resolve API format follows this format `https://acme.com/skg-if/api/{entity-type}/{local_identifier}`
-
-For example : `https://acme.com/skg-if/api/products/prod-1`
-
-Your API _MUST_ also be able to resolve full local_identifiers including the domain/base :
-
-`https://acme.com/skg-if/api/products/https://w3id.org/skg-if/sandbox/acme/prod-1`
-
-
-Note : this pattern is also used in standard SKG API like Crossref
-
-* http://api.crossref.org/works/https://doi.org/10.1039/d1cb00160d => OK
-* http://api.crossref.org/works/10.1039/d1cb00160d => OK
-
 
 
 ## Content negotiation
