@@ -58,31 +58,32 @@ You can also visualize the OpenAPI specifications with standard tools like :
 * Swagger : [https://editor.swagger.io/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml](https://editor.swagger.io/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
 
 
-## Define your @base
+## Define your @base and local_identifier format
 
-* `local_identifier` act as a PID URL.
-* `@base` is a default HTTP prefix fallback for all identifiers not defined as URLs in the `@graph`. `local_identifier` is an alias of `@id`. In JSON-LD, an `@id` value, when not starting with “http”, is interpreted by concatenation to the `@base` (refer to RFC 3986 relative IRI resolution).
+* `local_identifier` act as a persistent identifier, PID stable URL. `local_identifier` is an alias of JSON-LD `@id`.
+* `@base` is a default HTTP prefix fallback for all identifiers not defined as URLs in the `@graph`. In JSON-LD, an `@id` value, when not starting with “http”, is interpreted by concatenation to the `@base` (refer to RFC 3986 relative IRI resolution).
 
 You have a few options, to define your `local_identifier` format for your ACME organisation.
 
 * __Option 1__: Define a [w3id.org](https://w3id.org) domain ex: `https://w3id.org/acme/`. You can set up w3id.org to redirect to your catalogue. ex: `https://w3id.org/acme/prod-1` => `https://www.acme.com/product-catalogue/prod-1`. This approach is a flexible way to define PIDs for your entities.
-  * @base: `https://w3id.org/acme/`
-  * Product local_identifier JSON value example : `https://w3id.org/acme/prod-1` or `prod-1`
-* __Option 2__: If you mint DOIs for your main entities you expose (typically the research products), you can use the DOI itself as local_identifier. Use a full DOI URL in the local_identifier value. Use w3id.org SKG-IF sandbox as `@base`.
-  * @base: `https://w3id.org/skg-if/sandbox/acme/`
-  * Product local_identifier JSON value example : `https://doi.org/10.1234/56789` (full DOI URL)
-* __Option 3__: Use an existing dedicated domain ex: `https://www.acme.com/graph/`. It is a best practice that these URL resolve in a human readable format.
-  * @base: `https://www.acme.com/graph/`
+  * `@base`: `https://w3id.org/acme/`
+  * Product `local_identifier` JSON value example : `https://w3id.org/acme/prod-1` or `prod-1`
+* __Option 2__: If you mint DOIs for your main entities you expose (typically the research products), you can use the DOI itself as `local_identifier`. Use a full DOI URL in the `local_identifier` value. Use w3id.org SKG-IF sandbox as `@base`.
+  * `@base`: `https://w3id.org/skg-if/sandbox/acme/`
+  * Product `local_identifier` JSON value example : `https://doi.org/10.1234/56789` (full DOI URL)
+* __Option 3__: Use an existing dedicated domain ex: `https://www.acme.com/graph/`. It is a best practice that this URL is dereferenceable, in a human readable format.
+  * `@base`: `https://www.acme.com/graph/`
   * Product local_identifier JSON value example : `https://www.acme.com/graph/prod-1` or `prod-1`
-* __Option 4__: Use `https://w3id.org/skg-if/sandbox/acme/` for all entities. The URLs will not resolve in a human readable format.
-  * __@base__: `https://w3id.org/skg-if/sandbox/acme/`
-  * Product local_identifier JSON value example : `https://w3id.org/skg-if/sandbox/acme/prod-1` or `prod-1`
+* __Option 4__: Use `https://w3id.org/skg-if/sandbox/acme/` for all entities. Note, these URLs will not be dereferenceable.
+  * `@base`: `https://w3id.org/skg-if/sandbox/acme/`
+  * Product `local_identifier` JSON value example : `https://w3id.org/skg-if/sandbox/acme/prod-1` or `prod-1`
   * _You can use Option 4 for your initial implementation iteration_
 
-Make sure that you generate distinct URLs ids for person, product... They should not conflict.
+Make sure that you generate distinct URLs for person, product... They should not conflict.
 
-> Important : You cannot use the SKG-IF API root URL itself as the `@base`. It is an SKG-IF design choice to keep the object identifiers separated from the API. To see how the API URL and local_identifiers are associated for entity resolution, refer below [entity resolving](#api-get-entity-by-id-single-entity-resolving).
+> If you don't have stable ids for specific entity types ( typically for persons or organisations),  please refer to otf, [_on-the-fly_](https://skg-if.github.io/interoperability-framework/#local-identifiers-of-entities) ids.
 
+> __Important__ : You cannot use the SKG-IF API root URL itself as the `@base`. It is an SKG-IF design choice to keep the entity identifiers completely separated from the SKG-IF API. To see how the API URL and `local_identifier` are associated for entity resolution, refer below [entity resolving](#api-get-entity-by-id-single-entity-resolving).
 
 ## Endpoints and JSON-LD output
 
