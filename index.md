@@ -61,20 +61,20 @@ You can also visualize the OpenAPI specifications with standard tools like :
 ## Define your @base
 
 * `local_identifier` act as a PID URL.
-* `@base` is a default HTTP prefix fallback for all identifiers not defined as URLs in the `@graph`. `local_identifier` is an alias of `@id`. In JSON-LD, an `@id` value, when not starting with “http”, is interpreted by concatenation to the `@base`.
+* `@base` is a default HTTP prefix fallback for all identifiers not defined as URLs in the `@graph`. `local_identifier` is an alias of `@id`. In JSON-LD, an `@id` value, when not starting with “http”, is interpreted by concatenation to the `@base` (refer to RFC 3986 relative IRI resolution).
 
-You have a few options for your ACME organisation to define the domain of your `local_identifier` domain.
+You have a few options, to define your `local_identifier` format for your ACME organisation.
 
 * __Option 1__: Define a [w3id.org](https://w3id.org) domain ex: `https://w3id.org/acme/`. You can set up w3id.org to redirect to your catalogue. ex: `https://w3id.org/acme/prod-1` => `https://www.acme.com/product-catalogue/prod-1`. This approach is a flexible way to define PIDs for your entities.
   * @base: `https://w3id.org/acme/`
   * Product local_identifier JSON value example : `https://w3id.org/acme/prod-1` or `prod-1`
-* __Option 2__: If you mint DOIs for your main entities you expose (typically the research products), you can use the DOI itself as local_identifier. Use a full DOI URL in the local_identifier value. Use w3id.org SKG-IF sandbox as `@base`
+* __Option 2__: If you mint DOIs for your main entities you expose (typically the research products), you can use the DOI itself as local_identifier. Use a full DOI URL in the local_identifier value. Use w3id.org SKG-IF sandbox as `@base`.
   * @base: `https://w3id.org/skg-if/sandbox/acme/`
   * Product local_identifier JSON value example : `https://doi.org/10.1234/56789` (full DOI URL)
-* __Option 3__: Use a existing dedicated domain ex: `https://www.acme.com/graph/`. Make sure your entity URL resolve, it is a best practice.
+* __Option 3__: Use an existing dedicated domain ex: `https://www.acme.com/graph/`. It is a best practice that these URL resolve in a human readable format.
   * @base: `https://www.acme.com/graph/`
   * Product local_identifier JSON value example : `https://www.acme.com/graph/prod-1` or `prod-1`
-* __Option 4__: Use `https://w3id.org/skg-if/sandbox/acme/` for all entities. We don’t recommend it for prod because it does not resolve anywhere ( related to your ACME organisation ).
+* __Option 4__: Use `https://w3id.org/skg-if/sandbox/acme/` for all entities. The URLs will not resolve in a human readable format.
   * __@base__: `https://w3id.org/skg-if/sandbox/acme/`
   * Product local_identifier JSON value example : `https://w3id.org/skg-if/sandbox/acme/prod-1` or `prod-1`
   * _You can use Option 4 for your initial implementation iteration_
