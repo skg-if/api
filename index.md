@@ -92,7 +92,8 @@ Make sure that you generate distinct URLs for person, product... They should not
   * Get List of _Entity_
 * The SKG-IF OpenAPI endpoints outputs are JSON-LD and compatible with the [SKG-IF data model](https://skg-if.github.io/interoperability-framework/)
 
-
+You can refer to [static json-ld examples] (https://github.com/skg-if/api/tree/main/openapi/ver/current/sample_data).
+ 
 ## API Get Entity by Id, single entity resolving
 
 Single entity resolve API format follows this format `https://acme.com/skg-if/api/{entity-type}/{local_identifier}`.
@@ -105,7 +106,6 @@ Single entity resolve API format follows this format `https://acme.com/skg-if/ap
 > Note : this pattern is also used in standard SKG proprietary APIs like Crossref
 > * [http://api.crossref.org/works/https://doi.org/10.1039/d1cb00160d](http://api.crossref.org/works/https://doi.org/10.1039/d1cb00160d) => resolve OK
 > * [http://api.crossref.org/works/10.1039/d1cb00160d](http://api.crossref.org/works/10.1039/d1cb00160d) => resolve OK
-
 
 ## API links
 
