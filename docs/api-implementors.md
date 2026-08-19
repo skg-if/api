@@ -18,13 +18,7 @@ nav_order: 7
 | TeslaRIS - University of Novi Sad | [https://cris.uns.ac.rs/en](https://cris.uns.ac.rs/en) | [API Prod](https://cris.uns.ac.rs/api/skg-if) | [Git](https://github.com/sci2zero/TeslaRIS-backend/wiki/SKG%E2%80%90IF-API) | |
 | FSSDA - Finish Social Science Data Archive | [https://services.fsd.tuni.fi/catalogue](https://services.fsd.tuni.fi/catalogue) | [API Prod](https://api.fsd.tuni.fi/skg-if) | | |
 | [OPERAS](https://operas-eu.org/) | [GoTriple](https://gotriple.eu/) | [API Prod](https://api.gotriple.eu/api/skg-if/documentation) | | |
-
-
-**Reference implementation**
-
-| Maintainer | Catalogue exposed | SKG-IF API | Git | Notes |
-| ----- | ----- | ----- | ----- | ----- |
-| SKG-IF RDA WG | [Crossref](https://www.crossref.org/) and [DataCite](hhttps://commons.datacite.org/) products and grants | Docker to deploy | [Git](https://github.com/skg-if/api-impl-doira) | Java, Quarkus, [openapi-generator-maven-plugin](https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin) |
+| SKG-IF RDA WG | [Crossref](https://www.crossref.org/) and [DataCite](https://commons.datacite.org/) products and grants | Docker to deploy | [Git](https://github.com/skg-if/api-impl-doira) | Java, Quarkus, [openapi-generator-maven-plugin](https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin) |
 
 
 To update this list, please send issue or PR to the [skg-if/api repo](https://github.com/skg-if/api/issues/)
