@@ -24,7 +24,7 @@ nav_order: 7
 
 | Maintainer | Catalogue exposed | SKG-IF API | Git | Notes |
 | ----- | ----- | ----- | ----- | ----- |
-| SKG-IF RDA WG | [Crossref](https://www.crossref.org/) and [DataCite](hhttps://commons.datacite.org/) products and grants | Docker to deploy | [Git](https://github.com/skg-if/api-impl-doira) | Java |
+| SKG-IF RDA WG | [Crossref](https://www.crossref.org/) and [DataCite](hhttps://commons.datacite.org/) products and grants | Docker to deploy | [Git](https://github.com/skg-if/api-impl-doira) | Java, Quarkus, [openapi-generator-maven-plugin](https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin) |
 
 
 To update this list, please send issue or PR to the [skg-if/api repo](https://github.com/skg-if/api/issues/)
