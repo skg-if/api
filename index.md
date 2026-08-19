@@ -8,6 +8,11 @@ nav_order: 6
 
 {: .highlight }
 
+
+<p align="center">
+  <a href="https://discord.gg/6MY2G8Rs5m"><img src="https://img.shields.io/discord/1385577476205318279?label=Discord&logo=discord" alt="Discord"></a>
+</p>
+
 ## Versions
 
 **OpenAPI** is used to describe the endpoints and the format of the objects to exchange on the wire, the specifications are shared below.
