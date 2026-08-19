@@ -16,6 +16,7 @@ info:
     Last version of the SKG-IF OpenAPI is available at : https://skg-if.github.io/api/
 
     # Note for implementers :
+      - To validate a live implementation server see : [.github/WORFLOW.md](https://github.com/skg-if/api/blob/main/.github/WORFLOW.md)
       - Please refer to the [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?usp=sharing)
       - [RDA SKG-IF WG](https://skg-if.github.io/) does not provide any official implementation of the current specification.
       - Recommended OpenAPI viewer :
@@ -1961,7 +1962,9 @@ components:
               items:
                 type: string
             request:
-              type: [string, "null"]
+              type: [array, string, "null"]
+              items:
+                type: string
             retraction:
               type: [array, string, "null"]
               items:
@@ -2123,9 +2126,9 @@ components:
           ]
           properties :
             entity_type:
-              enum:
-                - "agent"
               type: string
+              default: "agent"
+              pattern: '^agent$'
               x-faker:
                 fake: ["agent"]
             identifiers:
@@ -2165,9 +2168,9 @@ components:
           ]
           properties :
             entity_type:
-              enum:
-                - "organisation"
               type: string
+              default: "organisation"
+              pattern: '^organisation$'
               x-faker:
                 fake: ["organisation"]
             identifiers:
@@ -2342,8 +2345,8 @@ components:
           properties :
             entity_type:
               type: string
-              enum:
-                - "person"
+              default: "person"
+              pattern: '^person$'
               x-faker:
                 fake: ["person"]
             identifiers:

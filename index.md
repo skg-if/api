@@ -260,9 +260,7 @@ SKG-IF Link entity relies on active stream vocabulary, rel : [https://www.w3.org
 
 ##  Validate a server implementation compliance with the SKG-IF OpenAPI specification.
 
-* See the [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?tab=t.0#heading=h.hso3muyqtlhx)
-  * Read the “validation process” and “hackathon” paragraphs at the beginning of this document.
-  * The document describes, how you can use the [PRISM proxy server](https://docs.stoplight.io/docs/prism/) to validate your implementation against the SKG-IF OpenAPI specification.
+* To validate a live implementation server see : [.github/WORFLOW.md](https://github.com/skg-if/api/blob/main/.github/WORFLOW.md)
 
 ##  Search filter formats
 
