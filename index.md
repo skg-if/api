@@ -9,9 +9,6 @@ nav_order: 6
 {: .highlight }
 
 
-<p align="center">
-  <a href="https://discord.gg/6MY2G8Rs5m"><img src="https://img.shields.io/discord/1385577476205318279?label=Discord&logo=discord" alt="Discord"></a>
-</p>
 
 ## Versions
 
@@ -32,6 +29,9 @@ Please also refer to the [SKG-IF OpenAPI Implementer documentation](https://docs
 | ----- | ----- | ----- |
 | 1.0.0 (Current) | `https://w3id.org/skg-if/api/skg-if-openapi.yaml` | 1.1.0 |
 
+<p align="center">
+<a href="https://discord.gg/6MY2G8Rs5m"><img src="https://img.shields.io/discord/1385577476205318279?label=Discord&logo=discord" alt="Discord"></a>
+</p>
 
 ### Current context
 
