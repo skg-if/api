@@ -15,7 +15,7 @@ CONTAINER_NAME = "prism-live-validation"
 NOT_FOUND_STATUSES = {404, 501}
 
 DEFAULT_QUERY_PARAMS = {
-    "/products": {"filter": "cf.search.title:Collections"},
+    "/products": {"filter": "cf.search.title:The"},
     "/grants": {"filter": "cf.search.title:The"},
     "/persons": {"filter": "cf.search.name:Smith"},
     "/datasources": {"filter": "cf.search.name:The"},
