@@ -20,7 +20,7 @@ info:
       - Please refer to the [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?usp=sharing)
       - [RDA SKG-IF WG](https://skg-if.github.io/) does not provide any official implementation of the current specification.
       - Recommended OpenAPI viewer :
-        - StopLight/Elements Viewer [Current/last SKG-IF OpenAPI version](https://elements-demo.stoplight.io/?spec=https://w3id.org/skg-if/api/skg-if-openapi.yaml).
+        - StopLight/Elements Viewer [Current/last SKG-IF OpenAPI version](https://stoplight-elements-demo.netlify.app/?spec=https://w3id.org/skg-if/api/skg-if-openapi.yaml).
         - Swagger : [Current/last SKG-IF OpenAPI version](https://editor.swagger.io/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
 
 externalDocs:
