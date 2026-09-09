@@ -40,7 +40,7 @@
             },
             "funding_stream": "Horizon Europe",
             "currency": "EUR",
-            "funded_amount": 50000,
+            "funded_amount": 50000.00,
             "duration": {
                 "start": "2023-01-01T00:00:00Z",
                 "end": "2025-12-31T23:59:59Z"
