@@ -427,7 +427,7 @@ paths:
                       title: 'INVALID_FILTER'
                       status: '422'
                       detail: 'The filter b is not supported by this implementation, valid filters are x, y, z'
-                      occurence: 'http://my-api/products?filter=b:foo,x:bar'
+                      instance: 'http://my-api/products?filter=b:foo,x:bar'
         '404':
           $ref: '#/components/responses/NotFoundSearch'
   '/persons/{local_identifier}':
