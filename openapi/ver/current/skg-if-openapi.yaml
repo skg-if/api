@@ -342,10 +342,6 @@ paths:
                       oneOf:
                         - $ref: '#/components/schemas/Product'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
-                      discriminator:
-                        propertyName: entity_type
-                        mapping:
-                          product: '#/components/schemas/Product'   
                 required: [ "@context", "meta", "@graph" ]
               examples:
                 JournalArticleListEx01:
