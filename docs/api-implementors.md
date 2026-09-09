@@ -12,7 +12,7 @@ nav_order: 7
 
 | Maintainer | Catalogue exposed | SKG-IF API | Git | Notes |
 | ----- | ----- | ----- | ----- | ----- |
-| [OpenCitations](https://opencitations.net) | [OpenCitations Datasets](https://search.opencitations.net/) | [API Staging](https://api-stg.opencitations.net/skg-if/v1/) | | |
+| [OpenCitations](https://opencitations.net) | [OpenCitations Datasets](https://search.opencitations.net/) | [API Production](https://api.opencitations.net/skg-if/v1/) | [Git](https://github.com/opencitations/oc_api) | |
 | OpenAIRE | [https://explore.openaire.eu/](https://explore.openaire.eu/) | [API Prod](https://api.openaire.eu/graph/swagger-ui/index.html?urls.primaryName=SKG-IF%20OpenAPI%20V1), [API Beta](https://api-beta.openaire.eu/graph/swagger-ui/index.html?urls.primaryName=SKG-IF%20OpenAPI%20V1) | | |
 | CESSDA - Consortium of European Social Science Data Archives | [https://datacatalogue.cessda.eu/](https://datacatalogue.cessda.eu/),  [https://thesauri.cessda.eu](https://thesauri.cessda.eu) | [API Prod](https://skg-if.cessda.eu/), [API Staging](https://skg-if-staging.cessda.eu/) | [Git](https://github.com/cessda/cessda.cdc.skg-if.api) | |
 | CLARIN - EU Research infrastructure for language resources and tools | [https://vlo.clarin.eu/](https://vlo.clarin.eu/?0) |  [API Staging](https://clarin-skg.dev.diginfra.org/api/v1/) | [Git](https://github.com/knaw-huc/ost-clarin-skg) | No API landingpage yet, but see [the products endpoint](https://clarin-skg.dev.diginfra.org/api/v1/products) for a start|
