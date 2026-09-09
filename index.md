@@ -60,6 +60,7 @@ Make sure your server JSON-LD output implementation is using the same context JS
 You can also visualize the OpenAPI specifications with standard tools like :
 
 * Stoplight : [https://stoplight-elements-demo.netlify.app/?spec=https://w3id.org/skg-if/api/skg-if-openapi.yaml](https://stoplight-elements-demo.netlify.app/?spec=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
+* Redocly : [https://redocly.github.io/redoc/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml](https://redocly.github.io/redoc/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
 * Swagger : [https://editor.swagger.io/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml](https://editor.swagger.io/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
 
 
