@@ -36,8 +36,10 @@ However, you can also just use an id and not an embedded the entity.
 
 ## How identifier schemes (ROR, DOI, ORCID …) are defined ?
 
-* In the json-ld context. see : https://github.com/skg-if/interoperability-framework/issues/17 (scheme update)
-* What are options if a scheme I need is missing ? https://github.com/skg-if/interoperability-framework/issues/36
+* Identifiers are defined, in the json-ld context. ( see : https://github.com/skg-if/interoperability-framework/issues/17)
+* What are options if a scheme I need is missing ?
+  * You may use the generic `url` scheme. or `urn` (ok for OAI-PMH ids).
+  * See also : https://github.com/skg-if/interoperability-framework/issues/36
 
 
 ## How can I include a specific product sub type ?
@@ -73,6 +75,11 @@ Example is :
 * No implement only the filters you can.
 
 * Each filter implementation is optional. If the operation does not implement one of the requested filters it must return an HTTP 422 response. see “Get list of products” operation documentation.
+
+## When should an operation return HTTP 200 vs HTTP 404 ?
+
+* Return HTTP 200 if the operation has a JSON-LD representation of the requested resource(s), i.e. the `@graph` field contains at least one entity.
+* Return HTTP 404 otherwise.  `@graph` is then an empty array. This applies **both** to single-entity "get by id" operations (e.g. `products/{local_identifier}`) when the id does not resolve, and to "get list" / search operations (e.g. `products`) when no entity matches the given filter.
 
 ## Is content-negotiation supported by SKG-IF ?
 

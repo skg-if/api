@@ -95,10 +95,13 @@ Make sure that you generate distinct URLs for person, product... They should not
 * The SKG-IF OpenAPI defines 2 types of endpoints
   * Get _Entity_ by Id
   * Get List of _Entity_
-* The SKG-IF OpenAPI endpoints outputs are JSON-LD and compatible with the [SKG-IF data model](https://skg-if.github.io/interoperability-framework/)
+* The SKG-IF OpenAPI endpoints outputs are JSON-LD and compatible with the [SKG-IF data model](https://skg-if.github.io/interoperability-framework/). Entities representations are included in a `@graph` field for **both** endpoints.
 
 You can refer to [static json-ld examples] (https://github.com/skg-if/api/tree/main/openapi/ver/current/sample_data).
- 
+
+* Return HTTP 200 if the operation has a JSON-LD representation of the requested resource(s), i.e. the `@graph` field contains at least one entity.
+* Return HTTP 404 otherwise.  `@graph` is then an empty array. This applies **both** to single-entity "get by id" operations (e.g. `products/{local_identifier}`) when the id does not resolve, and to "get list" / search operations (e.g. `products`) when no entity matches the given filter.
+
 ## API Get Entity by Id, single entity resolving
 
 Single entity resolve API format follows this format `https://acme.com/skg-if/api/{entity-type}/{local_identifier}`.

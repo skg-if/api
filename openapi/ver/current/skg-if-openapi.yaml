@@ -229,8 +229,7 @@ paths:
                           - value: "W4393781519"
                             scheme: "openalex"
         '404':
-          description: |
-            Error if entity does not exists
+          $ref: '#/components/responses/NotFoundEntity'
   '/products':
     get:
       tags:
@@ -429,6 +428,8 @@ paths:
                       status: '422'
                       detail: 'The filter b is not supported by this implementation, valid filters are x, y, z'
                       occurence: 'http://my-api/products?filter=b:foo,x:bar'
+        '404':
+          $ref: '#/components/responses/NotFoundSearch'
   '/persons/{local_identifier}':
     get:
       tags:
@@ -500,8 +501,7 @@ paths:
                         name: "John Doe"
 
         '404':
-          description: |
-            Error if entity does not exists
+          $ref: '#/components/responses/NotFoundEntity'
   '/persons':
     get:
       tags:
@@ -635,6 +635,8 @@ paths:
               operationId: getPersonById
               parameters:
                 local_identifier: $response.body#/@graph/local_identifier
+        '404':
+          $ref: '#/components/responses/NotFoundSearch'
   '/organisations/{local_identifier}':
     get:
       tags:
@@ -743,8 +745,7 @@ paths:
                         types:
                           - funder
         '404':
-          description: |
-            Error if entity does not exists
+          $ref: '#/components/responses/NotFoundEntity'
   '/organisations':
     get:
       tags:
@@ -823,6 +824,8 @@ paths:
                         - $ref: '#/components/schemas/Organisation'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
+        '404':
+          $ref: '#/components/responses/NotFoundSearch'
   '/grants/{local_identifier}':
     get:
       tags:
@@ -954,8 +957,7 @@ paths:
                               roles:
                                 - "co-applicant"
         '404':
-          description: |
-            Error if entity does not exists
+          $ref: '#/components/responses/NotFoundEntity'
   '/grants':
     get:
       tags:
@@ -1070,6 +1072,8 @@ paths:
                         - $ref: '#/components/schemas/Grant'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
+        '404':
+          $ref: '#/components/responses/NotFoundSearch'
   '/venues/{local_identifier}':
     get:
       tags:
@@ -1132,8 +1136,7 @@ paths:
                         acronym: JPC
                         type: journal
         '404':
-          description: |
-            Error if entity does not exists
+          $ref: '#/components/responses/NotFoundEntity'
   '/venues':
     get:
       tags:
@@ -1204,6 +1207,8 @@ paths:
                         - $ref: '#/components/schemas/Venue'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
+        '404':
+          $ref: '#/components/responses/NotFoundSearch'
   '/topics/{local_identifier}':
     get:
       tags:
@@ -1266,8 +1271,7 @@ paths:
                           en: "Computer Science"
                           it: "Informatica"
         '404':
-          description: |
-            Error if entity does not exists
+          $ref: '#/components/responses/NotFoundEntity'
   '/topics':
     get:
       tags:
@@ -1349,6 +1353,8 @@ paths:
                         - $ref: '#/components/schemas/Topic'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
+        '404':
+          $ref: '#/components/responses/NotFoundSearch'
   '/datasources/{local_identifier}':
     get:
       tags:
@@ -1413,8 +1419,7 @@ paths:
                           - "research data"
                           - "literature"
         '404':
-          description: |
-            Error if entity does not exists
+          $ref: '#/components/responses/NotFoundEntity'
   '/datasources':
     get:
       tags:
@@ -1485,6 +1490,8 @@ paths:
                         - $ref: '#/components/schemas/DataSource'
                         - $ref: '#/components/schemas/LocalIdentifierRef'
                 required: [ "@context", "meta", "@graph" ]
+        '404':
+          $ref: '#/components/responses/NotFoundSearch'
 components:
   securitySchemes:
     main_auth:
@@ -1538,6 +1545,87 @@ components:
             Search page size. limit search result size.
       schema:
         type: integer
+  responses:
+    NotFoundEntity:
+      description: |
+        No entity found for the given id. The `@graph` array is empty.
+      content:
+        application/json:
+          schema:
+            required: ['@context','@graph']
+            properties:
+              "@context":
+                type: array
+                description: JSON-LD context # not displayed in Stoplight elements
+                minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                uniqueItems: true
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                    - $ref: '#/components/schemas/JsonLdCtxSearch'
+                    - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                examples:
+                  - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}]
+              meta:
+                type: object
+                $ref: '#/components/schemas/MetaSingleEntity'
+              "@graph":
+                type: array
+                maxItems: 0
+                items: {}
+          examples:
+            NotFoundEntityEx01:
+              summary: No entity found for the given id
+              value:
+                "@context": [
+                  "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+                  "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+                  {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}
+                ]
+                "meta":
+                  local_identifier: https://example.com/skg-if/api/products/unknown-id
+                  entity_type: "single_entity"
+                "@graph": []
+    NotFoundSearch:
+      description: |
+        No entity found matching the given filter. The `@graph` array is empty.
+      content:
+        application/json:
+          schema:
+            properties:
+              "@context":
+                type: array
+                description: JSON-LD context # not displayed in Stoplight elements
+                minItems: 3 # http://../skg-if.json, http://../skg-if-api.json and @base
+                uniqueItems: true
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                    - $ref: '#/components/schemas/JsonLdCtxSearch'
+                    - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                examples:
+                  - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}]
+              meta:
+                type: object
+                $ref: '#/components/schemas/MetaSearch'
+              "@graph":
+                type: array
+                maxItems: 0
+                items: {}
+            required: [ "@context", "meta", "@graph" ]
+          examples:
+            NotFoundSearchEx01:
+              summary: No entity found matching the given filter
+              value:
+                "@context": [
+                  "https://w3id.org/skg-if/context/1.1.0/skg-if.json",
+                  "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json",
+                  {"@base" : "https://w3id.org/skg-if/sandbox/acme/"}
+                ]
+                "meta":
+                  local_identifier: https://example.com/skg-if/api/products?filter=cf.search.title:unknown
+                  entity_type: "search_result_page"
+                "@graph": []
   schemas:
     LocalIdentifierRef:
       type: string
