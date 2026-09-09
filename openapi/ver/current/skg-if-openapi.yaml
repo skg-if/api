@@ -13,15 +13,16 @@ info:
   description: |
     OpenAPI end points specifications for [SKG-IF](https://skg-if.github.io/interoperability-framework/)
 
-    Last version of the SKG-IF OpenAPI is available at : https://skg-if.github.io/api/
+    Last version of the SKG-IF OpenAPI is available at: https://skg-if.github.io/api/
 
     # Note for implementers :
-      - To validate a live implementation server see : [.github/WORFLOW.md](https://github.com/skg-if/api/blob/main/.github/WORFLOW.md)
+      - To validate a live implementation server see: [.github/WORFLOW.md](https://github.com/skg-if/api/blob/main/.github/WORFLOW.md)
       - Please refer to the [SKG-IF OpenAPI Implementer documentation](https://docs.google.com/document/d/1t7b7h28UTtM56Sda4NGJIp0hnQfGbcVVGn12fny9wfI/edit?usp=sharing)
       - [RDA SKG-IF WG](https://skg-if.github.io/) does not provide any official implementation of the current specification.
-      - Recommended OpenAPI viewer :
-        - StopLight/Elements Viewer [Current/last SKG-IF OpenAPI version](https://stoplight-elements-demo.netlify.app/?spec=https://w3id.org/skg-if/api/skg-if-openapi.yaml).
-        - Swagger : [Current/last SKG-IF OpenAPI version](https://editor.swagger.io/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
+      - Recommended OpenAPI viewers:
+        - StopLight/Elements Viewer: [Current/last SKG-IF OpenAPI version](https://stoplight-elements-demo.netlify.app/?spec=https://w3id.org/skg-if/api/skg-if-openapi.yaml).
+        - Redocly Viewer: [Current/last SKG-IF OpenAPI version](https://redocly.github.io/redoc/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
+        - Swagger: [Current/last SKG-IF OpenAPI version](https://editor.swagger.io/?url=https://w3id.org/skg-if/api/skg-if-openapi.yaml)
 
 externalDocs:
   description: SKG-IF
